@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="Inicio" />
+        <item
+            android:id="@+id/nav_purchases"
+            android:icon="@drawable/ic_purchases"
+            android:title="Compras" />
+        <item
+            android:id="@+id/nav_sales"
+            android:icon="@drawable/ic_sales"
+            android:title="Ventas" />
+        <item
+            android:id="@+id/nav_appointment"
+            android:icon="@drawable/ic_appointment"
+            android:title="Citas" />
+        <item
+            android:id="@+id/nav_garbage"
+            android:icon="@drawable/ic_garbage"
+            android:title="Basura" />
+    </group>
+
+    <item android:title="Acciones">
+        <menu>
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_logout"
+                android:title="Cerrar Sesion" />
+        </menu>
+    </item>
+
+</menu>
