@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/design_default_color_primary"
     android:orientation="vertical">
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"></android.support.v7.widget.RecyclerView>
 
     <LinearLayout
@@ -26,7 +25,7 @@
             android:src="@android:drawable/ic_menu_add"
             android:background="@null"
             android:scaleType="fitCenter"
-            />
+            android:contentDescription="Agregar" />
         <ImageButton
             android:id="@+id/borrar"
             android:layout_width="wrap_content"
@@ -35,6 +34,7 @@
             android:src="@android:drawable/ic_menu_delete"
             android:background="@null"
             android:scaleType="fitCenter"
+            android:contentDescription="Borrar"
             />
         <ImageButton
             android:id="@+id/modificar"
@@ -44,6 +44,7 @@
             android:src="@android:drawable/ic_menu_edit"
             android:background="@null"
             android:scaleType="fitCenter"
+            android:contentDescription="Modificar"
             />
     </LinearLayout>
 </LinearLayout>
