@@ -3,51 +3,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_gravity="center"/>
+        <TextView
+            android:id="@+id/nombre_persona"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pedro Infante"
+            android:textSize="20sp"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cantidad Ganado"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_gravity="center"/>
+        <TextView
+            android:id="@+id/cantidad_ganado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15"
+            android:textSize="20sp"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fecha"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_gravity="center"/>
+        <TextView
+            android:id="@+id/fecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15/Diciembre/2019"
+            android:textSize="20sp"
+            android:layout_gravity="center"/>
+    </LinearLayout>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nombre"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:layout_gravity="center"/>
-    <TextView
-        android:id="@+id/nombre_persona"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pedro Infante"
-        android:textSize="20sp"
-        android:layout_gravity="center"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cantidad Ganado"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:layout_gravity="center"/>
-    <TextView
-        android:id="@+id/cantidad_ganado"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="15"
-        android:textSize="20sp"
-        android:layout_gravity="center"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fecha"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:layout_gravity="center"/>
-    <TextView
-        android:id="@+id/fecha"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="15/Diciembre/2019"
-        android:textSize="20sp"
-        android:layout_gravity="center"/>
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimary"
+        android:layout_marginTop="11dp"/>
 
 
 </LinearLayout>
