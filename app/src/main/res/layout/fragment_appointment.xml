@@ -17,15 +17,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <ImageButton
             android:id="@+id/agregar"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_weight="1"
-            android:src="@android:drawable/ic_menu_add"
             android:background="@null"
+            android:contentDescription="Agregar"
+            android:onClick="onClick"
             android:scaleType="fitCenter"
-            android:contentDescription="Agregar" />
+            android:src="@android:drawable/ic_menu_add" />
         <ImageButton
             android:id="@+id/borrar"
             android:layout_width="wrap_content"
