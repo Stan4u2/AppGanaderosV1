@@ -100,7 +100,7 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    public void onClick(View view){
+    public void onClick(View view) {
         AppointmentFragment AF = new AppointmentFragment();
         AF.onClick(view);
     }

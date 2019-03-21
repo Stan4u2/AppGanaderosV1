@@ -21,6 +21,7 @@ import com.example.appganaderosv1.R;
 import com.example.appganaderosv1.entidades.Citas;
 import com.example.appganaderosv1.entidades.Persona;
 import com.example.appganaderosv1.utilidades.Utilidades;
+import com.example.appganaderosv1.insert_new_appointment;
 
 import java.util.ArrayList;
 
@@ -89,38 +90,48 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
 
         while(cursor.moveToNext()){
             persona = new Persona();
-            persona.setNombre(cursor.getString(1));
+            persona.setNombre(cursor.getString(0));
 
             citas = new Citas();
             citas.setCantidad_ganado(cursor.getInt(1));
-            citas.setFecha(cursor.getString(3));
+            citas.setFecha(cursor.getString(2));
 
             listaPersona.add(persona);
             listaCitas.add(citas);
         }
 
-        /*
+
         Adapter_appointment adapter_appointment = new Adapter_appointment(listaPersona, listaCitas);
 
-        adapter_appointment.setOnClickListener(new View.OnClickListener() {
+        recycler_view.setAdapter(adapter_appointment);
+
+        /*adapter_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Persona persona = listaPersona.get(recycler_view.getChildAdapterPosition(view));
                 Citas citas = listaCitas.get(recycler_view.getChildAdapterPosition(view));
             }
-        });
-        */
+        });*/
+
 
     }
 
 
     public void onClick(View view){
+        Intent miIntent = null;
+
         switch (view.getId()){
             case R.id.agregar:
-
+                miIntent = new Intent(view.getContext(), insert_new_appointment.class);
                 break;
         }
+        if(miIntent!=null){
+            view.getContext().startActivity(miIntent);
+        }
     }
+
+
+
 
 
 }

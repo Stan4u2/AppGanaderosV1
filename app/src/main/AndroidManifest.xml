@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".insert_new_appointment"></activity>
+        <activity android:name=".appointment_details"></activity>
+        <activity android:name=".calendar" />
+        <activity android:name=".insert_new_person" />
+        <activity android:name=".insert_new_appointment" />
         <activity android:name=".homeActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

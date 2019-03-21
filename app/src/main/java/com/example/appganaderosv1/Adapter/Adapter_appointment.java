@@ -37,7 +37,7 @@ public class Adapter_appointment extends RecyclerView.Adapter<Adapter_appointmen
     @Override
     public void onBindViewHolder(@NonNull Adapter_appointment.ViewHolderAppointment holder, int i) {
         holder.nombre_persona.setText(listaPersona.get(i).getNombre());
-        holder.cantidad_ganado.setText(listaCitas.get(i).getCantidad_ganado());
+        holder.cantidad_ganado.setText(listaCitas.get(i).getCantidad_ganado().toString());
         holder.fecha.setText(listaCitas.get(i).getFecha());
     }
 

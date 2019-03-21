@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".calendar">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <CalendarView
+            android:id="@+id/calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></CalendarView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fecha: "
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/calendar_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="dd/mm/aaaa"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/saveDate"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="17dp"
+            android:background="@null"
+            android:onClick="saveDate"
+            android:scaleType="fitCenter"
+            android:src="@android:drawable/ic_menu_today" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -6,7 +6,7 @@ public class Persona implements Serializable {
 
     private Integer id_persona;
     private String nombre;
-    private Integer telefono;
+    private String telefono;
     private String domicilio;
     private String datos_extras;
 
@@ -14,7 +14,7 @@ public class Persona implements Serializable {
 
     }
 
-    public Persona(Integer id_persona, String nombre, Integer telefono, String domicilio, String datos_extras) {
+    public Persona(Integer id_persona, String nombre, String telefono, String domicilio, String datos_extras) {
         this.id_persona = id_persona;
         this.nombre = nombre;
         this.telefono = telefono;
@@ -38,11 +38,11 @@ public class Persona implements Serializable {
         this.nombre = nombre;
     }
 
-    public Integer getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(Integer telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
