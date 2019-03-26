@@ -9,6 +9,7 @@
     android:launchMode="singleTask">
 
     <TextView
+        android:id="@+id/action_to_do"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -205,7 +206,7 @@
                 android:id="@+id/number_animals_appointment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="15"
+                android:hint="00"
                 android:inputType="number"
                 android:textSize="17dp" />
 

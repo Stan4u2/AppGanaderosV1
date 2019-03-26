@@ -50,6 +50,7 @@ public class Utilidades {
     public static final String CAMPO_DATOS = "datos";
     public static final String CAMPO_FECHA_CITAS = "fecha";
     public static final String CAMPO_PERSONA_CITA = "persona_cita";
+    public static final String CAMPO_RESPALDO_CITAS = "respaldo";
 
     public static final String CREAR_TABLA_CITAS =
             "CREATE TABLE " + TABLA_CITAS + "("
@@ -57,6 +58,7 @@ public class Utilidades {
                     + CAMPO_CANTIDAD_GANADO + " INTEGER, "
                     + CAMPO_DATOS + " TEXT, "
                     + CAMPO_FECHA_CITAS + " TEXT, "
+                    + CAMPO_RESPALDO_CITAS + " INTEGER, "
                     + CAMPO_PERSONA_CITA + " INTEGER REFERENCES " + TABLA_PERSONA + "(" + CAMPO_ID_PERSONA + "))";
 
 

@@ -63,6 +63,7 @@ public class Adapter_appointment extends RecyclerView.Adapter<Adapter_appointmen
 
         public ViewHolderAppointment(@NonNull View itemView) {
             super(itemView);
+
             nombre_persona = itemView.findViewById(R.id.nombre_persona);
             cantidad_ganado = itemView.findViewById(R.id.cantidad_ganado);
             fecha = itemView.findViewById(R.id.fecha);

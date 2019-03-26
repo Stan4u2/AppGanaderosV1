@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.appganaderosv1.entidades.Citas;
 import com.example.appganaderosv1.entidades.Persona;
 import com.example.appganaderosv1.utilidades.Utilidades;
 
@@ -28,9 +29,11 @@ public class insert_new_appointment extends AppCompatActivity {
     public static int id_new_person;
     public static String DateAppointment;
     int idPersonAppointment;
+    static String action;
+    int idAppointmentModifie;
 
     ImageButton cancelButton, add_person_appointment, select_date_appointment;
-    TextView name_person_appointment, cellphone_person_appointment, address_person_appointment, extra_data_person_appointment, date_appointment;
+    TextView action_to_do, name_person_appointment, cellphone_person_appointment, address_person_appointment, extra_data_person_appointment, date_appointment;
     EditText number_animals_appointment, extra_data_appointment;
     Spinner spinner_person_appointment;
 
@@ -55,6 +58,7 @@ public class insert_new_appointment extends AppCompatActivity {
         spinner_person_appointment = findViewById(R.id.spinner_person_appointment);
 
         //Textviews
+        action_to_do = findViewById(R.id.action_to_do);
         name_person_appointment = findViewById(R.id.name_person_appointment);
         cellphone_person_appointment = findViewById(R.id.cellphone_person_appointment);
         address_person_appointment = findViewById(R.id.address_person_appointment);
@@ -66,6 +70,55 @@ public class insert_new_appointment extends AppCompatActivity {
         extra_data_appointment = findViewById(R.id.extra_data_appointment);
 
         consultListPeople_appointment();
+
+        Bundle actionToDo = getIntent().getExtras();
+
+        if(actionToDo != null){
+
+            action = actionToDo.getSerializable("action").toString();
+
+            switch(action){
+                case "insert":
+                    action_to_do.setText("Nueva Cita");
+                    break;
+
+                case "modifie":
+                    action_to_do.setText("Modificar Cita");
+                    loadData();
+                    break;
+            }
+
+        }
+
+
+    }
+
+    private void loadData() {
+
+        Persona person = null;
+        Citas citas = null;
+
+        Bundle data = getIntent().getExtras();
+
+        if(data != null){
+            System.out.println("Hola");
+            person = (Persona) data.getSerializable("persona");
+            citas = (Citas) data.getSerializable("citas");
+
+            for(int x = 1; x <= spinner_person_appointment.getCount()-1; x++){
+                if(spinner_person_appointment.getItemAtPosition(x).equals(person.getId_persona() + " - " + person.getNombre())){
+                    spinner_person_appointment.setSelection(x);
+                    break;
+                }
+            }
+
+            idAppointmentModifie = citas.getId_citas();
+
+            date_appointment.setText(citas.getFecha());
+            number_animals_appointment.setText(citas.getCantidad_ganado().toString());
+            extra_data_appointment.setText(citas.getDatos());
+
+        }
     }
 
     //When you start another activity and come back this method will be executed
@@ -76,7 +129,14 @@ public class insert_new_appointment extends AppCompatActivity {
         if(id_new_person != -1 && process == true) {
 
             consultListPeople_appointment();
-            spinner_person_appointment.setSelection(id_new_person);
+            //So after restarting it will check what person was just inserted and it will select it automatically
+            for(int x = 1; x <= spinner_person_appointment.getCount()-1; x++){
+
+                if(spinner_person_appointment.getItemAtPosition(x).equals(peopleData.get(x-1).getId_persona() + " - " + peopleData.get(x-1).getNombre())){
+                    spinner_person_appointment.setSelection(x);
+                    break;
+                }
+            }
             process = false;
 
         }
@@ -149,7 +209,7 @@ public class insert_new_appointment extends AppCompatActivity {
         peopleList.add("Seleccione:");
 
         for (int i = 0; i < peopleData.size(); i++) {
-            peopleList.add(peopleData.get(i).getNombre());
+            peopleList.add(peopleData.get(i).getId_persona() + " - " + peopleData.get(i).getNombre());
         }
     }
 
@@ -193,7 +253,7 @@ public class insert_new_appointment extends AppCompatActivity {
 
 
     public void saveAppointmentDB(View view){
-        boolean inserted = false;
+        boolean complete = false;
         if(
            spinner_person_appointment.getSelectedItemId() == 0 ||
            date_appointment.getText().toString().isEmpty()||
@@ -202,27 +262,51 @@ public class insert_new_appointment extends AppCompatActivity {
         ) {
             Toast.makeText(getApplicationContext(), "¡¡Campos Vacios!!", Toast.LENGTH_LONG).show();
         }else{
-            inserted = insertNewAppointment(
-                    Integer.valueOf(number_animals_appointment.getText().toString()),
-                    extra_data_appointment.getText().toString(),
-                    date_appointment.getText().toString(),
-                    idPersonAppointment);
-        }
+            if(action == "insert") {
+                boolean inserted = insertNewAppointment(
+                        Integer.valueOf(number_animals_appointment.getText().toString()),
+                        extra_data_appointment.getText().toString(),
+                        date_appointment.getText().toString(),
+                        idPersonAppointment);
 
-        if(inserted == true){
-            Toast.makeText(getApplicationContext(), "Datos Insertados", Toast.LENGTH_LONG).show();
-            finish();
-        }else {
-            Toast.makeText(getApplicationContext(), "¡¡Datos No Insertados!!", Toast.LENGTH_LONG).show();
+                if(inserted == true){
+                    Toast.makeText(getApplicationContext(), "Datos Insertados", Toast.LENGTH_LONG).show();
+                    complete = true;
+                }else {
+                    Toast.makeText(getApplicationContext(), "¡¡Datos No Insertados!!", Toast.LENGTH_LONG).show();
+                }
+
+
+            }else if(action == "modifie"){
+                System.out.println("Entro");
+                int modified = modifieAppointment(
+                        Integer.valueOf(number_animals_appointment.getText().toString()),
+                        extra_data_appointment.getText().toString(),
+                        date_appointment.getText().toString(),
+                        idPersonAppointment
+                );
+
+                if(modified == 1){
+                    Toast.makeText(getApplicationContext(), "Se han actualizado los datos", Toast.LENGTH_LONG).show();
+                    complete = true;
+                }else{
+                    Toast.makeText(getApplicationContext(), "Datos no actualizados", Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            if(complete == true){
+                finish();
+            }
         }
     }
 
 
     private boolean insertNewAppointment(int numberAnimals, String data, String date, int idPerson) {
-        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(Utilidades.CAMPO_RESPALDO_CITAS, 0);
         values.put(Utilidades.CAMPO_CANTIDAD_GANADO, numberAnimals);
         values.put(Utilidades.CAMPO_DATOS, data);
         values.put(Utilidades.CAMPO_FECHA_CITAS, date);
@@ -238,6 +322,25 @@ public class insert_new_appointment extends AppCompatActivity {
             insert_new_appointment.id_new_person = idResult.intValue();
             return true;
         }
+    }
+
+    private int modifieAppointment(int numberAnimals, String data, String date, int idPerson){
+        SQLiteDatabase db = conn.getWritableDatabase();
+
+        String[] id_appointment = {String.valueOf(idAppointmentModifie)};
+
+        ContentValues values = new ContentValues();
+
+        values.put(Utilidades.CAMPO_CANTIDAD_GANADO, numberAnimals);
+        values.put(Utilidades.CAMPO_DATOS, data);
+        values.put(Utilidades.CAMPO_FECHA_CITAS, date);
+        values.put(Utilidades.CAMPO_PERSONA_CITA, idPerson);
+
+        int updated = db.update(Utilidades.TABLA_CITAS, values, Utilidades.CAMPO_ID_CITAS + " = ?", id_appointment);
+
+        db.close();
+
+        return updated;
     }
 }
 

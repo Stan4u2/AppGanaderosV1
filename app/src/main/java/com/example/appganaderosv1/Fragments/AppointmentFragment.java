@@ -13,11 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 
 import com.example.appganaderosv1.Adapter.Adapter_appointment;
 import com.example.appganaderosv1.ConexionSQLiteHelper;
 import com.example.appganaderosv1.R;
+import com.example.appganaderosv1.appointment_details;
 import com.example.appganaderosv1.entidades.Citas;
 import com.example.appganaderosv1.entidades.Persona;
 import com.example.appganaderosv1.utilidades.Utilidades;
@@ -32,6 +35,7 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
 
     RecyclerView recycler_view;
     ImageButton agregar, borrar, modificar;
+    CheckBox checkbox_appointment;
 
     @Nullable
     @Override
@@ -48,6 +52,8 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
 
         modificar = vista.findViewById(R.id.modificar);
 
+        checkbox_appointment = vista.findViewById(R.id.checkbox_appointment);
+
         listaPersona = new ArrayList<>();
         listaCitas = new ArrayList<>();
 
@@ -55,6 +61,12 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
 
         return vista;
 
+    }
+
+    //This part of the code updates the ListView in case that you made a modification
+    public void onResume(){
+        super.onResume();
+        llenarLista();
     }
 
     private void llenarLista() {
@@ -77,24 +89,39 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
             //c.persona_cita = p.id_persona;
         Cursor cursor = db.rawQuery(
                 "SELECT " +
-                        Utilidades.CAMPO_NOMBRE + ", " +
+                        Utilidades.CAMPO_ID_CITAS + ", " +
                         Utilidades.CAMPO_CANTIDAD_GANADO + ", " +
-                        Utilidades.CAMPO_FECHA_CITAS +
+                        Utilidades.CAMPO_DATOS + ", " +
+                        Utilidades.CAMPO_FECHA_CITAS + ", " +
+
+                        Utilidades.CAMPO_ID_PERSONA + ", " +
+                        Utilidades.CAMPO_NOMBRE + ", " +
+                        Utilidades.CAMPO_TELEFONO + ", " +
+                        Utilidades.CAMPO_DOMICILIO + ", " +
+                        Utilidades.CAMPO_DATOS_EXTRAS +
                     " FROM " +
                         Utilidades.TABLA_PERSONA + ", " +
                         Utilidades.TABLA_CITAS +
                     " WHERE " +
-                        Utilidades.CAMPO_PERSONA_CITA + " = " + Utilidades.CAMPO_ID_PERSONA,
+                        Utilidades.CAMPO_PERSONA_CITA + " = " + Utilidades.CAMPO_ID_PERSONA +
+                        " AND " +
+                        Utilidades.CAMPO_RESPALDO_CITAS + " = " + 0,
                 null
         );
 
         while(cursor.moveToNext()){
             persona = new Persona();
-            persona.setNombre(cursor.getString(0));
+            persona.setId_persona(cursor.getInt(4));
+            persona.setNombre(cursor.getString(5));
+            persona.setTelefono(cursor.getString(6));
+            persona.setDomicilio(cursor.getString(7));
+            persona.setDatos_extras(cursor.getString(8));
 
             citas = new Citas();
+            citas.setId_citas(cursor.getInt(0));
             citas.setCantidad_ganado(cursor.getInt(1));
-            citas.setFecha(cursor.getString(2));
+            citas.setDatos(cursor.getString(2));
+            citas.setFecha(cursor.getString(3));
 
             listaPersona.add(persona);
             listaCitas.add(citas);
@@ -103,29 +130,43 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
 
         Adapter_appointment adapter_appointment = new Adapter_appointment(listaPersona, listaCitas);
 
-        recycler_view.setAdapter(adapter_appointment);
 
-        /*adapter_appointment.setOnClickListener(new View.OnClickListener() {
+
+        adapter_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Persona persona = listaPersona.get(recycler_view.getChildAdapterPosition(view));
                 Citas citas = listaCitas.get(recycler_view.getChildAdapterPosition(view));
+
+                Intent intent = new Intent(view.getContext(), appointment_details.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("persona", persona);
+                bundle.putSerializable("citas", citas);
+
+                intent.putExtras(bundle);
+                startActivity(intent);
+
             }
-        });*/
+        });
 
-
+        recycler_view.setAdapter(adapter_appointment);
     }
-
 
     public void onClick(View view){
         Intent miIntent = null;
+        Bundle bundle = new Bundle();
 
         switch (view.getId()){
             case R.id.agregar:
                 miIntent = new Intent(view.getContext(), insert_new_appointment.class);
+
+                bundle.putSerializable("action", "insert");
+
                 break;
         }
         if(miIntent!=null){
+            miIntent.putExtras(bundle);
             view.getContext().startActivity(miIntent);
         }
     }
