@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
@@ -29,25 +28,25 @@
             android:onClick="onClick"
             android:scaleType="fitCenter"
             android:src="@android:drawable/ic_menu_add" />
+
         <ImageButton
             android:id="@+id/borrar"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_weight="1"
-            android:src="@android:drawable/ic_menu_delete"
             android:background="@null"
-            android:scaleType="fitCenter"
             android:contentDescription="Borrar"
-            />
+            android:scaleType="fitCenter"
+            android:src="@android:drawable/ic_menu_delete" />
+
         <ImageButton
             android:id="@+id/modificar"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_weight="1"
-            android:src="@android:drawable/ic_menu_edit"
             android:background="@null"
-            android:scaleType="fitCenter"
             android:contentDescription="Modificar"
-            />
+            android:scaleType="fitCenter"
+            android:src="@android:drawable/ic_menu_edit" />
     </LinearLayout>
 </LinearLayout>

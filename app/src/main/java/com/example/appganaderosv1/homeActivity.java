@@ -104,4 +104,9 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
         AppointmentFragment AF = new AppointmentFragment();
         AF.onClick(view);
     }
+
+    public void newPurchase(View view){
+        PurchasesFragment PF = new PurchasesFragment();
+        PF.newPurchase(view);
+    }
 }

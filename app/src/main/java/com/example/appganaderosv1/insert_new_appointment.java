@@ -101,14 +101,13 @@ public class insert_new_appointment extends AppCompatActivity {
         Bundle data = getIntent().getExtras();
 
         if(data != null){
-            System.out.println("Hola");
             person = (Persona) data.getSerializable("persona");
             citas = (Citas) data.getSerializable("citas");
 
-            for(int x = 1; x <= spinner_person_appointment.getCount()-1; x++){
-                if(spinner_person_appointment.getItemAtPosition(x).equals(person.getId_persona() + " - " + person.getNombre())){
-                    spinner_person_appointment.setSelection(x);
-                    break;
+            for (int i = 0; i < peopleData.size(); i++) {
+                System.out.println("ID de las personas : " + peopleData.get(i).getId_persona());
+                if(peopleData.get(i).getId_persona().equals(person.getId_persona())){
+                    spinner_person_appointment.setSelection(i+1);
                 }
             }
 
@@ -124,17 +123,14 @@ public class insert_new_appointment extends AppCompatActivity {
     //When you start another activity and come back this method will be executed
     public void onRestart(){
         super.onRestart();
-
-        System.out.println("Id de la nueva persona " + id_new_person);
+        System.out.println("ID de la persona " + id_new_person);
         if(id_new_person != -1 && process == true) {
 
             consultListPeople_appointment();
-            //So after restarting it will check what person was just inserted and it will select it automatically
-            for(int x = 1; x <= spinner_person_appointment.getCount()-1; x++){
 
-                if(spinner_person_appointment.getItemAtPosition(x).equals(peopleData.get(x-1).getId_persona() + " - " + peopleData.get(x-1).getNombre())){
-                    spinner_person_appointment.setSelection(x);
-                    break;
+            for (int i = 0; i < peopleData.size(); i++) {
+                if(peopleData.get(i).getId_persona() == id_new_person){
+                    spinner_person_appointment.setSelection(i+1);
                 }
             }
             process = false;
@@ -154,7 +150,7 @@ public class insert_new_appointment extends AppCompatActivity {
         peopleData = new ArrayList<Persona>();
 
         //Select * from personas;
-        Cursor cursor = db.rawQuery("SELECT * FROM " + Utilidades.TABLA_PERSONA, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Utilidades.TABLA_PERSONA + " ORDER BY " + Utilidades.CAMPO_NOMBRE, null);
         while (cursor.moveToNext()) {
             persona = new Persona();
             persona.setId_persona(cursor.getInt(0));
@@ -209,20 +205,13 @@ public class insert_new_appointment extends AppCompatActivity {
         peopleList.add("Seleccione:");
 
         for (int i = 0; i < peopleData.size(); i++) {
-            peopleList.add(peopleData.get(i).getId_persona() + " - " + peopleData.get(i).getNombre());
+            peopleList.add(peopleData.get(i).getNombre());
         }
     }
 
 
     public void cancel_appointment(View view) {
-        Intent intent = null;
-        if (view.getId() == R.id.cancelButton) {
-            intent = new Intent(insert_new_appointment.this, homeActivity.class);
-        }
-
-        if (intent != null) {
-            startActivity(intent);
-        }
+        finish();
     }
 
 
@@ -254,6 +243,7 @@ public class insert_new_appointment extends AppCompatActivity {
 
     public void saveAppointmentDB(View view){
         boolean complete = false;
+        System.out.println("La accion a realizar: " + action);
         if(
            spinner_person_appointment.getSelectedItemId() == 0 ||
            date_appointment.getText().toString().isEmpty()||
@@ -262,7 +252,7 @@ public class insert_new_appointment extends AppCompatActivity {
         ) {
             Toast.makeText(getApplicationContext(), "¡¡Campos Vacios!!", Toast.LENGTH_LONG).show();
         }else{
-            if(action == "insert") {
+            if(action.equals("insert")) {
                 boolean inserted = insertNewAppointment(
                         Integer.valueOf(number_animals_appointment.getText().toString()),
                         extra_data_appointment.getText().toString(),
@@ -277,15 +267,14 @@ public class insert_new_appointment extends AppCompatActivity {
                 }
 
 
-            }else if(action == "modifie"){
-                System.out.println("Entro");
+            }else if(action.equals("modifie")){
                 int modified = modifieAppointment(
                         Integer.valueOf(number_animals_appointment.getText().toString()),
                         extra_data_appointment.getText().toString(),
                         date_appointment.getText().toString(),
                         idPersonAppointment
                 );
-
+                System.out.println("Numero de modificados " + modified);
                 if(modified == 1){
                     Toast.makeText(getApplicationContext(), "Se han actualizado los datos", Toast.LENGTH_LONG).show();
                     complete = true;
@@ -323,6 +312,7 @@ public class insert_new_appointment extends AppCompatActivity {
             return true;
         }
     }
+
 
     private int modifieAppointment(int numberAnimals, String data, String date, int idPerson){
         SQLiteDatabase db = conn.getWritableDatabase();

@@ -35,7 +35,6 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
 
     RecyclerView recycler_view;
     ImageButton agregar, borrar, modificar;
-    CheckBox checkbox_appointment;
 
     @Nullable
     @Override
@@ -51,8 +50,6 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
         borrar = vista.findViewById(R.id.borrar);
 
         modificar = vista.findViewById(R.id.modificar);
-
-        checkbox_appointment = vista.findViewById(R.id.checkbox_appointment);
 
         listaPersona = new ArrayList<>();
         listaCitas = new ArrayList<>();
@@ -129,8 +126,6 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
 
 
         Adapter_appointment adapter_appointment = new Adapter_appointment(listaPersona, listaCitas);
-
-
 
         adapter_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
