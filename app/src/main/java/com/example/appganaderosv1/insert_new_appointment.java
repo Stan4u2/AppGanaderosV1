@@ -123,7 +123,6 @@ public class insert_new_appointment extends AppCompatActivity {
     //When you start another activity and come back this method will be executed
     public void onRestart(){
         super.onRestart();
-        System.out.println("ID de la persona " + id_new_person);
         if(id_new_person != -1 && process == true) {
 
             consultListPeople_appointment();

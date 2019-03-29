@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".insert_new_purchases"
+    android:launchMode="singleTask"
     android:orientation="vertical"
-    android:launchMode="singleTask">
+    tools:context=".insert_new_purchases">
 
     <TextView
         android:id="@+id/action_to_do"
@@ -38,17 +38,17 @@
             android:orientation="horizontal">
 
             <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/spinner_person_appointment"
+                android:id="@+id/spinner_person_purchase"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"></android.support.v7.widget.AppCompatSpinner>
 
             <ImageButton
-                android:id="@+id/add_person_appointment"
+                android:id="@+id/add_person_purchase"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:background="@null"
-                android:onClick="new_person_appointment"
+                android:onClick="new_person_purchase"
                 android:src="@android:drawable/ic_input_add" />
         </LinearLayout>
 
@@ -66,7 +66,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/name_person_appointment"
+                android:id="@+id/name_person_purchase"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Felipe Torres"
@@ -87,7 +87,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/cellphone_person_appointment"
+                android:id="@+id/cellphone_person_purchase"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="348-100-1302"
@@ -108,7 +108,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/address_person_appointment"
+                android:id="@+id/address_person_purchase"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Clavel #19"
@@ -129,7 +129,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/extra_data_person_appointment"
+                android:id="@+id/extra_data_person_purchase"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sepa"
@@ -172,19 +172,19 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/date_appointment"
+                android:id="@+id/date_purchase"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="dd/mm/aaaa"
                 android:textSize="17dp" />
 
             <ImageButton
-                android:id="@+id/select_date_appointment"
+                android:id="@+id/select_date_purchase"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:background="@null"
-                android:onClick="select_date_appointment"
+                android:onClick="select_date_purchase"
                 android:src="@android:drawable/ic_menu_today" />
 
         </LinearLayout>
@@ -203,7 +203,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/number_animals_appointment"
+                android:id="@+id/number_animals_purchase"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="00"
@@ -223,18 +223,19 @@
                 android:layout_height="wrap_content"
                 android:text="Cantidad a Pagar:"
                 android:textSize="17dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$"/>
+                android:text="$" />
 
             <TextView
+                android:id="@+id/amount_to_pay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="000"
-                android:textSize="17dp"/>
+                android:textSize="17dp" />
         </LinearLayout>
 
     </LinearLayout>
@@ -256,16 +257,35 @@
             android:layout_weight="1"></android.support.v7.widget.RecyclerView>
 
         <Button
+            android:id="@+id/add_animal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="AGREGAR GANADO"/>
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="70dp"
+
+                android:onClick="cancel_purchase"
+                android:src="@android:drawable/ic_menu_close_clear_cancel" />
+
+            <ImageButton
+                android:id="@+id/savePurchase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_save"/>
+        </LinearLayout>
+
     </LinearLayout>
-
-
-
-
 
 
 </LinearLayout>

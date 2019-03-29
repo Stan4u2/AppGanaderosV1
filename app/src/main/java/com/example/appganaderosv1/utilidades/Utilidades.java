@@ -116,6 +116,7 @@ public class Utilidades {
     public static final String CAMPO_PESO = "peso";
     public static final String CAMPO_PRECIO = "precio";
     public static final String CAMPO_TARA = "tara";
+    public static final String CAMPO_TOTAL_PAGAR = "total";
     public static final String CAMPO_NUMERO_ARETE = "numero_arete";
     public static final String CAMPO_COMPRA = "compra";
 
@@ -126,6 +127,7 @@ public class Utilidades {
                     + CAMPO_PESO + " REAL, "
                     + CAMPO_PRECIO + " REAL, "
                     + CAMPO_TARA + " REAL, "
+                    + CAMPO_TOTAL_PAGAR + " REAL, "
                     + CAMPO_NUMERO_ARETE + " INTEGER, "
                     + CAMPO_COMPRA + " INTEGER REFERENCES " + TABLA_COMPRAS + "(" + CAMPO_ID_COMPRA + "))";
 

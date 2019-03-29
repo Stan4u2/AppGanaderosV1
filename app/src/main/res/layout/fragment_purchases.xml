@@ -25,7 +25,7 @@
             android:layout_weight="1"
             android:background="@null"
             android:contentDescription="Agregar"
-            android:onClick="onClick"
+            android:onClick="newPurchase"
             android:scaleType="fitCenter"
             android:src="@android:drawable/ic_menu_add" />
         <ImageButton

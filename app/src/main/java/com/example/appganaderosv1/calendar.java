@@ -56,9 +56,14 @@ public class calendar extends AppCompatActivity {
                 case "appointment":
                     insert_new_appointment.DateAppointment = calendarDate.getText().toString();
                     insert_new_appointment.dateAppointment = true;
-                    finish();
+                    break;
+                case "purchase":
+                    insert_new_purchases.DatePurchase = calendarDate.getText().toString();
+                    insert_new_purchases.datePurchase = true;
+
                     break;
             }
+            finish();
         }
     }
 }

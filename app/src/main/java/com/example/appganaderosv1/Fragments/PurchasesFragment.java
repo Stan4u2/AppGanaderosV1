@@ -20,6 +20,7 @@ import com.example.appganaderosv1.ConexionSQLiteHelper;
 import com.example.appganaderosv1.R;
 import com.example.appganaderosv1.entidades.Compras;
 import com.example.appganaderosv1.entidades.Persona;
+import com.example.appganaderosv1.insert_new_purchases;
 import com.example.appganaderosv1.utilidades.Utilidades;
 
 import java.util.ArrayList;
@@ -123,10 +124,8 @@ public class PurchasesFragment extends Fragment {
 
         switch (view.getId()){
             case R.id.agregar:
-                //miIntent = new Intent(view.getContext(), insert_new_appointment.class);
-
+                miIntent = new Intent(view.getContext(), insert_new_purchases.class);
                 bundle.putSerializable("action", "insert");
-
                 break;
         }
         if(miIntent!=null){

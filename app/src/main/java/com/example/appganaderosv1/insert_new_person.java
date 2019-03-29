@@ -47,8 +47,14 @@ public class insert_new_person extends AppCompatActivity {
 
         if(inserted == true){
             Toast.makeText(insert_new_person.this, "Datos Insertados", Toast.LENGTH_LONG).show();
-            System.out.println("id de la persona nueva: " + insert_new_appointment.id_new_person);
-            insert_new_appointment.process = true;
+            switch (button_class){
+                case "appointment":
+                    insert_new_appointment.process = true;
+                    break;
+                case "purchase":
+                    insert_new_purchases.process = true;
+                    break;
+            }
             finish();
         }else {
             Toast.makeText(insert_new_person.this, "¡¡Datos No Insertados!!", Toast.LENGTH_LONG).show();
@@ -73,7 +79,15 @@ public class insert_new_person extends AppCompatActivity {
         if(idResult == -1){
             return false;
         }else{
-            insert_new_appointment.id_new_person = idResult.intValue();
+            switch (button_class){
+                case "appointment":
+                    insert_new_appointment.id_new_person = idResult.intValue();
+                    break;
+                case "purchase":
+                    insert_new_purchases.id_new_person = idResult.intValue();
+                    break;
+            }
+
             return true;
         }
     }
@@ -81,6 +95,9 @@ public class insert_new_person extends AppCompatActivity {
     public void cancel_person (View view){
         switch (button_class){
             case "appointment":
+                finish();
+                break;
+            case "purchase":
                 finish();
                 break;
         }
