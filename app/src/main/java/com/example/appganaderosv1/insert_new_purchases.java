@@ -68,6 +68,8 @@ public class insert_new_purchases extends AppCompatActivity {
         spinner_person_purchase = findViewById(R.id.spinner_person_purchase);
 
         consultListPeople_purchase();
+
+
     }
 
     public void onRestart(){
@@ -183,5 +185,17 @@ public class insert_new_purchases extends AppCompatActivity {
         }
     }
 
+    public void insertNewAnimal(View view){
+        Bundle bundle = new Bundle();
+        Intent intent = null;
+        if (view.getId() == R.id.add_animal) {
+            intent = new Intent(insert_new_purchases.this, insert_new_animal.class);
+            bundle.putSerializable("action", "insert");
+        }
 
+        if (intent != null) {
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+    }
 }

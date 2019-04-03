@@ -99,13 +99,11 @@ public class Utilidades {
     public static final String TABLA_GANADO = "ganado";
     public static final String CAMPO_ID_GANADO = "id_ganado";
     public static final String CAMPO_TIPO_GANADO = "tipo_ganado";
-    public static final String CAMPO_RAZA = "raza";
 
     public static final String CREAR_TABLA_GANADO =
             "CREATE TABLE " + TABLA_GANADO + "("
                     + CAMPO_ID_GANADO + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + CAMPO_TIPO_GANADO + " TEXT,"
-                    + CAMPO_RAZA + " INTEGER REFERENCES " + TABLA_RAZA + "(" + CAMPO_ID_RAZA + "))";
+                    + CAMPO_TIPO_GANADO + " TEXT)";
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -113,6 +111,7 @@ public class Utilidades {
     public static final String TABLA_COMPRA_DETALLE = "compra_detalle";
     public static final String CAMPO_ID_COMPRA_DETALLE = "id_compra_detalle";
     public static final String CAMPO_GANADO = "ganado";
+    public static final String CAMPO_RAZA = "raza";
     public static final String CAMPO_PESO = "peso";
     public static final String CAMPO_PRECIO = "precio";
     public static final String CAMPO_TARA = "tara";
@@ -124,6 +123,7 @@ public class Utilidades {
             "CREATE TABLE " + TABLA_COMPRA_DETALLE + "("
                     + CAMPO_ID_COMPRA_DETALLE + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + CAMPO_GANADO + " INTEGER REFERENCES " + TABLA_GANADO + "(" + CAMPO_ID_GANADO + "), "
+                    + CAMPO_RAZA + " INTEGER REFERENCES " + TABLA_RAZA + "(" + CAMPO_ID_RAZA + "), "
                     + CAMPO_PESO + " REAL, "
                     + CAMPO_PRECIO + " REAL, "
                     + CAMPO_TARA + " REAL, "

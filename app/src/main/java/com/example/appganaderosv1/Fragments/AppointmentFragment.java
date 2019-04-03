@@ -155,9 +155,7 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
         switch (view.getId()){
             case R.id.agregar:
                 miIntent = new Intent(view.getContext(), insert_new_appointment.class);
-
                 bundle.putSerializable("action", "insert");
-
                 break;
         }
         if(miIntent!=null){

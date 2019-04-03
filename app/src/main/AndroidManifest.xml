@@ -9,7 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".insert_new_animal"></activity>
+        <activity
+            android:name=".insert_new_type"
+            android:theme="@style/AppTheme.Transparent"></activity>
+        <activity
+            android:name=".insert_new_race"
+            android:theme="@style/AppTheme.Transparent" />
+        <activity android:name=".insert_new_animal" />
         <activity android:name=".insert_new_purchases" />
         <activity android:name=".appointment_details" />
         <activity android:name=".calendar" />

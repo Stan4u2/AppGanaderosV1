@@ -242,7 +242,6 @@ public class insert_new_appointment extends AppCompatActivity {
 
     public void saveAppointmentDB(View view){
         boolean complete = false;
-        System.out.println("La accion a realizar: " + action);
         if(
            spinner_person_appointment.getSelectedItemId() == 0 ||
            date_appointment.getText().toString().isEmpty()||

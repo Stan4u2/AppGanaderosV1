@@ -3,6 +3,7 @@ package com.example.appganaderosv1.entidades;
 public class CompraDetalle {
     private Integer id_compra_detalle;
     private Integer ganado;
+    private Integer raza;
     private Double peso;
     private Double precio;
     private Integer tara;
@@ -24,6 +25,14 @@ public class CompraDetalle {
 
     public void setGanado(Integer ganado) {
         this.ganado = ganado;
+    }
+
+    public Integer getRaza() {
+        return raza;
+    }
+
+    public void setRaza(Integer raza) {
+        this.raza = raza;
     }
 
     public Double getPeso() {
