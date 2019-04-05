@@ -105,7 +105,6 @@ public class insert_new_appointment extends AppCompatActivity {
             citas = (Citas) data.getSerializable("citas");
 
             for (int i = 0; i < peopleData.size(); i++) {
-                System.out.println("ID de las personas : " + peopleData.get(i).getId_persona());
                 if(peopleData.get(i).getId_persona().equals(person.getId_persona())){
                     spinner_person_appointment.setSelection(i+1);
                 }
@@ -272,7 +271,6 @@ public class insert_new_appointment extends AppCompatActivity {
                         date_appointment.getText().toString(),
                         idPersonAppointment
                 );
-                System.out.println("Numero de modificados " + modified);
                 if(modified == 1){
                     Toast.makeText(getApplicationContext(), "Se han actualizado los datos", Toast.LENGTH_LONG).show();
                     complete = true;

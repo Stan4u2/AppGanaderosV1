@@ -12,7 +12,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Tipo Ganado"
-            android:textSize="20sp"
+            android:textSize="17dp"
             android:textStyle="bold" />
 
         <TextView
@@ -21,14 +21,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Toro"
-            android:textSize="20sp" />
+            android:textSize="17dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Raza"
-            android:textSize="20sp"
+            android:textSize="17dp"
             android:textStyle="bold" />
 
         <TextView
@@ -37,14 +37,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Cebu"
-            android:textSize="20sp" />
+            android:textSize="17dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Peso"
-            android:textSize="20sp"
+            android:textSize="17dp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -59,14 +59,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="120"
-                android:textSize="20sp" />
+                android:textSize="17dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="kg"
-                android:textSize="20sp" />
+                android:textSize="17dp" />
 
         </LinearLayout>
 

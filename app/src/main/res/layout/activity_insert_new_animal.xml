@@ -194,12 +194,14 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="70dp"
 
+            android:onClick="cancelAnimal"
             android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
         <ImageButton
             android:id="@+id/saveAnimal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_save"/>
+            android:onClick="saveAnimal"
+            android:src="@android:drawable/ic_menu_save" />
     </LinearLayout>
 </LinearLayout>

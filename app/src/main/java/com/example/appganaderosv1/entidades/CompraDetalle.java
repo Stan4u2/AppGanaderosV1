@@ -1,6 +1,8 @@
 package com.example.appganaderosv1.entidades;
 
-public class CompraDetalle {
+import java.io.Serializable;
+
+public class CompraDetalle implements Serializable {
     private Integer id_compra_detalle;
     private Integer ganado;
     private Integer raza;

@@ -29,6 +29,7 @@ public class insert_new_animal extends AppCompatActivity {
     ImageButton add_type_animal, add_race_animal, cancelAnimal, saveAnimal;
     EditText weight_animal, price_animal, tare_animal, number_earring_animal;
 
+    //Thhese ArrayLists are for the spinners
     ArrayList<CompraDetalle> animalData;
     ArrayList<String> typeAnimalList;
     ArrayList<Ganado> typeAnimal;
@@ -41,6 +42,8 @@ public class insert_new_animal extends AppCompatActivity {
     public static int id_new_type;
     public static boolean process_type;
     int selectedType;
+
+    static int id_animal_modifie;
 
     static String action;
 
@@ -90,7 +93,37 @@ public class insert_new_animal extends AppCompatActivity {
     }
 
     private void loadData() {
+        CompraDetalle compraDetalle = null;
+        Ganado ganado = null;
+        Raza raza = null;
 
+        Bundle objectSent = getIntent().getExtras();
+
+        if(objectSent != null){
+            compraDetalle = (CompraDetalle) objectSent.getSerializable("compraDetalle");
+            ganado = (Ganado) objectSent.getSerializable("ganado");
+            raza = (Raza) objectSent.getSerializable("raza");
+
+            id_animal_modifie = compraDetalle.getId_compra_detalle();
+
+            for (int i = 0; i < typeAnimal.size(); i++) {
+                if(typeAnimal.get(i).getId_ganado().equals(ganado.getId_ganado())){
+                    spinner_types_animal.setSelection(i+1);
+                }
+            }
+
+            for (int i = 0; i < raceAnimal.size(); i++) {
+                if(raceAnimal.get(i).getId_raza().equals(raza.getId_raza())){
+                    spinner_race_animal.setSelection(i+1);
+                }
+            }
+
+            weight_animal.setText(compraDetalle.getPeso().toString());
+            price_animal.setText(compraDetalle.getPrecio().toString());
+            tare_animal.setText(compraDetalle.getTara().toString());
+            number_earring_animal.setText(compraDetalle.getNumero_arete().toString());
+
+        }
     }
 
     public void onResume(){
@@ -191,6 +224,22 @@ public class insert_new_animal extends AppCompatActivity {
 
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, typeAnimalList);
 
+        spinner_types_animal.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position != 0){
+                    selectedType = typeAnimal.get(position-1).getId_ganado();
+                }else{
+                    selectedType = 0;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         spinner_types_animal.setAdapter(adapter);
     }
 
@@ -226,25 +275,59 @@ public class insert_new_animal extends AppCompatActivity {
     }
 
     public void saveAnimal(View view){
+        boolean complete = false;
         if(
             spinner_types_animal.getSelectedItemId() == 0 ||
             spinner_race_animal.getSelectedItemId() == 0 ||
             weight_animal.getText().toString().isEmpty() ||
-            price_animal.getText().toString().isEmpty() ||
-            tare_animal.getText().toString().isEmpty() ||
-            number_earring_animal.getText().toString().isEmpty()
+            price_animal.getText().toString().isEmpty()
         ){
             Toast.makeText(getApplicationContext(), "¡¡Campos Vacios!!", Toast.LENGTH_LONG).show();
         }else{
+            int tare = 0, earring = 0;
+            if(!tare_animal.getText().toString().isEmpty()){
+                tare = Integer.valueOf(tare_animal.getText().toString());
+            }
+            if(!number_earring_animal.getText().toString().isEmpty()){
+                earring = Integer.valueOf(number_earring_animal.getText().toString());
+            }
             if(action.equals("insert")){
                 boolean inserted = insertNewAnimal(
                         selectedType,
                         selectedRace,
                         Double.parseDouble(weight_animal.getText().toString()),
                         Double.parseDouble(price_animal.getText().toString()),
-                        Integer.valueOf(tare_animal.getText().toString()),
-                        Integer.valueOf(number_earring_animal.getText().toString())
+                        tare,
+                        earring
                 );
+
+                if(inserted == true){
+                    Toast.makeText(getApplicationContext(), "Datos Insertados", Toast.LENGTH_LONG).show();
+                    complete = true;
+                }else {
+                    Toast.makeText(getApplicationContext(), "¡¡Datos No Insertados!!", Toast.LENGTH_LONG).show();
+                }
+            }else if (action.equals("modifie")){
+                int modified = modifieAnimal(
+                        selectedType,
+                        selectedRace,
+                        Double.parseDouble(weight_animal.getText().toString()),
+                        Double.parseDouble(price_animal.getText().toString()),
+                        tare,
+                        earring
+                );
+
+                if(modified == 1){
+                    Toast.makeText(getApplicationContext(), "Se han actualizado los datos", Toast.LENGTH_LONG).show();
+                    complete = true;
+                }else{
+                    Toast.makeText(getApplicationContext(), "Datos no actualizados", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            if(complete == true){
+                insert_new_purchases.newAnimalInserted = true;
+                finish();
             }
         }
     }
@@ -252,12 +335,16 @@ public class insert_new_animal extends AppCompatActivity {
     private boolean insertNewAnimal(int typeAnimal, int raceAnimal, double weightAnimal, double priceAnimal, int tareAnimal, int earringNumber) {
         SQLiteDatabase db = conn.getWritableDatabase();
 
+
+        double total = (weightAnimal * priceAnimal);
+
         ContentValues values = new ContentValues();
         values.put(Utilidades.CAMPO_GANADO, typeAnimal);
         values.put(Utilidades.CAMPO_RAZA, raceAnimal);
         values.put(Utilidades.CAMPO_PESO, weightAnimal);
         values.put(Utilidades.CAMPO_PRECIO, priceAnimal);
         values.put(Utilidades.CAMPO_TARA, tareAnimal);
+        values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total*tareAnimal)/100)));
         values.put(Utilidades.CAMPO_NUMERO_ARETE, earringNumber);
 
         Long idResult = db.insert(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_ID_CITAS, values);
@@ -267,33 +354,38 @@ public class insert_new_animal extends AppCompatActivity {
         if(idResult == -1){
             return false;
         }else{
-            insert_new_appointment.id_new_person = idResult.intValue();
             return true;
         }
-
-        /*
-        public static final String TABLA_COMPRA_DETALLE = "compra_detalle";
-        public static final String CAMPO_ID_COMPRA_DETALLE = "id_compra_detalle";
-        public static final String CAMPO_GANADO = "ganado";
-        public static final String CAMPO_RAZA = "raza";
-        public static final String CAMPO_PESO = "peso";
-        public static final String CAMPO_PRECIO = "precio";
-        public static final String CAMPO_TARA = "tara";
-        public static final String CAMPO_TOTAL_PAGAR = "total";
-        public static final String CAMPO_NUMERO_ARETE = "numero_arete";
-        public static final String CAMPO_COMPRA = "compra";
-
-        public static final String CREAR_TABLA_COMPRA_DETALLE =
-                "CREATE TABLE " + TABLA_COMPRA_DETALLE + "("
-                        + CAMPO_ID_COMPRA_DETALLE + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + CAMPO_GANADO + " INTEGER REFERENCES " + TABLA_GANADO + "(" + CAMPO_ID_GANADO + "), "
-                        + CAMPO_RAZA + " INTEGER REFERENCES " + TABLA_RAZA + "(" + CAMPO_ID_RAZA + "), "
-                        + CAMPO_PESO + " REAL, "
-                        + CAMPO_PRECIO + " REAL, "
-                        + CAMPO_TARA + " REAL, "
-                        + CAMPO_TOTAL_PAGAR + " REAL, "
-                        + CAMPO_NUMERO_ARETE + " INTEGER, "
-                        + CAMPO_COMPRA + " INTEGER REFERENCES " + TABLA_COMPRAS + "(" + CAMPO_ID_COMPRA + "))";
-         */
     }
+
+    private int modifieAnimal(int typeAnimal, int raceAnimal, double weightAnimal, double priceAnimal, int tareAnimal, int earringNumber){
+        SQLiteDatabase db = conn.getWritableDatabase();
+
+        double total = (weightAnimal * priceAnimal);
+
+        String[] id_animal = {String.valueOf(id_animal_modifie)};
+
+        ContentValues values = new ContentValues();
+
+        values.put(Utilidades.CAMPO_GANADO, typeAnimal);
+        values.put(Utilidades.CAMPO_RAZA, raceAnimal);
+        values.put(Utilidades.CAMPO_PESO, weightAnimal);
+        values.put(Utilidades.CAMPO_PRECIO, priceAnimal);
+        values.put(Utilidades.CAMPO_TARA, tareAnimal);
+        values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total*tareAnimal)/100)));
+        values.put(Utilidades.CAMPO_NUMERO_ARETE, earringNumber);
+
+        System.out.println("Id del animal: " + id_animal_modifie);
+
+        int updated = db.update(Utilidades.TABLA_COMPRA_DETALLE, values, Utilidades.CAMPO_ID_COMPRA_DETALLE + " = ?", id_animal);
+
+        db.close();
+
+        return updated;
+    }
+
+    public void cancelAnimal(View view){
+        finish();
+    }
+
 }
