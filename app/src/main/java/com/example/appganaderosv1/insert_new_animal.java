@@ -129,7 +129,7 @@ public class insert_new_animal extends AppCompatActivity {
     public void onResume(){
         super.onResume();
 
-        if(process_race == true){
+        if(process_race){
             consultListRaceAnimals();
 
             for(int i = 0; i < raceAnimal.size(); i++){
@@ -140,7 +140,7 @@ public class insert_new_animal extends AppCompatActivity {
             process_race = false;
         }
 
-        if(process_type == true){
+        if(process_type){
             consultListTypesAnimals();
 
             for(int i = 0; i < typeAnimal.size(); i++){
@@ -168,6 +168,8 @@ public class insert_new_animal extends AppCompatActivity {
 
             raceAnimal.add(raza);
         }
+
+        cursor.close();
         db.close();
 
         obtainList_Race();
@@ -218,6 +220,8 @@ public class insert_new_animal extends AppCompatActivity {
 
             typeAnimal.add(ganado);
         }
+
+        cursor.close();
         db.close();
 
         obtaninList_Types();
@@ -301,7 +305,7 @@ public class insert_new_animal extends AppCompatActivity {
                         earring
                 );
 
-                if(inserted == true){
+                if(inserted){
                     Toast.makeText(getApplicationContext(), "Datos Insertados", Toast.LENGTH_LONG).show();
                     complete = true;
                 }else {
@@ -325,7 +329,7 @@ public class insert_new_animal extends AppCompatActivity {
                 }
             }
 
-            if(complete == true){
+            if(complete){
                 insert_new_purchases.newAnimalInserted = true;
                 finish();
             }
@@ -347,7 +351,7 @@ public class insert_new_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total*tareAnimal)/100)));
         values.put(Utilidades.CAMPO_NUMERO_ARETE, earringNumber);
 
-        Long idResult = db.insert(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_ID_CITAS, values);
+        long idResult = db.insert(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_ID_CITAS, values);
 
         db.close();
 
@@ -374,8 +378,6 @@ public class insert_new_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_TARA, tareAnimal);
         values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total*tareAnimal)/100)));
         values.put(Utilidades.CAMPO_NUMERO_ARETE, earringNumber);
-
-        System.out.println("Id del animal: " + id_animal_modifie);
 
         int updated = db.update(Utilidades.TABLA_COMPRA_DETALLE, values, Utilidades.CAMPO_ID_COMPRA_DETALLE + " = ?", id_animal);
 

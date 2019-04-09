@@ -75,32 +75,9 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
         listaPersona = new ArrayList<Persona>();
         listaCitas = new ArrayList<Citas>();
 
-        //SELECT
-            //p.nombre, c.cantidad_ganado, c.fecha
-        //FROM
-            //persona p, citas c
-        //WHERE
-            //c.persona_cita = p.id_persona;
-        Cursor cursor = db.rawQuery(
-                "SELECT " +
-                        Utilidades.CAMPO_ID_CITAS + ", " +
-                        Utilidades.CAMPO_CANTIDAD_GANADO + ", " +
-                        Utilidades.CAMPO_DATOS + ", " +
-                        Utilidades.CAMPO_FECHA_CITAS + ", " +
 
-                        Utilidades.CAMPO_ID_PERSONA + ", " +
-                        Utilidades.CAMPO_NOMBRE + ", " +
-                        Utilidades.CAMPO_TELEFONO + ", " +
-                        Utilidades.CAMPO_DOMICILIO + ", " +
-                        Utilidades.CAMPO_DATOS_EXTRAS +
-                    " FROM " +
-                        Utilidades.TABLA_PERSONA + ", " +
-                        Utilidades.TABLA_CITAS +
-                    " WHERE " +
-                        Utilidades.CAMPO_PERSONA_CITA + " = " + Utilidades.CAMPO_ID_PERSONA +
-                        " AND " +
-                        Utilidades.CAMPO_RESPALDO_CITAS + " = " + 0,
-                null
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM appointment_view", null
         );
 
         while(cursor.moveToNext()){
@@ -121,6 +98,8 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
             listaCitas.add(citas);
         }
 
+        cursor.close();
+        db.close();
 
         Adapter_appointment adapter_appointment = new Adapter_appointment(listaPersona, listaCitas);
 

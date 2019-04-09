@@ -125,6 +125,9 @@ public class animal_details_purchase extends AppCompatActivity {
             earingNumberAnimal.setText(compraDetalle.getNumero_arete().toString());
             total.setText(compraDetalle.getTotal().toString());
 
+            cursor.close();
+            db.close();
+
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
         }
@@ -142,5 +145,23 @@ public class animal_details_purchase extends AppCompatActivity {
 
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    public void deleteAnimal(View view){
+        SQLiteDatabase db = conn.getReadableDatabase();
+
+        String[] id_animal = {String.valueOf(id_animal_modifie)};
+
+        int deleted = db.delete(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_ID_COMPRA_DETALLE + " = ?", id_animal);
+
+        if(deleted == 1){
+            insert_new_purchases.animalDeleted = true;
+            finish();
+            Toast.makeText(getApplicationContext(), "Se ha eliminado el animal", Toast.LENGTH_LONG).show();
+        }else {
+            Toast.makeText(getApplicationContext(), "Datos no eliminados", Toast.LENGTH_LONG).show();
+        }
+
+        db.close();
     }
 }

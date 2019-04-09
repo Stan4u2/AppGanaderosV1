@@ -172,4 +172,90 @@ public class Utilidades {
                     + CAMPO_VENTA + " INTEGER REFERENCES " + TABLA_VENTAS + "(" + CAMPO_ID_VENTA_DETALLE + "))";
 
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //Vista de citas
+    public static final String VIEW_CITA = "appointment_view";
+
+    public static final String SELECT_CITA =
+            "SELECT " +
+                    Utilidades.CAMPO_ID_CITAS + ", " +
+                    Utilidades.CAMPO_CANTIDAD_GANADO + ", " +
+                    Utilidades.CAMPO_DATOS + ", " +
+                    Utilidades.CAMPO_FECHA_CITAS + ", " +
+
+                    Utilidades.CAMPO_ID_PERSONA + ", " +
+                    Utilidades.CAMPO_NOMBRE + ", " +
+                    Utilidades.CAMPO_TELEFONO + ", " +
+                    Utilidades.CAMPO_DOMICILIO + ", " +
+                    Utilidades.CAMPO_DATOS_EXTRAS +
+                    " FROM " +
+                    Utilidades.TABLA_PERSONA + ", " +
+                    Utilidades.TABLA_CITAS +
+                    " WHERE " +
+                    Utilidades.CAMPO_PERSONA_CITA + " = " + Utilidades.CAMPO_ID_PERSONA +
+                    " AND " +
+                    Utilidades.CAMPO_RESPALDO_CITAS + " = " + 0;
+
+    public static final String CREAR_VISTA_CITAS = "CREATE VIEW " + VIEW_CITA + " AS " + SELECT_CITA;
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //Vista de compras
+    public static final String VIEW_COMPRAS = "purchase_view";
+
+    public static final String SELECT_COMPRA =
+            "SELECT " +
+                    Utilidades.CAMPO_ID_COMPRA + ", " +
+                    Utilidades.CAMPO_FECHA_COMPRAS + ", " +
+                    Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + ", " +
+                    Utilidades.CAMPO_CANTIDAD_PAGAR + ", " +
+
+                    Utilidades.CAMPO_ID_PERSONA + ", " +
+                    Utilidades.CAMPO_NOMBRE + ", " +
+                    Utilidades.CAMPO_TELEFONO + ", " +
+                    Utilidades.CAMPO_DOMICILIO + ", " +
+                    Utilidades.CAMPO_DATOS_EXTRAS +
+                    " FROM " +
+                    Utilidades.TABLA_PERSONA + ", " +
+                    Utilidades.TABLA_COMPRAS +
+                    " WHERE " +
+                    Utilidades.CAMPO_PERSONA_COMPRO + " = " + Utilidades.CAMPO_ID_PERSONA +
+                    " AND " +
+                    Utilidades.CAMPO_RESPALDO_COMPRAS + " = " + 0;
+
+    public static final String CREAR_VISTA_COMPRAS = "CREATE VIEW " + VIEW_COMPRAS + " AS " + SELECT_COMPRA;
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //Vista Animales sin dueño
+    public static final String VIEW_ANIMAL_NO_OWNER = "animal_view";
+
+    public static final String SELECT_ANIMAL =
+            "SELECT DISTINCT " +
+                    Utilidades.CAMPO_ID_COMPRA_DETALLE + ", " +
+                    Utilidades.CAMPO_GANADO + ", " +
+                    Utilidades.CAMPO_RAZA + ", " +
+                    Utilidades.CAMPO_PESO + ", " +
+                    Utilidades.CAMPO_PRECIO + ", " +
+                    Utilidades.CAMPO_TARA + ", " +
+                    Utilidades.CAMPO_TOTAL_PAGAR + ", " +
+                    Utilidades.CAMPO_NUMERO_ARETE + ", " +
+
+                    Utilidades.CAMPO_ID_GANADO + ", " +
+                    Utilidades.CAMPO_TIPO_GANADO + ", " +
+
+                    Utilidades.CAMPO_ID_RAZA + ", " +
+                    Utilidades.CAMPO_TIPO_RAZA +
+                    " FROM " +
+                    Utilidades.TABLA_COMPRA_DETALLE + ", " +
+                    Utilidades.TABLA_GANADO + ", " +
+                    Utilidades.TABLA_RAZA +
+                    " WHERE " +
+                    Utilidades.CAMPO_GANADO + " = " + Utilidades.CAMPO_ID_GANADO +
+                    " AND " +
+                    Utilidades.CAMPO_RAZA + " = " + Utilidades.CAMPO_ID_RAZA +
+                    " AND " +
+                    Utilidades.CAMPO_COMPRA + " IS NULL";
+
+    public static final String CREAR_VISTA_ANIMAL = "CREATE VIEW " + VIEW_ANIMAL_NO_OWNER + " AS " + SELECT_ANIMAL;
 }

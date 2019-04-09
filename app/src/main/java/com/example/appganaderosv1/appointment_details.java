@@ -116,6 +116,9 @@ public class appointment_details extends AppCompatActivity {
             citas.setCantidad_ganado(cursor.getInt(7));
             citas.setDatos(cursor.getString(8));
 
+            cursor.close();
+            db.close();
+
 
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
@@ -123,6 +126,7 @@ public class appointment_details extends AppCompatActivity {
     }
 
     public void deleteAppointment(View view){
+        //In this method i don´t really delete the data, i just send it tto the garbage can.
         SQLiteDatabase db = conn.getWritableDatabase();
 
         String[] id_appointment = {String.valueOf(citas.getId_citas())};
