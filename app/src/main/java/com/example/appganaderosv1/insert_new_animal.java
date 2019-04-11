@@ -46,6 +46,8 @@ public class insert_new_animal extends AppCompatActivity {
     static int id_animal_modifie;
 
     static String action;
+    static String WhereCameFrom;
+    static int idPurchase;
 
 
     @Override
@@ -79,9 +81,14 @@ public class insert_new_animal extends AppCompatActivity {
         if(actionToDo != null){
 
             action = actionToDo.getSerializable("action").toString();
+            WhereCameFrom = actionToDo.getSerializable("WhereCameFrom").toString();
+
 
             switch(action){
                 case "insert":
+                    if(WhereCameFrom.equals("change")) {
+                        idPurchase = Integer.valueOf(actionToDo.getSerializable("idPurchase").toString());
+                    }
                     break;
 
                 case "modifie":
@@ -296,14 +303,28 @@ public class insert_new_animal extends AppCompatActivity {
                 earring = Integer.valueOf(number_earring_animal.getText().toString());
             }
             if(action.equals("insert")){
-                boolean inserted = insertNewAnimal(
-                        selectedType,
-                        selectedRace,
-                        Double.parseDouble(weight_animal.getText().toString()),
-                        Double.parseDouble(price_animal.getText().toString()),
-                        tare,
-                        earring
-                );
+                boolean inserted = false;
+                if(WhereCameFrom.equals("new")) {
+                    inserted = insertNewAnimal(
+                            selectedType,
+                            selectedRace,
+                            Double.parseDouble(weight_animal.getText().toString()),
+                            Double.parseDouble(price_animal.getText().toString()),
+                            tare,
+                            earring
+                    );
+                }else if (WhereCameFrom.equals("change")){
+                    System.out.println("A insertar nuevo pero con dueño \nId de la compra " + idPurchase);
+                    inserted = insertNewAnimalCurrentPurchase(
+                            idPurchase,
+                            selectedType,
+                            selectedRace,
+                            Double.parseDouble(weight_animal.getText().toString()),
+                            Double.parseDouble(price_animal.getText().toString()),
+                            tare,
+                            earring
+                    );
+                }
 
                 if(inserted){
                     Toast.makeText(getApplicationContext(), "Datos Insertados", Toast.LENGTH_LONG).show();
@@ -333,6 +354,33 @@ public class insert_new_animal extends AppCompatActivity {
                 insert_new_purchases.newAnimalInserted = true;
                 finish();
             }
+        }
+    }
+
+    private boolean insertNewAnimalCurrentPurchase( int idPurchase, int typeAnimal, int raceAnimal, double weightAnimal, double priceAnimal, int tareAnimal, int earringNumber) {
+        SQLiteDatabase db = conn.getWritableDatabase();
+
+
+        double total = (weightAnimal * priceAnimal);
+
+        ContentValues values = new ContentValues();
+        values.put(Utilidades.CAMPO_COMPRA, idPurchase);
+        values.put(Utilidades.CAMPO_GANADO, typeAnimal);
+        values.put(Utilidades.CAMPO_RAZA, raceAnimal);
+        values.put(Utilidades.CAMPO_PESO, weightAnimal);
+        values.put(Utilidades.CAMPO_PRECIO, priceAnimal);
+        values.put(Utilidades.CAMPO_TARA, tareAnimal);
+        values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total*tareAnimal)/100)));
+        values.put(Utilidades.CAMPO_NUMERO_ARETE, earringNumber);
+
+        long idResult = db.insert(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_ID_CITAS, values);
+
+        db.close();
+
+        if(idResult == -1){
+            return false;
+        }else{
+            return true;
         }
     }
 

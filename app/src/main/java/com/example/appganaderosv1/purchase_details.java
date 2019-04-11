@@ -1,0 +1,246 @@
+package com.example.appganaderosv1;
+
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.example.appganaderosv1.Adapter.Adapter_animals;
+import com.example.appganaderosv1.entidades.CompraDetalle;
+import com.example.appganaderosv1.entidades.Compras;
+import com.example.appganaderosv1.entidades.Ganado;
+import com.example.appganaderosv1.entidades.Persona;
+import com.example.appganaderosv1.entidades.Raza;
+import com.example.appganaderosv1.utilidades.Utilidades;
+
+import java.util.ArrayList;
+
+public class purchase_details extends AppCompatActivity {
+
+    ConexionSQLiteHelper conn;
+
+    Persona person = null;
+    Compras compras = null;
+
+    static int idPurchase;
+
+    TextView name_person_purchase, cellphone_person_purchase, address_person_purchase, extra_data_person_purchase;
+    TextView date_purchase, amount_animals_purchase, amount_to_pay;
+    RecyclerView recycler_view_purchase;
+    ImageButton modifie_purchase, delete_purchase;
+
+    //These ArrayLists are for the Lists Views
+    ArrayList<CompraDetalle> listViewAnimalsBought;
+    ArrayList<Ganado> listViewTypeAnimal;
+    ArrayList<Raza> listViewRaceAnimal;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_purchase_details);
+
+        conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 1);
+
+        //TextView
+        //Person
+        name_person_purchase = findViewById(R.id.name_person_purchase);
+        cellphone_person_purchase = findViewById(R.id.cellphone_person_purchase);
+        address_person_purchase = findViewById(R.id.address_person_purchase);
+        extra_data_person_purchase = findViewById(R.id.extra_data_person_purchase);
+        //Purchase
+        date_purchase = findViewById(R.id.date_purchase);
+        amount_animals_purchase = findViewById(R.id.amount_animals_purchase);
+        amount_to_pay = findViewById(R.id.amount_to_pay);
+
+        //Recycler View
+        recycler_view_purchase = findViewById(R.id.recycler_view_purchase);
+        recycler_view_purchase.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+        modifie_purchase = findViewById(R.id.modifie_purchase);
+        delete_purchase = findViewById(R.id.delete_purchase);
+
+        listViewAnimalsBought = new ArrayList<>();
+        listViewTypeAnimal = new ArrayList<>();
+        listViewRaceAnimal = new ArrayList<>();
+
+        Bundle objectSent = getIntent().getExtras();
+
+
+        if(objectSent != null) {
+            person = (Persona) objectSent.getSerializable("persona");
+            compras = (Compras) objectSent.getSerializable("compras");
+
+            name_person_purchase.setText(person.getNombre());
+            cellphone_person_purchase.setText(person.getTelefono());
+            address_person_purchase.setText(person.getDomicilio());
+            extra_data_person_purchase.setText(person.getDatos_extras());
+
+            idPurchase = compras.getId_compras();
+            date_purchase.setText(compras.getFecha_compra());
+            amount_animals_purchase.setText(compras.getCantidad_animales_compra().toString());
+            amount_to_pay.setText(compras.getCantidad_pagar().toString());
+        }
+
+        fillAnimalList();
+
+    }
+
+    public void onRestart() {
+        super.onRestart();
+
+        fillAnimalList();
+        calculateQuantityAnimals();
+        calculateSumPayAnimals();
+    }
+
+    private void fillAnimalList() {
+        SQLiteDatabase db = conn.getReadableDatabase();
+
+        String[] parameters = {String.valueOf(compras.getId_compras())};
+
+        CompraDetalle compraDetalle = null;
+        Ganado ganado = null;
+        Raza raza = null;
+
+        listViewAnimalsBought = new ArrayList<CompraDetalle>();
+        listViewTypeAnimal = new ArrayList<Ganado>();
+        listViewRaceAnimal = new ArrayList<Raza>();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT DISTINCT " +
+                        Utilidades.CAMPO_ID_COMPRA_DETALLE + ", " +
+                        Utilidades.CAMPO_GANADO + ", " +
+                        Utilidades.CAMPO_RAZA + ", " +
+                        Utilidades.CAMPO_PESO + ", " +
+                        Utilidades.CAMPO_PRECIO + ", " +
+                        Utilidades.CAMPO_TARA + ", " +
+                        Utilidades.CAMPO_TOTAL_PAGAR + ", " +
+                        Utilidades.CAMPO_NUMERO_ARETE + ", " +
+
+                        Utilidades.CAMPO_ID_GANADO + ", " +
+                        Utilidades.CAMPO_TIPO_GANADO + ", " +
+
+                        Utilidades.CAMPO_ID_RAZA + ", " +
+                        Utilidades.CAMPO_TIPO_RAZA +
+                        " FROM " +
+                        Utilidades.TABLA_COMPRA_DETALLE + ", " +
+                        Utilidades.TABLA_GANADO + ", " +
+                        Utilidades.TABLA_RAZA +
+                        " WHERE " +
+                        Utilidades.CAMPO_GANADO + " = " + Utilidades.CAMPO_ID_GANADO +
+                        " AND " +
+                        Utilidades.CAMPO_RAZA + " = " + Utilidades.CAMPO_ID_RAZA +
+                        " AND " +
+                        Utilidades.CAMPO_COMPRA + " = ?", parameters
+        );
+
+        while (cursor.moveToNext()) {
+            compraDetalle = new CompraDetalle();
+            compraDetalle.setId_compra_detalle(cursor.getInt(0));
+            compraDetalle.setGanado(cursor.getInt(1));
+            compraDetalle.setRaza(cursor.getInt(2));
+            compraDetalle.setPeso(cursor.getDouble(3));
+            compraDetalle.setPrecio(cursor.getDouble(4));
+            compraDetalle.setTara(cursor.getInt(5));
+            compraDetalle.setTotal(cursor.getDouble(6));
+            compraDetalle.setNumero_arete(cursor.getInt(7));
+
+            ganado = new Ganado();
+            ganado.setId_ganado(cursor.getInt(8));
+            ganado.setTipo_ganado(cursor.getString(9));
+
+            raza = new Raza();
+            raza.setId_raza(cursor.getInt(10));
+            raza.setTipo_raza(cursor.getString(11));
+
+            listViewAnimalsBought.add(compraDetalle);
+            listViewTypeAnimal.add((ganado));
+            listViewRaceAnimal.add(raza);
+        }
+
+
+
+        db.close();
+        cursor.close();
+
+        Adapter_animals adapter_animals = new Adapter_animals(listViewAnimalsBought, listViewTypeAnimal, listViewRaceAnimal);
+
+        adapter_animals.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CompraDetalle compraDetalle = listViewAnimalsBought.get(recycler_view_purchase.getChildAdapterPosition(view));
+                Ganado ganado = listViewTypeAnimal.get(recycler_view_purchase.getChildAdapterPosition(view));
+                Raza raza = listViewRaceAnimal.get(recycler_view_purchase.getChildAdapterPosition(view));
+
+                Intent intent = new Intent(getApplicationContext(), animal_details_purchase.class);
+
+                Bundle bundle = new Bundle();
+
+                bundle.putSerializable("compraDetalle", compraDetalle);
+                bundle.putSerializable("ganado", ganado);
+                bundle.putSerializable("raza", raza);
+
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+            }
+        });
+
+        recycler_view_purchase.setAdapter(adapter_animals);
+
+    }
+
+    private void calculateQuantityAnimals() {
+        SQLiteDatabase db = conn.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Utilidades.TABLA_COMPRA_DETALLE + " WHERE " + Utilidades.CAMPO_COMPRA + " = " + idPurchase, null);
+
+        int count = cursor.getCount();
+
+        amount_animals_purchase.setText(String.valueOf(count));
+
+        db.close();
+        cursor.close();
+    }
+
+    private void calculateSumPayAnimals() {
+        SQLiteDatabase db = conn.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        "SUM(" + Utilidades.CAMPO_TOTAL_PAGAR + ") " +
+                        " FROM " +
+                        Utilidades.TABLA_COMPRA_DETALLE +
+                        " WHERE " +
+                        Utilidades.CAMPO_COMPRA + " = " + idPurchase
+                , null);
+
+        if (cursor.moveToFirst()) {
+            double total = cursor.getDouble(0);
+
+            amount_to_pay.setText(String.valueOf(total));
+        }
+
+        db.close();
+        cursor.close();
+    }
+
+    public void modifie_purchase(View view){
+        Intent intent = new Intent(view.getContext(), insert_new_purchases.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("action", "modifie");
+
+        bundle.putSerializable("persona", person);
+        bundle.putSerializable("compras", compras);
+
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+}
