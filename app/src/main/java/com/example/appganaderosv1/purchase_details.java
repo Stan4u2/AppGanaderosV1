@@ -94,9 +94,40 @@ public class purchase_details extends AppCompatActivity {
     public void onRestart() {
         super.onRestart();
 
+        getPeopleData();
         fillAnimalList();
         calculateQuantityAnimals();
         calculateSumPayAnimals();
+    }
+
+    private void getPeopleData() {
+        SQLiteDatabase db = conn.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        Utilidades.CAMPO_NOMBRE + ", " +
+                        Utilidades.CAMPO_TELEFONO + ", " +
+                        Utilidades.CAMPO_DOMICILIO + ", " +
+                        Utilidades.CAMPO_DATOS_EXTRAS +
+                        " FROM " +
+                        Utilidades.TABLA_PERSONA + ", " +
+                        Utilidades.TABLA_COMPRAS +
+                        " WHERE " +
+                        Utilidades.CAMPO_PERSONA_COMPRO + " = " + Utilidades.CAMPO_ID_PERSONA +
+                        " AND "+
+                        Utilidades.CAMPO_ID_COMPRA + " = " + idPurchase
+                , null);
+
+        if (cursor.moveToFirst()) {
+
+            name_person_purchase.setText(cursor.getString(0));
+            cellphone_person_purchase.setText(cursor.getString(1));
+            address_person_purchase.setText(cursor.getString(2));
+            extra_data_person_purchase.setText(cursor.getString(3));
+        }
+
+        db.close();
+        cursor.close();
     }
 
     private void fillAnimalList() {
