@@ -41,7 +41,7 @@ public class PurchasesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_purchases, container, false);
 
-        conn = new ConexionSQLiteHelper(getContext(), "bd_ganado", null, 1);
+        conn = new ConexionSQLiteHelper(getContext(), "bd_ganado", null, 2);
 
         recycler_view = view.findViewById(R.id.recycler_view);
         recycler_view.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -77,8 +77,29 @@ public class PurchasesFragment extends Fragment {
         listaPersonas = new ArrayList<Persona>();
         listaCompras = new ArrayList<Compras>();
 
-        Cursor cursor = db.rawQuery(
+        /*Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + Utilidades.VIEW_COMPRAS, null
+        );*/
+
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        Utilidades.CAMPO_ID_COMPRA + ", " +
+                        Utilidades.CAMPO_FECHA_COMPRAS + ", " +
+                        Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + ", " +
+                        Utilidades.CAMPO_CANTIDAD_PAGAR + ", " +
+
+                        Utilidades.CAMPO_ID_PERSONA + ", " +
+                        Utilidades.CAMPO_NOMBRE + ", " +
+                        Utilidades.CAMPO_TELEFONO + ", " +
+                        Utilidades.CAMPO_DOMICILIO + ", " +
+                        Utilidades.CAMPO_DATOS_EXTRAS +
+                        " FROM " +
+                        Utilidades.TABLA_PERSONA + ", " +
+                        Utilidades.TABLA_COMPRAS +
+                        " WHERE " +
+                        Utilidades.CAMPO_PERSONA_COMPRO + " = " + Utilidades.CAMPO_ID_PERSONA +
+                        " AND " +
+                        Utilidades.CAMPO_RESPALDO_COMPRAS + " = " + 0, null
         );
 
         while(cursor.moveToNext()){

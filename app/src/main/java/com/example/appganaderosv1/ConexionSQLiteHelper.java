@@ -14,6 +14,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        System.out.println("Inicio la creacion de tablas");
         db.execSQL(Utilidades.CREAR_TABLA_USUARIO);
         db.execSQL(Utilidades.INSERTAR_USUARIOS);
         db.execSQL(Utilidades.CREAR_TABLA_PERSONA);
@@ -27,6 +28,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(Utilidades.CREAR_VISTA_CITAS);
         db.execSQL(Utilidades.CREAR_VISTA_COMPRAS);
         db.execSQL(Utilidades.CREAR_VISTA_ANIMAL);
+        System.out.println("Termino la creacion de tablas");
     }
 
     @Override

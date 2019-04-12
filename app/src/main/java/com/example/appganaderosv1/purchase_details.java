@@ -45,7 +45,7 @@ public class purchase_details extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase_details);
 
-        conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 1);
+        conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 2);
 
         //TextView
         //Person
@@ -94,17 +94,23 @@ public class purchase_details extends AppCompatActivity {
     public void onRestart() {
         super.onRestart();
 
-        getPeopleData();
+        getPurchaseData();
         fillAnimalList();
         calculateQuantityAnimals();
         calculateSumPayAnimals();
     }
 
-    private void getPeopleData() {
+    private void getPurchaseData() {
         SQLiteDatabase db = conn.getReadableDatabase();
 
         Cursor cursor = db.rawQuery(
                 "SELECT " +
+                        Utilidades.CAMPO_ID_COMPRA + ", " +
+                        Utilidades.CAMPO_FECHA_COMPRAS + ", " +
+                        Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + ", " +
+                        Utilidades.CAMPO_CANTIDAD_PAGAR + ", " +
+
+                        Utilidades.CAMPO_ID_PERSONA + ", " +
                         Utilidades.CAMPO_NOMBRE + ", " +
                         Utilidades.CAMPO_TELEFONO + ", " +
                         Utilidades.CAMPO_DOMICILIO + ", " +
@@ -114,20 +120,36 @@ public class purchase_details extends AppCompatActivity {
                         Utilidades.TABLA_COMPRAS +
                         " WHERE " +
                         Utilidades.CAMPO_PERSONA_COMPRO + " = " + Utilidades.CAMPO_ID_PERSONA +
-                        " AND "+
-                        Utilidades.CAMPO_ID_COMPRA + " = " + idPurchase
-                , null);
+                        " AND " +
+                        Utilidades.CAMPO_ID_COMPRA + " = " + idPurchase +
+                        " AND " +
+                        Utilidades.CAMPO_RESPALDO_COMPRAS + " = " + 0, null
+        );
 
-        if (cursor.moveToFirst()) {
+        cursor.moveToFirst();
 
-            name_person_purchase.setText(cursor.getString(0));
-            cellphone_person_purchase.setText(cursor.getString(1));
-            address_person_purchase.setText(cursor.getString(2));
-            extra_data_person_purchase.setText(cursor.getString(3));
-        }
+        compras = new Compras();
+        compras.setId_compras(cursor.getInt(0));
+        compras.setFecha_compra(cursor.getString(1));
+        compras.setCantidad_animales_compra(cursor.getInt(2));
+        compras.setCantidad_pagar(cursor.getInt(3));
 
-        db.close();
+        person = new Persona();
+        person.setId_persona(cursor.getInt(4));
+        person.setNombre(cursor.getString(5));
+        person.setTelefono(cursor.getString(6));
+        person.setDomicilio(cursor.getString(7));
+        person.setDatos_extras(cursor.getString(8));
+
+        date_purchase.setText(cursor.getString(1));
+
+        name_person_purchase.setText(cursor.getString(5));
+        cellphone_person_purchase.setText(cursor.getString(6));
+        address_person_purchase.setText(cursor.getString(7));
+        extra_data_person_purchase.setText(cursor.getString(8));
+
         cursor.close();
+        db.close();
     }
 
     private void fillAnimalList() {
@@ -153,6 +175,7 @@ public class purchase_details extends AppCompatActivity {
                         Utilidades.CAMPO_TARA + ", " +
                         Utilidades.CAMPO_TOTAL_PAGAR + ", " +
                         Utilidades.CAMPO_NUMERO_ARETE + ", " +
+                        Utilidades.CAMPO_COMPRA + ", " +
 
                         Utilidades.CAMPO_ID_GANADO + ", " +
                         Utilidades.CAMPO_TIPO_GANADO + ", " +
@@ -181,14 +204,15 @@ public class purchase_details extends AppCompatActivity {
             compraDetalle.setTara(cursor.getInt(5));
             compraDetalle.setTotal(cursor.getDouble(6));
             compraDetalle.setNumero_arete(cursor.getInt(7));
+            compraDetalle.setCompra(cursor.getInt(8));
 
             ganado = new Ganado();
-            ganado.setId_ganado(cursor.getInt(8));
-            ganado.setTipo_ganado(cursor.getString(9));
+            ganado.setId_ganado(cursor.getInt(9));
+            ganado.setTipo_ganado(cursor.getString(10));
 
             raza = new Raza();
-            raza.setId_raza(cursor.getInt(10));
-            raza.setTipo_raza(cursor.getString(11));
+            raza.setId_raza(cursor.getInt(11));
+            raza.setTipo_raza(cursor.getString(12));
 
             listViewAnimalsBought.add(compraDetalle);
             listViewTypeAnimal.add((ganado));
@@ -216,6 +240,7 @@ public class purchase_details extends AppCompatActivity {
                 bundle.putSerializable("compraDetalle", compraDetalle);
                 bundle.putSerializable("ganado", ganado);
                 bundle.putSerializable("raza", raza);
+                bundle.putSerializable("tipo", "existente");
 
                 intent.putExtras(bundle);
                 startActivity(intent);

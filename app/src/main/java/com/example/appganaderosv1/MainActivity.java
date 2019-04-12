@@ -20,18 +20,19 @@ public class MainActivity extends AppCompatActivity {
 
     public static String userName;
 
+
+    ConexionSQLiteHelper conn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Usuario = (TextView) findViewById(R.id.Usuario);
         Contrasena = (TextView) findViewById(R.id.Contrasena);
-
-        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 1);
     }
 
     public void verificarUsuarios(View view) {
-        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 1);
+        conn = new ConexionSQLiteHelper(getApplicationContext(), "bd_ganado", null, 2);
         SQLiteDatabase db = conn.getReadableDatabase();
 
         administrator = null;

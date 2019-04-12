@@ -31,7 +31,7 @@ public class appointment_details extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment_details);
 
-        conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 1);
+        conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 2);
 
         name_person_appointment = findViewById(R.id.name_person_appointment);
         cellphone_person_appointment = findViewById(R.id.cellphone_person_appointment);

@@ -47,7 +47,7 @@ public class insert_new_appointment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_new_appointment);
 
-        conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 1);
+        conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 2);
 
         //Image Buttons
         cancelButton = findViewById(R.id.cancelButton);

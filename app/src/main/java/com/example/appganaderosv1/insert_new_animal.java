@@ -55,7 +55,7 @@ public class insert_new_animal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_new_animal);
 
-        conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 1);
+        conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 2);
 
         //Spinner
         spinner_types_animal = findViewById(R.id.spinner_types_animal);

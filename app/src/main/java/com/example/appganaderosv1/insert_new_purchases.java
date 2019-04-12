@@ -66,7 +66,7 @@ public class insert_new_purchases extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_new_purchases);
 
-        conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 1);
+        conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 2);
 
         //Image Button
         add_person_purchase = findViewById(R.id.add_person_purchase);
@@ -465,6 +465,7 @@ public class insert_new_purchases extends AppCompatActivity {
                 bundle.putSerializable("compraDetalle", compraDetalle);
                 bundle.putSerializable("ganado", ganado);
                 bundle.putSerializable("raza", raza);
+                bundle.putSerializable("tipo", "nuevo");
 
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -493,7 +494,7 @@ public class insert_new_purchases extends AppCompatActivity {
 
         Cursor cursor = db.rawQuery(
                 "SELECT " +
-                        "SUM(" + Utilidades.CAMPO_TOTAL_PAGAR + ") " +
+                        "SUM(" + Utilidades.CAMPO_TOTAL_PAGAR + ")" +
                         " FROM " +
                         Utilidades.TABLA_COMPRA_DETALLE +
                         " WHERE " +

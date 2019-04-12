@@ -65,7 +65,7 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
 
     private void llenarLista() {
 
-        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(getContext(), "bd_ganado", null, 1);
+        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(getContext(), "bd_ganado", null, 2);
         SQLiteDatabase db = conn.getReadableDatabase();
 
         Citas citas = null;

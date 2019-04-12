@@ -63,7 +63,7 @@ public class insert_new_person extends AppCompatActivity {
     }
 
     private boolean registerPerson(String name, String cellphone, String address, String extraData){
-        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 1);
+        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 2);
         SQLiteDatabase db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();

@@ -1,5 +1,6 @@
 package com.example.appganaderosv1;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,6 +24,7 @@ public class animal_details_purchase extends AppCompatActivity {
     Raza raza = null;
 
     static int id_animal_modifie;
+    static int id_purchase_modifie;
 
     ConexionSQLiteHelper conn;
 
@@ -31,7 +33,7 @@ public class animal_details_purchase extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animal_details_purchase);
 
-        conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 1);
+        conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 2);
 
         typeAnimal = findViewById(R.id.typeAnimal);
         raceAnimal = findViewById(R.id.raceAnimal);
@@ -48,6 +50,9 @@ public class animal_details_purchase extends AppCompatActivity {
             ganado = (Ganado) objectSent.getSerializable("ganado");
             raza = (Raza) objectSent.getSerializable("raza");
 
+            if(String.valueOf(objectSent.getSerializable("tipo")).equals("existente")) {
+                id_purchase_modifie = compraDetalle.getCompra();
+            }
             id_animal_modifie = compraDetalle.getId_compra_detalle();
             typeAnimal.setText(ganado.getTipo_ganado());
             raceAnimal.setText(raza.getTipo_raza());
@@ -139,6 +144,7 @@ public class animal_details_purchase extends AppCompatActivity {
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("action", "modifie");
+        bundle.putSerializable("WhereCameFrom", "change");
         bundle.putSerializable("compraDetalle", compraDetalle);
         bundle.putSerializable("ganado", ganado);
         bundle.putSerializable("raza", raza);
@@ -149,17 +155,30 @@ public class animal_details_purchase extends AppCompatActivity {
 
     public void deleteAnimal(View view){
         SQLiteDatabase db = conn.getReadableDatabase();
-
+        boolean continueProcess = false;
         String[] id_animal = {String.valueOf(id_animal_modifie)};
-
+        //In this part I delete the animal but I still have to change the number of animals
         int deleted = db.delete(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_ID_COMPRA_DETALLE + " = ?", id_animal);
 
         if(deleted == 1){
             insert_new_purchases.animalDeleted = true;
             finish();
             Toast.makeText(getApplicationContext(), "Se ha eliminado el animal", Toast.LENGTH_LONG).show();
+            continueProcess = true;
         }else {
             Toast.makeText(getApplicationContext(), "Datos no eliminados", Toast.LENGTH_LONG).show();
+        }
+
+        if(continueProcess == true){
+            String[] id_purchase = {String.valueOf(id_purchase_modifie)};
+
+            db.execSQL(
+                    "UPDATE " +
+                            Utilidades.TABLA_COMPRAS +
+                    " SET " +
+                            Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + " = " + Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + " - 1" +
+                    " WHERE " +
+                        Utilidades.CAMPO_ID_COMPRA + " = ? ", id_purchase);
         }
 
         db.close();
