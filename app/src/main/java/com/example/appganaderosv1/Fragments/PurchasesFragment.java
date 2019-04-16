@@ -77,29 +77,8 @@ public class PurchasesFragment extends Fragment {
         listaPersonas = new ArrayList<Persona>();
         listaCompras = new ArrayList<Compras>();
 
-        /*Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + Utilidades.VIEW_COMPRAS, null
-        );*/
-
         Cursor cursor = db.rawQuery(
-                "SELECT " +
-                        Utilidades.CAMPO_ID_COMPRA + ", " +
-                        Utilidades.CAMPO_FECHA_COMPRAS + ", " +
-                        Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + ", " +
-                        Utilidades.CAMPO_CANTIDAD_PAGAR + ", " +
-
-                        Utilidades.CAMPO_ID_PERSONA + ", " +
-                        Utilidades.CAMPO_NOMBRE + ", " +
-                        Utilidades.CAMPO_TELEFONO + ", " +
-                        Utilidades.CAMPO_DOMICILIO + ", " +
-                        Utilidades.CAMPO_DATOS_EXTRAS +
-                        " FROM " +
-                        Utilidades.TABLA_PERSONA + ", " +
-                        Utilidades.TABLA_COMPRAS +
-                        " WHERE " +
-                        Utilidades.CAMPO_PERSONA_COMPRO + " = " + Utilidades.CAMPO_ID_PERSONA +
-                        " AND " +
-                        Utilidades.CAMPO_RESPALDO_COMPRAS + " = " + 0, null
+                "SELECT * FROM " + Utilidades.VIEW_COMPRAS, null
         );
 
         while(cursor.moveToNext()){

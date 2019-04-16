@@ -50,6 +50,7 @@ public class insert_new_purchases extends AppCompatActivity {
     public static boolean animalDeleted;
 
     public static String action;
+    public static String InsertNewAnimal;
 
     ArrayList<String> peopleList;
     ArrayList<Persona> peopleData;
@@ -173,7 +174,12 @@ public class insert_new_purchases extends AppCompatActivity {
             newAnimalInserted = false;
             switch (action) {
                 case "insert":
-                    fillAnimalList();
+                    //In these if´s i compare if the animal inserted has an owner, and depending the case will e the list that will be shown
+                    if(InsertNewAnimal.equals("no owner")){
+                        fillAnimalList();
+                    }else if(InsertNewAnimal.equals("owner")){
+                        fillAnimalListOwner();
+                    }
                     break;
                 case "modifie":
                     fillAnimalListOwner();
@@ -264,6 +270,22 @@ public class insert_new_purchases extends AppCompatActivity {
     }
 
     public void cancel_purchase(View view) {
+        deleteProgress();
+    }
+
+    public void onBackPressed() {
+        deleteProgress();
+    }
+
+    public void deleteProgress(){
+        SQLiteDatabase db = conn.getReadableDatabase();
+
+        int deleted = db.delete(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_COMPRA + " IS NULL", null);
+
+        if(deleted >= 1){
+            Toast.makeText(getApplicationContext(), "Compra Cancelada", Toast.LENGTH_LONG).show();
+        }
+
         finish();
     }
 
@@ -299,11 +321,13 @@ public class insert_new_purchases extends AppCompatActivity {
                 intent = new Intent(insert_new_purchases.this, insert_new_animal.class);
                 bundle.putSerializable("action", "insert");
                 bundle.putSerializable("WhereCameFrom", "new");
+                InsertNewAnimal = "no owner";
             }else if(action.equals("modifie")){
                 intent = new Intent(insert_new_purchases.this, insert_new_animal.class);
                 bundle.putSerializable("action", "insert");
                 bundle.putSerializable("WhereCameFrom", "change");
                 bundle.putSerializable("idPurchase", idPurchase);
+                InsertNewAnimal = "owner";
             }
         }
 

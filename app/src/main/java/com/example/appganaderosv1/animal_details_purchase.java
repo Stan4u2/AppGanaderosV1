@@ -162,13 +162,12 @@ public class animal_details_purchase extends AppCompatActivity {
 
         if(deleted == 1){
             insert_new_purchases.animalDeleted = true;
-            finish();
             Toast.makeText(getApplicationContext(), "Se ha eliminado el animal", Toast.LENGTH_LONG).show();
             continueProcess = true;
         }else {
             Toast.makeText(getApplicationContext(), "Datos no eliminados", Toast.LENGTH_LONG).show();
         }
-
+        //Now I compare if the user did really delete something, and if he did, then I´ll modify the purchase to substract one animal.
         if(continueProcess == true){
             String[] id_purchase = {String.valueOf(id_purchase_modifie)};
 
@@ -179,6 +178,7 @@ public class animal_details_purchase extends AppCompatActivity {
                             Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + " = " + Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + " - 1" +
                     " WHERE " +
                         Utilidades.CAMPO_ID_COMPRA + " = ? ", id_purchase);
+            finish();
         }
 
         db.close();

@@ -233,6 +233,7 @@
                 android:layout_height="70sp"
                 android:layout_weight="1"
                 android:background="@null"
+                android:onClick="delete_purchase"
                 android:scaleType="fitCenter"
                 android:src="@android:drawable/ic_menu_delete" />
 
