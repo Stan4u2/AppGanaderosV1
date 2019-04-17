@@ -54,6 +54,9 @@ public class insert_new_person extends AppCompatActivity {
                 case "purchase":
                     insert_new_purchases.process = true;
                     break;
+                case "sale":
+                    insert_new_sales.process = true;
+                    break;
             }
             finish();
         }else {
@@ -85,6 +88,9 @@ public class insert_new_person extends AppCompatActivity {
                     break;
                 case "purchase":
                     insert_new_purchases.id_new_person = idResult.intValue();
+                    break;
+                case "sale":
+                    insert_new_sales.id_new_person = idResult.intValue();
                     break;
             }
 

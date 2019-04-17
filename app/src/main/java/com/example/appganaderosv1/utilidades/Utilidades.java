@@ -227,6 +227,34 @@ public class Utilidades {
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    //Vista de ventas
+    public static final String VIEW_VENTAS = "sales_view";
+
+    public static final String SELECT_VENTA =
+            "SELECT " +
+                    Utilidades.CAMPO_ID_VENTAS + ", " +
+                    Utilidades.CAMPO_FECHA_VENTAS + ", " +
+                    Utilidades.CAMPO_CANTIDAD_ANIMALES_VENTAS + ", " +
+                    Utilidades.CAMPO_CANTIDAD_COBRAR + ", " +
+                    Utilidades.CAMPO_GANANCIAS + ", " +
+
+                    Utilidades.CAMPO_ID_PERSONA + ", " +
+                    Utilidades.CAMPO_NOMBRE + ", " +
+                    Utilidades.CAMPO_TELEFONO + ", " +
+                    Utilidades.CAMPO_DOMICILIO + ", " +
+                    Utilidades.CAMPO_DATOS_EXTRAS +
+                    " FROM " +
+                    Utilidades.TABLA_PERSONA + ", " +
+                    Utilidades.TABLA_VENTAS +
+                    " WHERE " +
+                    Utilidades.CAMPO_PERSONA_VENTA + " = " + Utilidades.CAMPO_ID_PERSONA +
+                    " AND " +
+                    Utilidades.CAMPO_RESPALDO_VENTAS + " = " + 0;
+
+    public static final String CREAR_VISTA_VENTAS = "CREATE VIEW " + VIEW_VENTAS + " AS " + SELECT_VENTA;
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     //Vista Animales sin dueño
     public static final String VIEW_ANIMAL_NO_OWNER = "animal_view";
 

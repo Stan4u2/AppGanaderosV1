@@ -108,7 +108,7 @@ public class insert_new_purchases extends AppCompatActivity {
 
             switch (action) {
                 case "insert":
-                    action_to_do.setText("NUEVA COMPRA");
+                    action_to_do.setText("Nueva Compra");
                     calculateQuantityAnimalsNotSaved();
                     calculateSumPayAnimalsNotSaved();
                     fillAnimalList();
@@ -118,7 +118,7 @@ public class insert_new_purchases extends AppCompatActivity {
                     fillAnimalListOwner();
                     calculateQuantityAnimals();
                     calculateSumPayAnimals();
-                    action_to_do.setText("MODIFICAR COMPRA");
+                    action_to_do.setText("Modificar Compra");
                     break;
 
             }

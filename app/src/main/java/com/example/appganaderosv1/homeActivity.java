@@ -109,4 +109,9 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
         PurchasesFragment PF = new PurchasesFragment();
         PF.newPurchase(view);
     }
+
+    public void newSale(View view){
+        SalesFragment SF = new SalesFragment();
+        SF.newSale(view);
+    }
 }

@@ -61,6 +61,9 @@ public class calendar extends AppCompatActivity {
                     insert_new_purchases.DatePurchase = calendarDate.getText().toString();
                     insert_new_purchases.datePurchase = true;
                     break;
+                case "sale":
+                    insert_new_sales.DateSale = calendarDate.getText().toString();
+                    insert_new_sales.dateSale = true;
             }
             finish();
         }

@@ -14,7 +14,6 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        System.out.println("Inicio la creacion de tablas");
         db.execSQL(Utilidades.CREAR_TABLA_USUARIO);
         db.execSQL(Utilidades.INSERTAR_USUARIOS);
         db.execSQL(Utilidades.CREAR_TABLA_PERSONA);
@@ -28,7 +27,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(Utilidades.CREAR_VISTA_CITAS);
         db.execSQL(Utilidades.CREAR_VISTA_COMPRAS);
         db.execSQL(Utilidades.CREAR_VISTA_ANIMAL);
-        System.out.println("Termino la creacion de tablas");
+        db.execSQL(Utilidades.CREAR_VISTA_VENTAS);
     }
 
     @Override
@@ -45,6 +44,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP VIEW IF EXISTS " + Utilidades.VIEW_CITA);
         db.execSQL("DROP VIEW IF EXISTS " + Utilidades.VIEW_COMPRAS);
         db.execSQL("DROP VIEW IF EXISTS " + Utilidades.VIEW_ANIMAL_NO_OWNER);
+        db.execSQL("DROP VIEW IF EXISTS " + Utilidades.VIEW_VENTAS);
         onCreate(db);
     }
 

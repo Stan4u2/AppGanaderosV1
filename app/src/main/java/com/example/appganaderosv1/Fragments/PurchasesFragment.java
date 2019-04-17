@@ -64,7 +64,6 @@ public class PurchasesFragment extends Fragment {
 
     public void onResume(){
         super.onResume();
-        System.out.println("Que onda");
         fillList();
     }
 
