@@ -211,6 +211,7 @@ public class insert_new_sales extends AppCompatActivity {
 
     public void select_animal(View view){
         Intent intent = null;
+        Bundle bundle = new Bundle();
         switch (action) {
             case "insert":
                 if(view.getId() == R.id.add_animal){
@@ -219,8 +220,13 @@ public class insert_new_sales extends AppCompatActivity {
                 }
                 break;
             case "modifie":
-                action_to_do.setText("Modificar Venta");
+
                 break;
+        }
+
+        if (intent != null) {
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     }
 

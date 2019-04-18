@@ -36,7 +36,7 @@
             android:orientation="horizontal">
 
             <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/spinner_person"
+                android:id="@+id/spinner_owner"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
         </LinearLayout>
@@ -55,7 +55,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/name_person"
+                android:id="@+id/name_owner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Felipe Torres"
@@ -76,7 +76,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/cellphone_person"
+                android:id="@+id/cellphone_owner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="348-100-1302"
@@ -97,7 +97,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/address_person"
+                android:id="@+id/address_owner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Clavel #19"
@@ -118,7 +118,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/extra_data_person"
+                android:id="@+id/extra_data_owner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sepa"
@@ -322,7 +322,7 @@
                 android:textSize="17sp"/>
 
             <TextView
-                android:id="@+id/total"
+                android:id="@+id/total_pagado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10000"
@@ -377,6 +377,7 @@
                 android:textStyle="bold"/>
 
             <EditText
+                android:id="@+id/tare_sale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="5"
@@ -412,6 +413,7 @@
             android:textSize="17sp"/>
 
         <TextView
+            android:id="@+id/total_cobrar_CT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1000000"
