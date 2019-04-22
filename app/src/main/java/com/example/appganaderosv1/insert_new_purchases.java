@@ -581,7 +581,7 @@ public class insert_new_purchases extends AppCompatActivity {
         } else if (date_purchase.getText().toString().isEmpty()) {
             Toast.makeText(getApplicationContext(), "¡¡Selecione La Fecha!!", Toast.LENGTH_LONG).show();
             noBlankSpaces = false;
-        } else if (number_animals_purchase.getText().toString().isEmpty()) {
+        } else if (number_animals_purchase.getText().toString().equals("0")) {
             Toast.makeText(getApplicationContext(), "¡¡Registre Almenos 1 Animal!!", Toast.LENGTH_LONG).show();
             noBlankSpaces = false;
         }

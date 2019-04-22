@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,7 +15,12 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.appganaderosv1.Adapter.Adapter_animals;
+import com.example.appganaderosv1.entidades.CompraDetalle;
+import com.example.appganaderosv1.entidades.Ganado;
 import com.example.appganaderosv1.entidades.Persona;
+import com.example.appganaderosv1.entidades.Raza;
+import com.example.appganaderosv1.entidades.VentaDetalle;
 import com.example.appganaderosv1.utilidades.Utilidades;
 
 import java.util.ArrayList;
@@ -34,11 +40,17 @@ public class insert_new_sales extends AppCompatActivity {
     public static boolean process;
     public static boolean dateSale;
     public static String DateSale;
+    public static boolean newSale;
 
     public static String action;
 
     ArrayList<String> peopleList;
     ArrayList<Persona> peopleData;
+
+    //These ArrayLists are for the Lists Views
+    ArrayList<CompraDetalle> listViewAnimalsBought;
+    ArrayList<Ganado> listViewTypeAnimal;
+    ArrayList<Raza> listViewRaceAnimal;
 
     ConexionSQLiteHelper conn;
 
@@ -73,7 +85,11 @@ public class insert_new_sales extends AppCompatActivity {
 
         //RecyclerView
         recycler_view = findViewById(R.id.recycler_view);
+        recycler_view.setLayoutManager(new LinearLayoutManager(this));
 
+        listViewAnimalsBought = new ArrayList<>();
+        listViewTypeAnimal = new ArrayList<>();
+        listViewRaceAnimal = new ArrayList<>();
 
         consultListPeopleSale();
 
@@ -113,6 +129,11 @@ public class insert_new_sales extends AppCompatActivity {
         if (dateSale) {
             dateSale = false;
             date_sale.setText(DateSale);
+        }
+
+        if(newSale){
+            newSale = false;
+            fillAnimalListNoOwner();
         }
     }
 
@@ -216,7 +237,7 @@ public class insert_new_sales extends AppCompatActivity {
             case "insert":
                 if(view.getId() == R.id.add_animal){
                     intent = new Intent(getApplicationContext(),select_animal.class);
-                    intent.putExtra("button", "sale");
+                    bundle.putSerializable("action", "insert");
                 }
                 break;
             case "modifie":
@@ -230,4 +251,66 @@ public class insert_new_sales extends AppCompatActivity {
         }
     }
 
+    public void fillAnimalListNoOwner(){
+        SQLiteDatabase db = conn.getReadableDatabase();
+
+        Persona persona = null;
+        VentaDetalle ventaDetalle = null;
+        CompraDetalle compraDetalle = null;
+        Ganado ganado = null;
+        Raza raza = null;
+
+        listViewAnimalsBought = new ArrayList<CompraDetalle>();
+        listViewTypeAnimal = new ArrayList<Ganado>();
+        listViewRaceAnimal = new ArrayList<Raza>();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + Utilidades.VIEW_ANIMAL_SALE_NO_OWNER, null
+        );
+
+        while (cursor.moveToNext()) {
+            persona = new Persona();
+            persona.setId_persona(cursor.getInt(0));
+            persona.setNombre(cursor.getString(1));
+            persona.setTelefono(cursor.getString(2));
+            persona.setDomicilio(cursor.getString(3));
+            persona.setDatos_extras(cursor.getString(4));
+
+            ventaDetalle = new VentaDetalle();
+            ventaDetalle.setId_venta_detalle(cursor.getInt(5));
+            ventaDetalle.setId_ganado(cursor.getInt(6));
+            ventaDetalle.setPrecio_venta(cursor.getInt(7));
+            ventaDetalle.setTara_venta(cursor.getInt(8));
+            ventaDetalle.setTotal_venta(cursor.getInt(9));
+
+            compraDetalle = new CompraDetalle();
+            compraDetalle.setId_compra_detalle(cursor.getInt(10));
+            compraDetalle.setGanado(cursor.getInt(11));
+            compraDetalle.setRaza(cursor.getInt(12));
+            compraDetalle.setPeso(cursor.getDouble(13));
+            compraDetalle.setPrecio(cursor.getDouble(14));
+            compraDetalle.setTara(cursor.getInt(15));
+            compraDetalle.setTotal(cursor.getDouble(16));
+            compraDetalle.setNumero_arete(cursor.getInt(17));
+
+            ganado = new Ganado();
+            ganado.setId_ganado(cursor.getInt(18));
+            ganado.setTipo_ganado(cursor.getString(19));
+
+            raza = new Raza();
+            raza.setId_raza(cursor.getInt(20));
+            raza.setTipo_raza(cursor.getString(21));
+
+            listViewAnimalsBought.add(compraDetalle);
+            listViewTypeAnimal.add((ganado));
+            listViewRaceAnimal.add(raza);
+        }
+
+        db.close();
+        cursor.close();
+
+        Adapter_animals adapter_animals = new Adapter_animals(listViewAnimalsBought, listViewTypeAnimal, listViewRaceAnimal);
+
+        recycler_view.setAdapter(adapter_animals);
+    }
 }

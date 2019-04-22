@@ -314,7 +314,6 @@ public class insert_new_animal extends AppCompatActivity {
                             earring
                     );
                 }else if (WhereCameFrom.equals("change")){
-                    System.out.println("A insertar nuevo pero con dueño \nId de la compra " + idPurchase);
                     inserted = insertNewAnimalCurrentPurchase(
                             idPurchase,
                             selectedType,
@@ -399,7 +398,7 @@ public class insert_new_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total*tareAnimal)/100)));
         values.put(Utilidades.CAMPO_NUMERO_ARETE, earringNumber);
 
-        long idResult = db.insert(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_ID_CITAS, values);
+        long idResult = db.insert(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_ID_COMPRA_DETALLE, values);
 
         db.close();
 

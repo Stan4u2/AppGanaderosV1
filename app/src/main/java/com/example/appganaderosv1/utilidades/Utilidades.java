@@ -113,8 +113,8 @@ public class Utilidades {
     public static final String CAMPO_GANADO = "ganado";
     public static final String CAMPO_RAZA = "raza";
     public static final String CAMPO_PESO = "peso";
-    public static final String CAMPO_PRECIO = "precio";
-    public static final String CAMPO_TARA = "tara";
+    public static final String CAMPO_PRECIO = "precio_compra";
+    public static final String CAMPO_TARA = "tara_compra";
     public static final String CAMPO_TOTAL_PAGAR = "total";
     public static final String CAMPO_NUMERO_ARETE = "numero_arete";
     public static final String CAMPO_COMPRA = "compra";
@@ -159,8 +159,9 @@ public class Utilidades {
     public static final String TABLA_VENTA_DETALLE = "venta_detalle";
     public static final String CAMPO_ID_VENTA_DETALLE = "id_venta_detalle";
     public static final String CAMPO_COMPRA_GANADO = "compra_animal";
-    public static final String CAMPO_PRECIO_VENTA = "precio";
-    public static final String CAMPO_TARA_VENTA = "tara";
+    public static final String CAMPO_PRECIO_VENTA = "precio_venta";
+    public static final String CAMPO_TARA_VENTA = "tara_venta";
+    public static final String CAMPO_TOTAL_VENTA = "total_ct";
     public static final String CAMPO_VENTA = "venta";
 
     public static final String CREAR_TABLA_VENTA_DETALLE =
@@ -169,6 +170,7 @@ public class Utilidades {
                     + CAMPO_COMPRA_GANADO + " INTEGER REFERENCES " + TABLA_COMPRA_DETALLE + "(" + CAMPO_ID_COMPRA_DETALLE + "), "
                     + CAMPO_PRECIO_VENTA + " REAL, "
                     + CAMPO_TARA_VENTA + " REAL, "
+                    + CAMPO_TOTAL_VENTA + " REAL, "
                     + CAMPO_VENTA + " INTEGER REFERENCES " + TABLA_VENTAS + "(" + CAMPO_ID_VENTA_DETALLE + "))";
 
 
@@ -286,4 +288,57 @@ public class Utilidades {
                     Utilidades.CAMPO_COMPRA + " IS NULL";
 
     public static final String CREAR_VISTA_ANIMAL = "CREATE VIEW " + VIEW_ANIMAL_NO_OWNER + " AS " + SELECT_ANIMAL;
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //Vista Animales en Venta sin dueño
+    public static final String VIEW_ANIMAL_SALE_NO_OWNER = "animal_view_sale";
+
+    public static final String SELECT_ANIMAL_SALE =
+            "SELECT DISTINCT " +
+                    Utilidades.CAMPO_ID_PERSONA + ", " +
+                    Utilidades.CAMPO_NOMBRE + ", " +
+                    Utilidades.CAMPO_TELEFONO + ", " +
+                    Utilidades.CAMPO_DOMICILIO + ", " +
+                    Utilidades.CAMPO_DATOS_EXTRAS + ", " +
+
+                    Utilidades.CAMPO_ID_VENTA_DETALLE + ", " +
+                    Utilidades.CAMPO_COMPRA_GANADO + ", " +
+                    Utilidades.CAMPO_PRECIO_VENTA + " AS precio_venta, " +
+                    Utilidades.CAMPO_TARA_VENTA + ", " +
+                    Utilidades.CAMPO_TOTAL_VENTA + ", " +
+
+                    Utilidades.CAMPO_ID_COMPRA_DETALLE + ", " +
+                    Utilidades.CAMPO_GANADO + ", " +
+                    Utilidades.CAMPO_RAZA + ", " +
+                    Utilidades.CAMPO_PESO + ", " +
+                    Utilidades.CAMPO_PRECIO + " AS precio_compra, " +
+                    Utilidades.CAMPO_TARA + ", " +
+                    Utilidades.CAMPO_TOTAL_PAGAR + ", " +
+                    Utilidades.CAMPO_NUMERO_ARETE + ", " +
+
+                    Utilidades.CAMPO_ID_GANADO + ", " +
+                    Utilidades.CAMPO_TIPO_GANADO + ", " +
+
+                    Utilidades.CAMPO_ID_RAZA + ", " +
+                    Utilidades.CAMPO_TIPO_RAZA +
+                    " FROM " +
+                    Utilidades.TABLA_PERSONA + ", " +
+                    Utilidades.TABLA_VENTA_DETALLE + ", " +
+                    Utilidades.TABLA_COMPRAS + ", " +
+                    Utilidades.TABLA_COMPRA_DETALLE + ", " +
+                    Utilidades.TABLA_GANADO + ", " +
+                    Utilidades.TABLA_RAZA +
+                    " WHERE " +
+                    Utilidades.CAMPO_PERSONA_COMPRO + " = " + CAMPO_ID_PERSONA +
+                    " AND " +
+                    Utilidades.CAMPO_COMPRA_GANADO + " = " + CAMPO_ID_COMPRA_DETALLE +
+                    " AND " +
+                    Utilidades.CAMPO_GANADO + " = " + Utilidades.CAMPO_ID_GANADO +
+                    " AND " +
+                    Utilidades.CAMPO_RAZA + " = " + Utilidades.CAMPO_ID_RAZA +
+                    " AND " +
+                    Utilidades.CAMPO_VENTA + " IS NULL";
+
+    public static final String CREAR_VISTA_ANIMAL_VENTA = "CREATE VIEW " + VIEW_ANIMAL_SALE_NO_OWNER + " AS " + SELECT_ANIMAL_SALE;
 }

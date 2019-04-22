@@ -28,6 +28,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(Utilidades.CREAR_VISTA_COMPRAS);
         db.execSQL(Utilidades.CREAR_VISTA_ANIMAL);
         db.execSQL(Utilidades.CREAR_VISTA_VENTAS);
+        db.execSQL(Utilidades.CREAR_VISTA_ANIMAL_VENTA);
     }
 
     @Override
@@ -45,6 +46,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP VIEW IF EXISTS " + Utilidades.VIEW_COMPRAS);
         db.execSQL("DROP VIEW IF EXISTS " + Utilidades.VIEW_ANIMAL_NO_OWNER);
         db.execSQL("DROP VIEW IF EXISTS " + Utilidades.VIEW_VENTAS);
+        db.execSQL("DROP VIEW IF EXISTS " +  Utilidades.VIEW_ANIMAL_SALE_NO_OWNER);
         onCreate(db);
     }
 

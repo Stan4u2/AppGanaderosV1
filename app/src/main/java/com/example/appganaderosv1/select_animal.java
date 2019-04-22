@@ -1,9 +1,12 @@
 package com.example.appganaderosv1;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.appganaderosv1.entidades.CompraDetalle;
 import com.example.appganaderosv1.entidades.Ganado;
@@ -22,13 +26,16 @@ import java.util.ArrayList;
 
 public class select_animal extends AppCompatActivity {
 
-    EditText total_cobrar, tare_sale;
+    EditText precio_venta, tare_sale;
     TextView name_owner, cellphone_owner, address_owner, extra_data_owner;
     TextView typeAnimal, raceAnimal, weightAnimal, priceAnimal, tareAnimal, earingNumberAnimal, total_pagado, total_cobrar_CT;
     Spinner spinner_owner, spinner_animal;
     ImageButton saveSale;
 
+    public static String action;
+
     int idOwner;
+    int idAnimal;
     
     //ArrayLists Spinner Person
     ArrayList<String> peopleList;
@@ -50,7 +57,7 @@ public class select_animal extends AppCompatActivity {
         conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 2);
 
         //EditText
-        total_cobrar = findViewById(R.id.total_cobrar);
+        precio_venta = findViewById(R.id.precio_venta);
         tare_sale = findViewById(R.id.tare_sale);
 
         //TextView
@@ -74,9 +81,61 @@ public class select_animal extends AppCompatActivity {
         
         //ImageButton
         saveSale = findViewById(R.id.saveSale);
+
+        Bundle actionToDo = getIntent().getExtras();
+
+        if(actionToDo != null){
+
+            action = actionToDo.getSerializable("action").toString();
+
+            switch(action){
+                case "insert":
+
+                    break;
+
+                case "modifie":
+                    break;
+            }
+
+        }
         
         consultListOwners();
         consultListAnimals();
+
+        precio_venta.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                calculateTotal();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        tare_sale.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                calculateTotal();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     private void consultListOwners() {
@@ -158,7 +217,6 @@ public class select_animal extends AppCompatActivity {
         }
     }
 
-
     private void consultListAnimals() {
 
         SQLiteDatabase db = conn.getWritableDatabase();
@@ -202,6 +260,10 @@ public class select_animal extends AppCompatActivity {
                         " AND " +
                         Utilidades.CAMPO_COMPRA + " = " + Utilidades.CAMPO_ID_COMPRA +
                         " AND " +
+                        "NOT EXISTS (" +
+                            "SELECT * FROM " + Utilidades.TABLA_VENTA_DETALLE + " WHERE " + Utilidades.CAMPO_ID_COMPRA_DETALLE + " = " + Utilidades.CAMPO_COMPRA_GANADO +
+                        ")" +
+                        " AND " +
                         Utilidades.CAMPO_PERSONA_COMPRO + " = ?", parameters
         );
 
@@ -244,6 +306,7 @@ public class select_animal extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position != 0) {
 
+                    idAnimal = animalData.get(position - 1).getId_compra_detalle();
                     typeAnimal.setText(animalType.get(position - 1).getTipo_ganado());
                     raceAnimal.setText(animalRace.get(position - 1).getTipo_raza());
                     weightAnimal.setText(animalData.get(position - 1).getPeso().toString());
@@ -254,6 +317,7 @@ public class select_animal extends AppCompatActivity {
 
                 } else {
 
+                    idAnimal = 0;
                     typeAnimal.setText("");
                     raceAnimal.setText("");
                     weightAnimal.setText("");
@@ -284,5 +348,100 @@ public class select_animal extends AppCompatActivity {
         }
 
     }
+
+    public void calculateTotal(){
+        int tare = 0;
+        double weight = 0, price_sale = 0, total = 0, sum;
+        if(!precio_venta.getText().toString().isEmpty()){
+            price_sale = Integer.valueOf(precio_venta.getText().toString());
+        }
+        if(!tare_sale.getText().toString().isEmpty()){
+            tare = Integer.valueOf(tare_sale.getText().toString());
+        }
+        if(!weightAnimal.getText().toString().isEmpty()){
+            weight = Double.parseDouble(weightAnimal.getText().toString());
+        }
+
+        total = (price_sale * weight);
+
+        sum = (total-((total * tare)/100));
+
+        total_cobrar_CT.setText(String.valueOf(sum));
+    }
+
+    public void saveSale(View view){
+        boolean complete = false;
+
+        boolean noBlankSpaces = true;
+
+        if(spinner_owner.getSelectedItemId() == 0){
+            Toast.makeText(getApplicationContext(), "¡¡Selecione El Dueño!!", Toast.LENGTH_LONG).show();
+            noBlankSpaces = false;
+        }
+        if(spinner_animal.getSelectedItemId() == 0){
+            Toast.makeText(getApplicationContext(), "¡¡Selecione El Ganado!!", Toast.LENGTH_LONG).show();
+            noBlankSpaces = false;
+        }
+        if(precio_venta.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(), "¡¡Ingrese El Precio De Venta!!", Toast.LENGTH_LONG).show();
+            noBlankSpaces = false;
+        }
+
+        if (noBlankSpaces) {
+            int tare = 0;
+            if(!tare_sale.getText().toString().isEmpty()){
+                tare = Integer.valueOf(tare_sale.getText().toString());
+            }
+            if(action.equals("insert")){
+                boolean inserted = false;
+
+                inserted = insertNewSale(
+                        idAnimal,
+                        Double.parseDouble(precio_venta.getText().toString()),
+                        tare,
+                        Double.parseDouble(total_cobrar_CT.getText().toString())
+                );
+
+                if(inserted){
+                    Toast.makeText(getApplicationContext(), "Datos Insertados", Toast.LENGTH_LONG).show();
+                    complete = true;
+                }else {
+                    Toast.makeText(getApplicationContext(), "¡¡Datos No Insertados!!", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            if(complete){
+                insert_new_sales.newSale = true;
+                finish();
+            }
+        }
+    }
+
+    private boolean insertNewSale(int idAnimal, double price, int tare, double total) {
+
+        SQLiteDatabase db = conn.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(Utilidades.CAMPO_COMPRA_GANADO, idAnimal);
+        values.put(Utilidades.CAMPO_PRECIO_VENTA, price);
+        values.put(Utilidades.CAMPO_TARA_VENTA, tare);
+        values.put(Utilidades.CAMPO_TOTAL_VENTA, total);
+
+        long idResult = db.insert(Utilidades.TABLA_VENTA_DETALLE, Utilidades.CAMPO_ID_VENTA_DETALLE, values);
+
+        db.close();
+
+        if(idResult == -1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public void cancel (View view){
+        finish();
+    }
+
 
 }

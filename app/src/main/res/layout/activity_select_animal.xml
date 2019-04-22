@@ -345,7 +345,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cobrar: "
+                android:text="Precio Venta: "
                 android:textSize="17sp"
                 android:textStyle="bold"/>
 
@@ -356,10 +356,11 @@
                 android:textSize="17sp"/>
 
             <EditText
-                android:id="@+id/total_cobrar"
+                android:id="@+id/precio_venta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="100000"
+                android:inputType="numberDecimal"
+                android:hint="precio venta"
                 android:textSize="17sp"/>
 
         </LinearLayout>
@@ -380,7 +381,8 @@
                 android:id="@+id/tare_sale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="5"
+                android:inputType="number"
+                android:hint="tara"
                 android:textSize="17sp"/>
 
             <TextView
@@ -431,12 +433,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="70dp"
+            android:onClick="cancel"
             android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
         <ImageButton
             android:id="@+id/saveSale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="saveSale"
             android:src="@android:drawable/ic_menu_save" />
     </LinearLayout>
 
