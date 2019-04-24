@@ -304,7 +304,7 @@ public class Utilidades {
 
                     Utilidades.CAMPO_ID_VENTA_DETALLE + ", " +
                     Utilidades.CAMPO_COMPRA_GANADO + ", " +
-                    Utilidades.CAMPO_PRECIO_VENTA + " AS precio_venta, " +
+                    Utilidades.CAMPO_PRECIO_VENTA  + ", " +
                     Utilidades.CAMPO_TARA_VENTA + ", " +
                     Utilidades.CAMPO_TOTAL_VENTA + ", " +
 
@@ -312,7 +312,7 @@ public class Utilidades {
                     Utilidades.CAMPO_GANADO + ", " +
                     Utilidades.CAMPO_RAZA + ", " +
                     Utilidades.CAMPO_PESO + ", " +
-                    Utilidades.CAMPO_PRECIO + " AS precio_compra, " +
+                    Utilidades.CAMPO_PRECIO + ", " +
                     Utilidades.CAMPO_TARA + ", " +
                     Utilidades.CAMPO_TOTAL_PAGAR + ", " +
                     Utilidades.CAMPO_NUMERO_ARETE + ", " +
@@ -331,6 +331,8 @@ public class Utilidades {
                     Utilidades.TABLA_RAZA +
                     " WHERE " +
                     Utilidades.CAMPO_PERSONA_COMPRO + " = " + CAMPO_ID_PERSONA +
+                    " AND " +
+                    Utilidades.CAMPO_COMPRA + " = " + Utilidades.CAMPO_ID_COMPRA +
                     " AND " +
                     Utilidades.CAMPO_COMPRA_GANADO + " = " + CAMPO_ID_COMPRA_DETALLE +
                     " AND " +

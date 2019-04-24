@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.appganaderosv1.entidades.CompraDetalle;
+import com.example.appganaderosv1.entidades.Compras;
 import com.example.appganaderosv1.entidades.Ganado;
 import com.example.appganaderosv1.entidades.Persona;
 import com.example.appganaderosv1.entidades.Raza;
@@ -29,17 +30,23 @@ public class select_animal extends AppCompatActivity {
     EditText precio_venta, tare_sale;
     TextView name_owner, cellphone_owner, address_owner, extra_data_owner;
     TextView typeAnimal, raceAnimal, weightAnimal, priceAnimal, tareAnimal, earingNumberAnimal, total_pagado, total_cobrar_CT;
-    Spinner spinner_owner, spinner_animal;
+    Spinner spinner_owner, spinner_purchase_date, spinner_animal;
     ImageButton saveSale;
 
     public static String action;
+    public static String owner;
 
     int idOwner;
+    String purchaseDate;
     int idAnimal;
     
     //ArrayLists Spinner Person
     ArrayList<String> peopleList;
     ArrayList<Persona> peopleData;
+
+    //ArrayList Spinner Purchase Date
+    ArrayList<String> purchaseList;
+    ArrayList<Compras> purchaseData;
 
     //ArrayLists Spinner Animals
     ArrayList<String> animalList;
@@ -77,6 +84,7 @@ public class select_animal extends AppCompatActivity {
 
         //Spinner
         spinner_owner = findViewById(R.id.spinner_owner);
+        spinner_purchase_date = findViewById(R.id.spinner_purchase_date);
         spinner_animal = findViewById(R.id.spinner_animal);
         
         //ImageButton
@@ -87,6 +95,7 @@ public class select_animal extends AppCompatActivity {
         if(actionToDo != null){
 
             action = actionToDo.getSerializable("action").toString();
+            owner = actionToDo.getSerializable("owner").toString();
 
             switch(action){
                 case "insert":
@@ -101,6 +110,7 @@ public class select_animal extends AppCompatActivity {
         
         consultListOwners();
         consultListAnimals();
+        consultListDates();
 
         precio_venta.addTextChangedListener(new TextWatcher() {
             @Override
@@ -146,7 +156,7 @@ public class select_animal extends AppCompatActivity {
 
 
         Cursor cursor = db.rawQuery(
-                "SELECT " +
+                "SELECT DISTINCT " +
                         "p.*" +
                         " FROM " +
                         Utilidades.TABLA_PERSONA + " p, " +
@@ -186,7 +196,7 @@ public class select_animal extends AppCompatActivity {
                     address_owner.setText(peopleData.get(position - 1).getDomicilio());
                     extra_data_owner.setText(peopleData.get(position - 1).getDatos_extras());
 
-                    consultListAnimals();
+                    consultListDates();
 
                 } else {
 
@@ -217,7 +227,74 @@ public class select_animal extends AppCompatActivity {
         }
     }
 
-    private void consultListAnimals() {
+    private void consultListDates(){
+        SQLiteDatabase db = conn.getWritableDatabase();
+
+        Compras compras = null;
+
+        String[] parameters = {String.valueOf(idOwner)};
+
+        purchaseData = new ArrayList<Compras>();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT DISTINCT " +
+                        Utilidades.CAMPO_FECHA_COMPRAS +
+                    " FROM " +
+                        Utilidades.TABLA_COMPRAS +
+                    " WHERE " +
+                        Utilidades.CAMPO_PERSONA_COMPRO + " = ?", parameters
+                );
+
+        while (cursor.moveToNext()) {
+            compras = new Compras();
+            compras.setFecha_compra(cursor.getString(0));
+
+            purchaseData.add(compras);
+        }
+
+        cursor.close();
+        db.close();
+
+        obtainListDates();
+
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, purchaseList);
+
+        spinner_purchase_date.setAdapter(adapter);
+
+        spinner_purchase_date.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != 0) {
+
+                    purchaseDate = purchaseData.get(position - 1).getFecha_compra();
+
+                    consultListAnimals();
+
+                } else {
+
+                    purchaseDate = "";
+
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void obtainListDates() {
+        purchaseList = new ArrayList<String>();
+        purchaseList.add("Seleccione:");
+
+        for (int i = 0; i < purchaseData.size(); i++) {
+            purchaseList.add(purchaseData.get(i).getFecha_compra());
+        }
+    }
+
+    private void consultListAnimals(){
 
         SQLiteDatabase db = conn.getWritableDatabase();
 
@@ -259,6 +336,8 @@ public class select_animal extends AppCompatActivity {
                         Utilidades.CAMPO_RAZA + " = " + Utilidades.CAMPO_ID_RAZA +
                         " AND " +
                         Utilidades.CAMPO_COMPRA + " = " + Utilidades.CAMPO_ID_COMPRA +
+                        " AND " +
+                        Utilidades.CAMPO_FECHA_COMPRAS + " = '" + purchaseDate + "'" +
                         " AND " +
                         "NOT EXISTS (" +
                             "SELECT * FROM " + Utilidades.TABLA_VENTA_DETALLE + " WHERE " + Utilidades.CAMPO_ID_COMPRA_DETALLE + " = " + Utilidades.CAMPO_COMPRA_GANADO +
@@ -373,18 +452,26 @@ public class select_animal extends AppCompatActivity {
         boolean complete = false;
 
         boolean noBlankSpaces = true;
-
-        if(spinner_owner.getSelectedItemId() == 0){
-            Toast.makeText(getApplicationContext(), "¡¡Selecione El Dueño!!", Toast.LENGTH_LONG).show();
+        if(spinner_owner.getSelectedItemId() == 0 && spinner_animal.getSelectedItemId() == 0 && spinner_purchase_date.getSelectedItemId() == 0 && precio_venta.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(), "¡¡Campos Vacios!!", Toast.LENGTH_LONG).show();
             noBlankSpaces = false;
-        }
-        if(spinner_animal.getSelectedItemId() == 0){
-            Toast.makeText(getApplicationContext(), "¡¡Selecione El Ganado!!", Toast.LENGTH_LONG).show();
-            noBlankSpaces = false;
-        }
-        if(precio_venta.getText().toString().isEmpty()){
-            Toast.makeText(getApplicationContext(), "¡¡Ingrese El Precio De Venta!!", Toast.LENGTH_LONG).show();
-            noBlankSpaces = false;
+        }else {
+            if (spinner_owner.getSelectedItemId() == 0) {
+                Toast.makeText(getApplicationContext(), "¡¡Selecione El Dueño!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            }
+            if (spinner_animal.getSelectedItemId() == 0) {
+                Toast.makeText(getApplicationContext(), "¡¡Selecione El Ganado!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            }
+            if (spinner_purchase_date.getSelectedItemId() == 0) {
+                Toast.makeText(getApplicationContext(), "¡¡Selecione La Fecha de Compra!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            }
+            if (precio_venta.getText().toString().isEmpty()) {
+                Toast.makeText(getApplicationContext(), "¡¡Ingrese El Precio De Venta!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            }
         }
 
         if (noBlankSpaces) {
@@ -395,12 +482,17 @@ public class select_animal extends AppCompatActivity {
             if(action.equals("insert")){
                 boolean inserted = false;
 
-                inserted = insertNewSale(
-                        idAnimal,
-                        Double.parseDouble(precio_venta.getText().toString()),
-                        tare,
-                        Double.parseDouble(total_cobrar_CT.getText().toString())
-                );
+                if(owner.equals("no")){
+                    inserted = insertNewSale(
+                            idAnimal,
+                            Double.parseDouble(precio_venta.getText().toString()),
+                            tare,
+                            Double.parseDouble(total_cobrar_CT.getText().toString())
+                    );
+                }else if(owner.equals("yes")){
+
+                }
+
 
                 if(inserted){
                     Toast.makeText(getApplicationContext(), "Datos Insertados", Toast.LENGTH_LONG).show();

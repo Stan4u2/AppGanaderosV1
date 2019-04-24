@@ -220,7 +220,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cantidad a Pagar:"
+                android:text="Cantidad a Cobrar:"
                 android:textSize="17sp"
                 android:textStyle="bold" />
 
@@ -281,6 +281,7 @@
                 android:id="@+id/saveSale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="saveSale"
                 android:src="@android:drawable/ic_menu_save" />
         </LinearLayout>
 

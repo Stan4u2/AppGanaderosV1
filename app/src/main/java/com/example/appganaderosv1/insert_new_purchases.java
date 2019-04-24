@@ -174,7 +174,7 @@ public class insert_new_purchases extends AppCompatActivity {
             newAnimalInserted = false;
             switch (action) {
                 case "insert":
-                    //In these if´s i compare if the animal inserted has an owner, and depending the case will e the list that will be shown
+                    //In these if´s I compare if the animal inserted has an owner, and depending the case will e the list that will be shown
                     if(InsertNewAnimal.equals("no owner")){
                         fillAnimalList();
                     }else if(InsertNewAnimal.equals("owner")){
@@ -572,8 +572,8 @@ public class insert_new_purchases extends AppCompatActivity {
 
     public void savePurchase(View view) {
 
-        boolean noBlankSpaces = true;
-        boolean complete = false;
+            boolean noBlankSpaces = true;
+            boolean complete = false;
 
         if (spinner_person_purchase.getSelectedItemId() == 0) {
             Toast.makeText(getApplicationContext(), "¡¡Selecione El Vendedor!!", Toast.LENGTH_LONG).show();
