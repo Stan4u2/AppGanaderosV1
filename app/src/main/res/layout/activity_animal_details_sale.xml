@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:launchMode="singleTask"
-    android:orientation="vertical"
-    tools:context=".select_animal">
+    tools:context=".animal_details_sale"
+    android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Selecionar Ganado"
-        android:textAlignment="center"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DETALLE DE GANADO"
+            android:textSize="25sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,128 +33,119 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/spinner_owner"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nombre: "
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/name_owner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Felipe Torres"
-                android:textSize="17sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Telfono: "
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/cellphone_owner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="348-100-1302"
-                android:textSize="17sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Domicilio: "
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/address_owner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Clavel #19"
-                android:textSize="17sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Datos Extras: "
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/extra_data_owner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sepa"
-                android:textSize="17sp" />
-        </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/colorPrimary"
-            android:textSize="17sp" />
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Fecha Compra"
-            android:textSize="20sp"
+            android:text="Nombre: "
+            android:textSize="17sp"
             android:textStyle="bold" />
 
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/spinner_purchase_date"
+        <TextView
+            android:id="@+id/name_owner"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:text="Felipe Torres"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Telfono: "
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/cellphone_owner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="348-100-1302"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Domicilio: "
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/address_owner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clavel #19"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Datos Extras: "
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/extra_data_owner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sepa"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimary"
+        android:textSize="17sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Fecha Compra"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/purchaseDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12/12/1997"
+            android:textSize="17sp"/>
 
     </LinearLayout>
 
@@ -172,18 +167,6 @@
             android:text="Ganado"
             android:textSize="20sp"
             android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
-
-            <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/spinner_animal"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -390,12 +373,11 @@
                 android:text="$"
                 android:textSize="17sp"/>
 
-            <EditText
-                android:id="@+id/precio_venta"
+            <TextView
+                android:id="@+id/sale_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:hint="precio venta"
+                android:text="20"
                 android:textSize="17sp"/>
 
         </LinearLayout>
@@ -412,12 +394,11 @@
                 android:textSize="17sp"
                 android:textStyle="bold"/>
 
-            <EditText
+            <TextView
                 android:id="@+id/tare_sale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="tara"
+                android:text="20"
                 android:textSize="17sp"/>
 
             <TextView
@@ -428,55 +409,61 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total a Cobrar: "
+                android:textSize="17sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$"
+                android:textSize="17sp"/>
+
+            <TextView
+                android:id="@+id/total_cobrar_CT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1000000"
+                android:textSize="17sp"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Total a Cobrar: "
-            android:textSize="17sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="$"
-            android:textSize="17sp"/>
-
-        <TextView
-            android:id="@+id/total_cobrar_CT"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1000000"
-            android:textSize="17sp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
+        android:gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_height="match_parent"
         android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/modifie_sale"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="70dp"
-            android:onClick="cancel"
-            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+            android:layout_height="70sp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:onClick="modifiePurchase"
+            android:scaleType="fitCenter"
+            android:src="@android:drawable/ic_menu_edit" />
 
         <ImageButton
-            android:id="@+id/saveSale"
+            android:id="@+id/delete_sale"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="saveSale"
-            android:src="@android:drawable/ic_menu_save" />
+            android:layout_height="70sp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:onClick="deletePurchase"
+            android:scaleType="fitCenter"
+            android:src="@android:drawable/ic_menu_delete" />
     </LinearLayout>
 
 </LinearLayout>

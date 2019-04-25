@@ -46,6 +46,8 @@ public class insert_new_sales extends AppCompatActivity {
     public static String DateSale;
     public static boolean newSale;
 
+    public static boolean saleDeleted;
+
     public static String action;
     public static String owner;
 
@@ -56,6 +58,12 @@ public class insert_new_sales extends AppCompatActivity {
     ArrayList<CompraDetalle> listViewAnimalsBought;
     ArrayList<Ganado> listViewTypeAnimal;
     ArrayList<Raza> listViewRaceAnimal;
+
+    ArrayList<Persona> listOwners;
+    ArrayList<VentaDetalle> listSales;
+
+    public String purchaseDate;
+
 
     ConexionSQLiteHelper conn;
 
@@ -155,6 +163,16 @@ public class insert_new_sales extends AppCompatActivity {
                     break;
             }
 
+        }
+
+        if(saleDeleted == true){
+            if(owner.equals("no")) {
+                fillAnimalListNoOwner();
+                calculateQuantityAnimalsNotSaved();
+                calculateSumPayAnimalsNotSaved();
+            }else if(owner.equals("yes")){
+
+            }
         }
     }
 
@@ -283,6 +301,8 @@ public class insert_new_sales extends AppCompatActivity {
         Ganado ganado = null;
         Raza raza = null;
 
+        listOwners = new ArrayList<Persona>();
+        listSales = new ArrayList<VentaDetalle>();
         listViewAnimalsBought = new ArrayList<CompraDetalle>();
         listViewTypeAnimal = new ArrayList<Ganado>();
         listViewRaceAnimal = new ArrayList<Raza>();
@@ -324,6 +344,10 @@ public class insert_new_sales extends AppCompatActivity {
             raza.setId_raza(cursor.getInt(20));
             raza.setTipo_raza(cursor.getString(21));
 
+            purchaseDate = cursor.getString(22);
+
+            listOwners.add(persona);
+            listSales.add(ventaDetalle);
             listViewAnimalsBought.add(compraDetalle);
             listViewTypeAnimal.add((ganado));
             listViewRaceAnimal.add(raza);
@@ -333,6 +357,33 @@ public class insert_new_sales extends AppCompatActivity {
         cursor.close();
 
         Adapter_animals adapter_animals = new Adapter_animals(listViewAnimalsBought, listViewTypeAnimal, listViewRaceAnimal);
+
+        adapter_animals.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Persona persona = listOwners.get(recycler_view.getChildAdapterPosition(view));
+                VentaDetalle ventaDetalle = listSales.get(recycler_view.getChildAdapterPosition(view));
+                CompraDetalle compraDetalle = listViewAnimalsBought.get(recycler_view.getChildAdapterPosition(view));
+                Ganado ganado = listViewTypeAnimal.get(recycler_view.getChildAdapterPosition(view));
+                Raza raza = listViewRaceAnimal.get(recycler_view.getChildAdapterPosition(view));
+
+                Intent intent = new Intent(getApplicationContext(), animal_details_sale.class);
+
+                Bundle bundle = new Bundle();
+
+                bundle.putSerializable("persona", persona);
+                bundle.putSerializable("fechaCompra", purchaseDate);
+                bundle.putSerializable("ventaDetalle", ventaDetalle);
+                bundle.putSerializable("compraDetalle", compraDetalle);
+                bundle.putSerializable("ganado", ganado);
+                bundle.putSerializable("raza", raza);
+                bundle.putSerializable("owner", "no");
+
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+            }
+        });
 
         recycler_view.setAdapter(adapter_animals);
     }

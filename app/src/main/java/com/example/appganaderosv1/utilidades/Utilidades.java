@@ -321,7 +321,9 @@ public class Utilidades {
                     Utilidades.CAMPO_TIPO_GANADO + ", " +
 
                     Utilidades.CAMPO_ID_RAZA + ", " +
-                    Utilidades.CAMPO_TIPO_RAZA +
+                    Utilidades.CAMPO_TIPO_RAZA + ", " +
+
+                    Utilidades.CAMPO_FECHA_COMPRAS +
                     " FROM " +
                     Utilidades.TABLA_PERSONA + ", " +
                     Utilidades.TABLA_VENTA_DETALLE + ", " +
