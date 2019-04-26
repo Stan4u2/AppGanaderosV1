@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".animal_details_sale"></activity>
+        <activity android:name=".sales_details"></activity>
+        <activity android:name=".animal_details_sale" />
         <activity android:name=".select_animal" />
         <activity android:name=".insert_new_sales" />
         <activity android:name=".purchase_details" />

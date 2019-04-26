@@ -20,6 +20,7 @@ import com.example.appganaderosv1.R;
 import com.example.appganaderosv1.entidades.Persona;
 import com.example.appganaderosv1.entidades.Ventas;
 import com.example.appganaderosv1.insert_new_sales;
+import com.example.appganaderosv1.sales_details;
 import com.example.appganaderosv1.utilidades.Utilidades;
 
 import java.util.ArrayList;
@@ -107,7 +108,7 @@ public class SalesFragment extends Fragment {
                 Ventas ventas = listaVentas.get(recycler_view.getChildAdapterPosition(view));
                 Persona persona = listaPersonas.get(recycler_view.getChildAdapterPosition(view));
 
-                /*
+
                 Intent intent = new Intent(view.getContext(), sales_details.class);
 
                 Bundle bundle = new Bundle();
@@ -116,7 +117,7 @@ public class SalesFragment extends Fragment {
 
                 intent.putExtras(bundle);
                 startActivity(intent);
-                */
+
             }
         });
 
