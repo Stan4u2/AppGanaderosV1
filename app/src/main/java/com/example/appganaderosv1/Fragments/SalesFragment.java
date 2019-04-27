@@ -135,6 +135,7 @@ public class SalesFragment extends Fragment {
             case R.id.agregar_venta:
                 miIntent = new Intent(view.getContext(), insert_new_sales.class);
                 bundle.putSerializable("action", "insert");
+                bundle.putSerializable("owner", "no");
                 break;
         }
         if(miIntent!=null){

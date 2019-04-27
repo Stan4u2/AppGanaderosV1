@@ -451,7 +451,7 @@
             android:layout_height="70sp"
             android:layout_weight="1"
             android:background="@null"
-            android:onClick="modifiePurchase"
+            android:onClick="modifieSale"
             android:scaleType="fitCenter"
             android:src="@android:drawable/ic_menu_edit" />
 
@@ -461,7 +461,7 @@
             android:layout_height="70sp"
             android:layout_weight="1"
             android:background="@null"
-            android:onClick="deletePurchase"
+            android:onClick="deleteSale"
             android:scaleType="fitCenter"
             android:src="@android:drawable/ic_menu_delete" />
     </LinearLayout>

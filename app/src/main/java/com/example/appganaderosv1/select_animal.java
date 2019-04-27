@@ -43,6 +43,7 @@ public class select_animal extends AppCompatActivity {
     static int id_sale_modifie;
 
     int idOwner;
+    int idSale;
     String purchaseDate;
     int idAnimal;
 
@@ -68,7 +69,7 @@ public class select_animal extends AppCompatActivity {
     Ganado ganado = null;
     Raza raza = null;
 
-    int posA , posB, posC;
+    int posA, posB, posC;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +153,10 @@ public class select_animal extends AppCompatActivity {
 
             switch (action) {
                 case "insert":
-                    System.out.println("insertar");
+
+                    if (owner.equals("yes")) {
+                        idSale = Integer.valueOf(actionToDo.getSerializable("idSale").toString());
+                    }
                     break;
 
                 case "modifie":
@@ -169,6 +173,10 @@ public class select_animal extends AppCompatActivity {
                         loadingData = true;
                     }
 
+                    if (owner.equals("yes")) {
+                        idSale = Integer.valueOf(actionToDo.getSerializable("idSale").toString());
+                    }
+
                     loadData();
                     break;
             }
@@ -181,14 +189,14 @@ public class select_animal extends AppCompatActivity {
 
         if (loadingData) {
 
-            if (owner.equals("no")) {
+            //if (owner.equals("no")) {
 
                 id_sale_modifie = ventaDetalle.getId_venta_detalle();
 
                 for (int i = 0; i < peopleData.size(); i++) {
                     if (peopleData.get(i).getId_persona().equals(persona.getId_persona())) {
                         spinner_owner.setSelection(i + 1);
-                        posA = i+1;
+                        posA = i + 1;
                         consultListDates();
                     }
                 }
@@ -196,7 +204,7 @@ public class select_animal extends AppCompatActivity {
                 for (int i = 0; i < purchaseData.size(); i++) {
                     if (purchaseData.get(i).getFecha_compra().equals(purchaseDate)) {
                         spinner_purchase_date.setSelection(i + 1);
-                        posB = i+1;
+                        posB = i + 1;
                         consultListAnimals();
                     }
                 }
@@ -204,17 +212,17 @@ public class select_animal extends AppCompatActivity {
                 for (int i = 0; i < animalData.size(); i++) {
                     if (animalData.get(i).getId_compra_detalle().equals(compraDetalle.getId_compra_detalle())) {
                         spinner_animal.setSelection(i + 1);
-                        posC = i+1;
+                        posC = i + 1;
                     }
                 }
-            }
+            //}
 
 
             precio_venta.setText(ventaDetalle.getPrecio_venta().toString());
             tare_sale.setText(ventaDetalle.getTara_venta().toString());
         }
 
-        if(posA != 0 && posB != 0 && posC != 0){
+        if (posA != 0 && posB != 0 && posC != 0) {
             loadingData = false;
             selected = true;
             System.out.println(posA + " " + posB + " " + posC);
@@ -436,14 +444,14 @@ public class select_animal extends AppCompatActivity {
                             Utilidades.CAMPO_FECHA_COMPRAS + " = '" + purchaseDate + "'" +
                             " AND " +
                             "NOT EXISTS (" +
-                                "SELECT " +
-                                    "* " +
-                                " FROM "
-                                    + Utilidades.TABLA_VENTA_DETALLE +
-                                " WHERE "
-                                    + Utilidades.CAMPO_ID_COMPRA_DETALLE + " = " + Utilidades.CAMPO_COMPRA_GANADO +
-                                " AND "
-                                    + Utilidades.CAMPO_ID_VENTA_DETALLE + " != " + id_sale_modifie +
+                            "SELECT " +
+                            "* " +
+                            " FROM "
+                            + Utilidades.TABLA_VENTA_DETALLE +
+                            " WHERE "
+                            + Utilidades.CAMPO_ID_COMPRA_DETALLE + " = " + Utilidades.CAMPO_COMPRA_GANADO +
+                            " AND "
+                            + Utilidades.CAMPO_ID_VENTA_DETALLE + " != " + id_sale_modifie +
                             ")" +
                             " AND " +
                             Utilidades.CAMPO_PERSONA_COMPRO + " = ?", parameters
@@ -560,7 +568,7 @@ public class select_animal extends AppCompatActivity {
 
         spinner_animal.setAdapter(adapter);
 
-        if(posA != 0 && posB != 0 && posC != 0 && spinner_owner.getSelectedItemId() == posA && spinner_purchase_date.getSelectedItemId() == posB && selected){
+        if (posA != 0 && posB != 0 && posC != 0 && spinner_owner.getSelectedItemId() == posA && spinner_purchase_date.getSelectedItemId() == posB && selected) {
             System.out.println("hola");
             System.out.println(posA + " " + posB + " " + posC);
             spinner_owner.setSelection(posA);
@@ -643,7 +651,13 @@ public class select_animal extends AppCompatActivity {
                             Double.parseDouble(total_cobrar_CT.getText().toString())
                     );
                 } else if (owner.equals("yes")) {
-
+                    inserted = insertNewSaleOwner(
+                            idSale,
+                            idAnimal,
+                            Double.parseDouble(precio_venta.getText().toString()),
+                            tare,
+                            Double.parseDouble(total_cobrar_CT.getText().toString())
+                    );
                 }
 
 
@@ -655,14 +669,12 @@ public class select_animal extends AppCompatActivity {
                 }
             } else if (action.equals("modifie")) {
                 int modified = 0;
-                if (owner.equals("no")) {
-                    modified = modifieSaleNoOwner(id_sale_modifie, idAnimal,
-                            Double.parseDouble(precio_venta.getText().toString()),
-                            tare,
-                            Double.parseDouble(total_cobrar_CT.getText().toString()));
-                } else if (owner.equals("yes")) {
-
-                }
+                modified = modifieSale(
+                        id_sale_modifie,
+                        idAnimal,
+                        Double.parseDouble(precio_venta.getText().toString()),
+                        tare,
+                        Double.parseDouble(total_cobrar_CT.getText().toString()));
 
                 if (modified == 1) {
                     Toast.makeText(getApplicationContext(), "Se han actualizado los datos", Toast.LENGTH_LONG).show();
@@ -679,7 +691,7 @@ public class select_animal extends AppCompatActivity {
         }
     }
 
-    private int modifieSaleNoOwner(int id_sale, int idAnimal, double price, int tare, double total) {
+    private int modifieSale(int id_sale, int idAnimal, double price, int tare, double total) {
         SQLiteDatabase db = conn.getWritableDatabase();
 
         String[] id_sale_mod = {String.valueOf(id_sale)};
@@ -707,6 +719,28 @@ public class select_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_PRECIO_VENTA, price);
         values.put(Utilidades.CAMPO_TARA_VENTA, tare);
         values.put(Utilidades.CAMPO_TOTAL_VENTA, total);
+
+        long idResult = db.insert(Utilidades.TABLA_VENTA_DETALLE, Utilidades.CAMPO_ID_VENTA_DETALLE, values);
+
+        db.close();
+
+        if (idResult == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean insertNewSaleOwner(int idSale, int idAnimal, double price, int tare, double total) {
+        SQLiteDatabase db = conn.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(Utilidades.CAMPO_COMPRA_GANADO, idAnimal);
+        values.put(Utilidades.CAMPO_PRECIO_VENTA, price);
+        values.put(Utilidades.CAMPO_TARA_VENTA, tare);
+        values.put(Utilidades.CAMPO_TOTAL_VENTA, total);
+        values.put(Utilidades.CAMPO_VENTA, idSale);
 
         long idResult = db.insert(Utilidades.TABLA_VENTA_DETALLE, Utilidades.CAMPO_ID_VENTA_DETALLE, values);
 

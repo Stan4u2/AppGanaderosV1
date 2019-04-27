@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class sales_details extends AppCompatActivity {
 
     TextView name_person_sale, cellphone_person_sale, address_person_sale, extra_data_person_sale, date_sale;
-    TextView number_animals_sale, amount_to_charge;
+    TextView number_animals_sale, amount_to_charge, earnings;
 
     RecyclerView recycler_view_sale;
 
@@ -32,6 +32,8 @@ public class sales_details extends AppCompatActivity {
 
     Persona persona = null;
     Ventas ventas = null;
+
+    public static int idSale;
 
     //These ArrayLists are for the Lists Views
     ArrayList<CompraDetalle> listViewAnimalsBought;
@@ -58,6 +60,7 @@ public class sales_details extends AppCompatActivity {
         date_sale = findViewById(R.id.date_sale);
         number_animals_sale = findViewById(R.id.number_animals_sale);
         amount_to_charge = findViewById(R.id.amount_to_charge);
+        earnings = findViewById(R.id.earnings);
 
         //RecyclerView
         recycler_view_sale = findViewById(R.id.recycler_view_sale);
@@ -73,6 +76,8 @@ public class sales_details extends AppCompatActivity {
             persona = (Persona) objectSent.getSerializable("persona");
             ventas = (Ventas) objectSent.getSerializable("ventas");
 
+            idSale = ventas.getId_ventas();
+
             name_person_sale.setText(persona.getNombre());
             cellphone_person_sale.setText(persona.getTelefono());
             address_person_sale.setText(persona.getDomicilio());
@@ -81,9 +86,74 @@ public class sales_details extends AppCompatActivity {
             date_sale.setText(ventas.getFecha());
             number_animals_sale.setText(ventas.getCantidad_animales().toString());
             amount_to_charge.setText(ventas.getCantidad_cobrar().toString());
+            earnings.setText(ventas.getGanancias().toString());
         }
 
         fillAnimalList();
+    }
+
+    public void onRestart() {
+        super.onRestart();
+
+        getPurchaseData();
+        fillAnimalList();
+    }
+
+    private void getPurchaseData() {
+        SQLiteDatabase db = conn.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        Utilidades.CAMPO_ID_VENTAS + ", " +
+                        Utilidades.CAMPO_FECHA_VENTAS + ", " +
+                        Utilidades.CAMPO_CANTIDAD_ANIMALES_VENTAS + ", " +
+                        Utilidades.CAMPO_CANTIDAD_COBRAR + ", " +
+                        Utilidades.CAMPO_GANANCIAS + ", " +
+
+                        Utilidades.CAMPO_ID_PERSONA + ", " +
+                        Utilidades.CAMPO_NOMBRE + ", " +
+                        Utilidades.CAMPO_TELEFONO + ", " +
+                        Utilidades.CAMPO_DOMICILIO + ", " +
+                        Utilidades.CAMPO_DATOS_EXTRAS +
+                        " FROM " +
+                        Utilidades.TABLA_PERSONA + ", " +
+                        Utilidades.TABLA_VENTAS +
+                        " WHERE " +
+                        Utilidades.CAMPO_PERSONA_VENTA + " = " + Utilidades.CAMPO_ID_PERSONA +
+                        " AND " +
+                        Utilidades.CAMPO_ID_VENTAS + " = " + idSale +
+                        " AND " +
+                        Utilidades.CAMPO_RESPALDO_VENTAS + " = " + 0, null
+        );
+
+        cursor.moveToFirst();
+
+        ventas = new Ventas();
+        ventas.setId_ventas(cursor.getInt(0));
+        ventas.setFecha(cursor.getString(1));
+        ventas.setCantidad_animales(cursor.getInt(2));
+        ventas.setCantidad_cobrar(cursor.getInt(3));
+        ventas.setGanancias(cursor.getInt(4));
+
+        persona = new Persona();
+        persona.setId_persona(cursor.getInt(5));
+        persona.setNombre(cursor.getString(6));
+        persona.setTelefono(cursor.getString(7));
+        persona.setDomicilio(cursor.getString(8));
+        persona.setDatos_extras(cursor.getString(9));
+
+        name_person_sale.setText(persona.getNombre());
+        cellphone_person_sale.setText(persona.getTelefono());
+        address_person_sale.setText(persona.getDomicilio());
+        extra_data_person_sale.setText(persona.getDatos_extras());
+
+        date_sale.setText(ventas.getFecha());
+        number_animals_sale.setText(ventas.getCantidad_animales().toString());
+        amount_to_charge.setText(ventas.getCantidad_cobrar().toString());
+        earnings.setText(ventas.getGanancias().toString());
+
+        cursor.close();
+        db.close();
     }
 
     private void fillAnimalList() {
@@ -114,6 +184,7 @@ public class sales_details extends AppCompatActivity {
                         Utilidades.CAMPO_PRECIO_VENTA  + ", " +
                         Utilidades.CAMPO_TARA_VENTA + ", " +
                         Utilidades.CAMPO_TOTAL_VENTA + ", " +
+                        Utilidades.CAMPO_VENTA + ", " +
 
                         Utilidades.CAMPO_ID_COMPRA_DETALLE + ", " +
                         Utilidades.CAMPO_GANADO + ", " +
@@ -166,26 +237,27 @@ public class sales_details extends AppCompatActivity {
             ventaDetalle.setPrecio_venta(cursor.getInt(7));
             ventaDetalle.setTara_venta(cursor.getInt(8));
             ventaDetalle.setTotal_venta(cursor.getInt(9));
+            ventaDetalle.setId_venta(cursor.getInt(10));
 
             compraDetalle = new CompraDetalle();
-            compraDetalle.setId_compra_detalle(cursor.getInt(10));
-            compraDetalle.setGanado(cursor.getInt(11));
-            compraDetalle.setRaza(cursor.getInt(12));
-            compraDetalle.setPeso(cursor.getDouble(13));
-            compraDetalle.setPrecio(cursor.getDouble(14));
-            compraDetalle.setTara(cursor.getInt(15));
-            compraDetalle.setTotal(cursor.getDouble(16));
-            compraDetalle.setNumero_arete(cursor.getInt(17));
+            compraDetalle.setId_compra_detalle(cursor.getInt(11));
+            compraDetalle.setGanado(cursor.getInt(12));
+            compraDetalle.setRaza(cursor.getInt(13));
+            compraDetalle.setPeso(cursor.getDouble(14));
+            compraDetalle.setPrecio(cursor.getDouble(15));
+            compraDetalle.setTara(cursor.getInt(16));
+            compraDetalle.setTotal(cursor.getDouble(17));
+            compraDetalle.setNumero_arete(cursor.getInt(18));
 
             ganado = new Ganado();
-            ganado.setId_ganado(cursor.getInt(18));
-            ganado.setTipo_ganado(cursor.getString(19));
+            ganado.setId_ganado(cursor.getInt(19));
+            ganado.setTipo_ganado(cursor.getString(20));
 
             raza = new Raza();
-            raza.setId_raza(cursor.getInt(20));
-            raza.setTipo_raza(cursor.getString(21));
+            raza.setId_raza(cursor.getInt(21));
+            raza.setTipo_raza(cursor.getString(22));
 
-            purchaseDate = cursor.getString(22);
+            purchaseDate = cursor.getString(23);
 
             listOwners.add(persona);
             listSales.add(ventaDetalle);
@@ -198,15 +270,15 @@ public class sales_details extends AppCompatActivity {
         cursor.close();
 
         Adapter_animals adapter_animals = new Adapter_animals(listViewAnimalsBought, listViewTypeAnimal, listViewRaceAnimal);
-        /*
+
         adapter_animals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Persona persona = listOwners.get(recycler_view.getChildAdapterPosition(view));
-                VentaDetalle ventaDetalle = listSales.get(recycler_view.getChildAdapterPosition(view));
-                CompraDetalle compraDetalle = listViewAnimalsBought.get(recycler_view.getChildAdapterPosition(view));
-                Ganado ganado = listViewTypeAnimal.get(recycler_view.getChildAdapterPosition(view));
-                Raza raza = listViewRaceAnimal.get(recycler_view.getChildAdapterPosition(view));
+                Persona persona = listOwners.get(recycler_view_sale.getChildAdapterPosition(view));
+                VentaDetalle ventaDetalle = listSales.get(recycler_view_sale.getChildAdapterPosition(view));
+                CompraDetalle compraDetalle = listViewAnimalsBought.get(recycler_view_sale.getChildAdapterPosition(view));
+                Ganado ganado = listViewTypeAnimal.get(recycler_view_sale.getChildAdapterPosition(view));
+                Raza raza = listViewRaceAnimal.get(recycler_view_sale.getChildAdapterPosition(view));
 
                 Intent intent = new Intent(getApplicationContext(), animal_details_sale.class);
 
@@ -218,14 +290,27 @@ public class sales_details extends AppCompatActivity {
                 bundle.putSerializable("compraDetalle", compraDetalle);
                 bundle.putSerializable("ganado", ganado);
                 bundle.putSerializable("raza", raza);
-                bundle.putSerializable("owner", "no");
+                bundle.putSerializable("owner", "yes");
 
                 intent.putExtras(bundle);
                 startActivity(intent);
 
             }
         });
-        */
+
         recycler_view_sale.setAdapter(adapter_animals);
+    }
+
+    public void modifySale(View view){
+        Intent intent = new Intent(view.getContext(), insert_new_sales.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("action", "modifie");
+        bundle.putSerializable("owner" , "yes");
+        bundle.putSerializable("persona", persona);
+        bundle.putSerializable("ventas", ventas);
+
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

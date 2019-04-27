@@ -204,7 +204,7 @@
             <TextView
                 android:id="@+id/number_animals_sale"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:hint="00"
                 android:inputType="number"
                 android:textSize="17sp" />
@@ -231,6 +231,32 @@
 
             <TextView
                 android:id="@+id/amount_to_charge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="000"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ganancias:"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$" />
+
+            <TextView
+                android:id="@+id/earnings_sale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="000"

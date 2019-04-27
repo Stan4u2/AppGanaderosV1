@@ -32,6 +32,8 @@ public class animal_details_sale extends AppCompatActivity {
 
     static int id_sales;
 
+    int id_sale;
+
     public static String owner;
 
     public String purchase_date;
@@ -74,6 +76,11 @@ public class animal_details_sale extends AppCompatActivity {
             ganado = (Ganado) objectSent.getSerializable("ganado");
             raza = (Raza) objectSent.getSerializable("raza");
             purchase_date = objectSent.getSerializable("fechaCompra").toString();
+
+            if(owner.equals("yes")){
+                System.out.println("si entro");
+                id_sale = ventaDetalle.getId_venta();
+            }
 
             id_sale_modifie = ventaDetalle.getId_venta_detalle();
 
@@ -220,7 +227,7 @@ public class animal_details_sale extends AppCompatActivity {
         }
     }
 
-    public void modifiePurchase(View view){
+    public void modifieSale(View view){
         Intent intent = new Intent(view.getContext(), select_animal.class);
 
         Bundle bundle = new Bundle();
@@ -232,13 +239,16 @@ public class animal_details_sale extends AppCompatActivity {
         bundle.putSerializable("compraDetalle", compraDetalle);
         bundle.putSerializable("ganado", ganado);
         bundle.putSerializable("raza", raza);
+        if(owner.equals("yes")){
+            bundle.putSerializable("idSale", id_sale);
+        }
 
 
         intent.putExtras(bundle);
         startActivity(intent);
     }
 
-    public void deletePurchase(View view){
+    public void deleteSale(View view){
         SQLiteDatabase db = conn.getReadableDatabase();
         boolean continueProcess = false;
         String[] id_sale = {String.valueOf(id_sale_modifie)};
