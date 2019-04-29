@@ -9,17 +9,19 @@ public class Citas implements Serializable {
     private String datos;
     private String fecha;
     private Integer persona_cita;
+    private Integer respaldo;
 
     public Citas(){
 
     }
 
-    public Citas(Integer id_citas, Integer cantidad_ganado, String datos, String fecha, Integer persona_cita) {
+    public Citas(Integer id_citas, Integer cantidad_ganado, String datos, String fecha, Integer persona_cita, Integer respaldo) {
         this.id_citas = id_citas;
         this.cantidad_ganado = cantidad_ganado;
         this.datos = datos;
         this.fecha = fecha;
         this.persona_cita = persona_cita;
+        this.respaldo = respaldo;
     }
 
     public Integer getId_citas() {
@@ -60,5 +62,13 @@ public class Citas implements Serializable {
 
     public void setPersona_cita(Integer persona_cita) {
         this.persona_cita = persona_cita;
+    }
+
+    public Integer getRespaldo() {
+        return respaldo;
+    }
+
+    public void setRespaldo(Integer respaldo) {
+        this.respaldo = respaldo;
     }
 }

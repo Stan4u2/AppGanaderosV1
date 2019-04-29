@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,10 +15,13 @@ import com.example.appganaderosv1.entidades.Citas;
 import com.example.appganaderosv1.entidades.Persona;
 import com.example.appganaderosv1.utilidades.Utilidades;
 
+import static com.example.appganaderosv1.MainActivity.administrator;
+
 public class appointment_details extends AppCompatActivity {
 
     TextView name_person_appointment, cellphone_person_appointment, address_person_appointment;
     TextView extra_data_person_appointment, date_appointment, number_animals_appointment, extra_data_appointment;
+    ImageButton delete_appointment, restore_appointment;
 
     Persona person = null;
     Citas citas = null;
@@ -41,6 +45,9 @@ public class appointment_details extends AppCompatActivity {
         number_animals_appointment = findViewById(R.id.number_animals_appointment);
         extra_data_appointment = findViewById(R.id.extra_data_appointment);
 
+        delete_appointment = findViewById(R.id.delete_appointment);
+        restore_appointment = findViewById(R.id.restore_appointment);
+
         Bundle objectSent = getIntent().getExtras();
 
 
@@ -58,6 +65,13 @@ public class appointment_details extends AppCompatActivity {
             number_animals_appointment.setText(citas.getCantidad_ganado().toString());
             extra_data_appointment.setText(citas.getDatos());
 
+            if(citas.getRespaldo() == 0){
+                delete_appointment.setVisibility(View.VISIBLE);
+                restore_appointment.setVisibility(View.GONE);
+            }else if (citas.getRespaldo() == 1){
+                restore_appointment.setVisibility(View.VISIBLE);
+                delete_appointment.setVisibility(View.VISIBLE);
+            }
         }
 
     }
@@ -126,6 +140,31 @@ public class appointment_details extends AppCompatActivity {
     }
 
     public void deleteAppointment(View view){
+        if(administrator){
+            delete();
+        }else if (!false){
+            sendGarbage();
+        }
+
+    }
+
+    private void delete(){
+        SQLiteDatabase db = conn.getReadableDatabase();
+        String[] id_appointment = {String.valueOf(citas.getId_citas())};
+
+        int deleted = db.delete(Utilidades.TABLA_CITAS, Utilidades.CAMPO_ID_CITAS + " = ?", id_appointment);
+
+        if(deleted == 1){
+            Toast.makeText(getApplicationContext(), "Cita Eliminada", Toast.LENGTH_LONG).show();
+        }else {
+            Toast.makeText(getApplicationContext(), "Datos no eliminados", Toast.LENGTH_LONG).show();
+        }
+
+        db.close();
+        finish();
+    }
+
+    private void sendGarbage(){
         //In this method I don´t really delete the data, i just send it tto the garbage can.
         SQLiteDatabase db = conn.getWritableDatabase();
 
@@ -138,6 +177,27 @@ public class appointment_details extends AppCompatActivity {
 
         if (updated == 1){
             Toast.makeText(getApplicationContext(), "Se ha mandado al bote de basura.", Toast.LENGTH_LONG).show();
+            finish();
+        }else{
+            Toast.makeText(getApplicationContext(), "Ha ocurrdio un error.", Toast.LENGTH_LONG).show();
+        }
+
+        db.close();
+    }
+
+    public void restoreAppointment(View view){
+        //In this method I restore the data.
+        SQLiteDatabase db = conn.getWritableDatabase();
+
+        String[] id_appointment = {String.valueOf(citas.getId_citas())};
+
+        ContentValues values = new ContentValues();
+        values.put(Utilidades.CAMPO_RESPALDO_CITAS, 0);
+
+        int updated = db.update(Utilidades.TABLA_CITAS, values, Utilidades.CAMPO_ID_CITAS + " = ?", id_appointment);
+
+        if (updated == 1){
+            Toast.makeText(getApplicationContext(), "Se ha recuperado la cita.", Toast.LENGTH_LONG).show();
             finish();
         }else{
             Toast.makeText(getApplicationContext(), "Ha ocurrdio un error.", Toast.LENGTH_LONG).show();

@@ -233,6 +233,17 @@
             android:scaleType="fitCenter"
             android:background="@null"
             android:onClick="deleteAppointment"/>
+
+        <ImageButton
+            android:id="@+id/restore_appointment"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:onClick="restoreAppointment"
+            android:scaleType="fitCenter"
+            android:src="@android:drawable/ic_menu_rotate" />
+
     </LinearLayout>
 
 </LinearLayout>

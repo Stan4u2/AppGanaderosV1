@@ -1,5 +1,6 @@
 package com.example.appganaderosv1;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.appganaderosv1.Adapter.Adapter_animals;
 import com.example.appganaderosv1.entidades.CompraDetalle;
@@ -312,5 +314,26 @@ public class sales_details extends AppCompatActivity {
 
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    public void delete_sale(View view){
+        //In this method I don´t really delete the data, i just send it tto the garbage can.
+        SQLiteDatabase db = conn.getWritableDatabase();
+
+        String[] id_sale = {String.valueOf(idSale)};
+
+        ContentValues values = new ContentValues();
+        values.put(Utilidades.CAMPO_RESPALDO_VENTAS, 1);
+
+        int updated = db.update(Utilidades.TABLA_VENTAS, values, Utilidades.CAMPO_ID_VENTAS + " = ?", id_sale);
+
+        if (updated == 1){
+            Toast.makeText(getApplicationContext(), "Se ha mandado al bote de basura.", Toast.LENGTH_LONG).show();
+            finish();
+        }else{
+            Toast.makeText(getApplicationContext(), "Ha ocurrdio un error.", Toast.LENGTH_LONG).show();
+        }
+
+        db.close();
     }
 }

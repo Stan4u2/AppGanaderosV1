@@ -3,6 +3,7 @@ package com.example.appganaderosv1.Fragments;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,8 +21,10 @@ import com.example.appganaderosv1.R;
 import com.example.appganaderosv1.appointment_details;
 import com.example.appganaderosv1.entidades.Citas;
 import com.example.appganaderosv1.entidades.Persona;
-import com.example.appganaderosv1.utilidades.Utilidades;
 import com.example.appganaderosv1.insert_new_appointment;
+import com.example.appganaderosv1.utilidades.Utilidades;
+
+import static com.example.appganaderosv1.MainActivity.administrator;
 
 import java.util.ArrayList;
 
@@ -31,13 +34,40 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
     ArrayList<Citas> listaCitas;
 
     RecyclerView recycler_view;
-    ImageButton agregar, borrar, modificar;
+    ImageButton agregar, borrar;
+
+    boolean deleteButton = false;
+
+    ConexionSQLiteHelper conn;
+
+    String normalUser = "SELECT * FROM appointment_view";
+    String admin = "SELECT " +
+            Utilidades.CAMPO_ID_CITAS + ", " +
+            Utilidades.CAMPO_CANTIDAD_GANADO + ", " +
+            Utilidades.CAMPO_DATOS + ", " +
+            Utilidades.CAMPO_FECHA_CITAS + ", " +
+            Utilidades.CAMPO_RESPALDO_CITAS + ", " +
+
+            Utilidades.CAMPO_ID_PERSONA + ", " +
+            Utilidades.CAMPO_NOMBRE + ", " +
+            Utilidades.CAMPO_TELEFONO + ", " +
+            Utilidades.CAMPO_DOMICILIO + ", " +
+            Utilidades.CAMPO_DATOS_EXTRAS +
+            " FROM " +
+            Utilidades.TABLA_PERSONA + ", " +
+            Utilidades.TABLA_CITAS +
+            " WHERE " +
+            Utilidades.CAMPO_PERSONA_CITA + " = " + Utilidades.CAMPO_ID_PERSONA +
+            " AND " +
+            Utilidades.CAMPO_RESPALDO_CITAS + " = " + 1;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View vista = inflater.inflate(R.layout.fragment_appointment, container, false);
+
+        conn = new ConexionSQLiteHelper(getContext(), "bd_ganado", null, 2);
 
         recycler_view = vista.findViewById(R.id.recycler_view);
         recycler_view.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -46,12 +76,29 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
 
         borrar = vista.findViewById(R.id.borrar);
 
-        modificar = vista.findViewById(R.id.modificar);
-
         listaPersona = new ArrayList<>();
         listaCitas = new ArrayList<>();
 
-        llenarLista();
+        if(administrator) {
+            borrar.setVisibility(View.VISIBLE);
+            borrar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (deleteButton) {
+                        deleteButton = false;
+                        borrar.setBackgroundColor(Color.TRANSPARENT);
+                    } else if (!false) {
+                        deleteButton = true;
+                        borrar.setBackgroundColor(Color.LTGRAY);
+                    }
+                    fillList();
+                }
+            });
+        }else{
+            borrar.setVisibility(View.GONE);
+        }
+
+        fillList();
 
         return vista;
 
@@ -60,12 +107,10 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
     //This part of the code updates the ListView in case that you made a modification
     public void onResume(){
         super.onResume();
-        llenarLista();
+        fillList();
     }
 
-    private void llenarLista() {
-
-        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(getContext(), "bd_ganado", null, 2);
+    private void fillList() {
         SQLiteDatabase db = conn.getReadableDatabase();
 
         Citas citas = null;
@@ -75,24 +120,33 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
         listaPersona = new ArrayList<Persona>();
         listaCitas = new ArrayList<Citas>();
 
+        String SELECT;
+
+        if(deleteButton){
+            SELECT = admin;
+        }else if (!false) {
+            SELECT = normalUser;
+        }
+
 
         Cursor cursor = db.rawQuery(
-                "SELECT * FROM appointment_view", null
+                SELECT, null
         );
 
         while(cursor.moveToNext()){
             persona = new Persona();
-            persona.setId_persona(cursor.getInt(4));
-            persona.setNombre(cursor.getString(5));
-            persona.setTelefono(cursor.getString(6));
-            persona.setDomicilio(cursor.getString(7));
-            persona.setDatos_extras(cursor.getString(8));
+            persona.setId_persona(cursor.getInt(5));
+            persona.setNombre(cursor.getString(6));
+            persona.setTelefono(cursor.getString(7));
+            persona.setDomicilio(cursor.getString(8));
+            persona.setDatos_extras(cursor.getString(9));
 
             citas = new Citas();
             citas.setId_citas(cursor.getInt(0));
             citas.setCantidad_ganado(cursor.getInt(1));
             citas.setDatos(cursor.getString(2));
             citas.setFecha(cursor.getString(3));
+            citas.setRespaldo(cursor.getInt(4));
 
             listaPersona.add(persona);
             listaCitas.add(citas);

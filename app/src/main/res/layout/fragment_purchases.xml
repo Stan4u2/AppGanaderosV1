@@ -26,25 +26,15 @@
             android:onClick="newPurchase"
             android:scaleType="fitCenter"
             android:src="@android:drawable/ic_menu_add" />
+
         <ImageButton
             android:id="@+id/borrar"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_weight="1"
-            android:src="@android:drawable/ic_menu_delete"
             android:background="@null"
-            android:scaleType="fitCenter"
             android:contentDescription="Borrar"
-            />
-        <ImageButton
-            android:id="@+id/modificar"
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:layout_weight="1"
-            android:src="@android:drawable/ic_menu_edit"
-            android:background="@null"
             android:scaleType="fitCenter"
-            android:contentDescription="Modificar"
-            />
+            android:src="@android:drawable/ic_menu_delete" />
     </LinearLayout>
 </LinearLayout>

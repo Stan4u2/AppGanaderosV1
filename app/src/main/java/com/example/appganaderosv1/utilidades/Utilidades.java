@@ -184,6 +184,7 @@ public class Utilidades {
                     Utilidades.CAMPO_CANTIDAD_GANADO + ", " +
                     Utilidades.CAMPO_DATOS + ", " +
                     Utilidades.CAMPO_FECHA_CITAS + ", " +
+                    Utilidades.CAMPO_RESPALDO_CITAS + ", " +
 
                     Utilidades.CAMPO_ID_PERSONA + ", " +
                     Utilidades.CAMPO_NOMBRE + ", " +

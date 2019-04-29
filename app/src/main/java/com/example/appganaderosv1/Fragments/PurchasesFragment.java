@@ -3,6 +3,7 @@ package com.example.appganaderosv1.Fragments;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,6 +24,8 @@ import com.example.appganaderosv1.insert_new_purchases;
 import com.example.appganaderosv1.purchase_details;
 import com.example.appganaderosv1.utilidades.Utilidades;
 
+import static com.example.appganaderosv1.MainActivity.administrator;
+
 import java.util.ArrayList;
 
 public class PurchasesFragment extends Fragment {
@@ -32,9 +35,31 @@ public class PurchasesFragment extends Fragment {
 
     RecyclerView recycler_view;
 
-    ImageButton agregar, borrar, modificar;
+    ImageButton agregar, borrar;
+
+    boolean deleteButton = false;
 
     ConexionSQLiteHelper conn;
+
+    String normalUser = "SELECT * FROM " + Utilidades.VIEW_COMPRAS;
+    String admin = "SELECT " +
+            Utilidades.CAMPO_ID_COMPRA + ", " +
+            Utilidades.CAMPO_FECHA_COMPRAS + ", " +
+            Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + ", " +
+            Utilidades.CAMPO_CANTIDAD_PAGAR + ", " +
+
+            Utilidades.CAMPO_ID_PERSONA + ", " +
+            Utilidades.CAMPO_NOMBRE + ", " +
+            Utilidades.CAMPO_TELEFONO + ", " +
+            Utilidades.CAMPO_DOMICILIO + ", " +
+            Utilidades.CAMPO_DATOS_EXTRAS +
+            " FROM " +
+            Utilidades.TABLA_PERSONA + ", " +
+            Utilidades.TABLA_COMPRAS +
+            " WHERE " +
+            Utilidades.CAMPO_PERSONA_COMPRO + " = " + Utilidades.CAMPO_ID_PERSONA +
+            " AND " +
+            Utilidades.CAMPO_RESPALDO_COMPRAS + " = " + 1;
 
     @Nullable
     @Override
@@ -50,15 +75,31 @@ public class PurchasesFragment extends Fragment {
 
         borrar = view.findViewById(R.id.borrar);
 
-        modificar = view.findViewById(R.id.modificar);
-
         listaPersonas = new ArrayList<>();
         listaCompras = new ArrayList<>();
+
+        if(administrator) {
+            borrar.setVisibility(View.VISIBLE);
+            borrar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (deleteButton) {
+                        deleteButton = false;
+                        borrar.setBackgroundColor(Color.TRANSPARENT);
+                    } else if (!false) {
+                        deleteButton = true;
+                        borrar.setBackgroundColor(Color.LTGRAY);
+                    }
+                    fillList();
+                }
+            });
+        }else{
+            borrar.setVisibility(View.GONE);
+        }
 
         fillList();
 
         return view;
-
 
     }
 
@@ -68,6 +109,7 @@ public class PurchasesFragment extends Fragment {
     }
 
     private void fillList() {
+        conn = new ConexionSQLiteHelper(getContext(), "bd_ganado", null, 2);
         SQLiteDatabase db = conn.getReadableDatabase();
 
         Compras compras = null;
@@ -76,8 +118,17 @@ public class PurchasesFragment extends Fragment {
         listaPersonas = new ArrayList<Persona>();
         listaCompras = new ArrayList<Compras>();
 
+        String SELECT;
+
+        if(deleteButton){
+            SELECT = admin;
+        }else if (!false) {
+            SELECT = normalUser;
+        }
+
         Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + Utilidades.VIEW_COMPRAS, null
+                //"SELECT * FROM " + Utilidades.VIEW_COMPRAS, null
+                SELECT, null
         );
 
         while(cursor.moveToNext()){
@@ -114,6 +165,7 @@ public class PurchasesFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("persona", persona);
                 bundle.putSerializable("compras", compras);
+                bundle.putSerializable("garbage", "false");
 
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -123,6 +175,7 @@ public class PurchasesFragment extends Fragment {
         recycler_view.setAdapter(adapter_purchases);
 
     }
+
 
     public void newPurchase(View view) {
         Intent miIntent = null;
@@ -139,4 +192,5 @@ public class PurchasesFragment extends Fragment {
             view.getContext().startActivity(miIntent);
         }
     }
+
 }

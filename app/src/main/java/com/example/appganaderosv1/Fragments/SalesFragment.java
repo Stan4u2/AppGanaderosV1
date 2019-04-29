@@ -3,6 +3,7 @@ package com.example.appganaderosv1.Fragments;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +26,8 @@ import com.example.appganaderosv1.utilidades.Utilidades;
 
 import java.util.ArrayList;
 
+import static com.example.appganaderosv1.MainActivity.administrator;
+
 public class SalesFragment extends Fragment {
 
     ArrayList<Persona> listaPersonas;
@@ -32,9 +35,32 @@ public class SalesFragment extends Fragment {
 
     RecyclerView recycler_view;
 
-    ImageButton agregar_venta, borrar, modificar;
+    ImageButton agregar_venta, borrar;
+
+    boolean deleteButton = false;
 
     ConexionSQLiteHelper conn;
+
+    String normalUser = "SELECT * FROM " + Utilidades.VIEW_VENTAS;
+    String admin = "SELECT " +
+            Utilidades.CAMPO_ID_VENTAS + ", " +
+            Utilidades.CAMPO_FECHA_VENTAS + ", " +
+            Utilidades.CAMPO_CANTIDAD_ANIMALES_VENTAS + ", " +
+            Utilidades.CAMPO_CANTIDAD_COBRAR + ", " +
+            Utilidades.CAMPO_GANANCIAS + ", " +
+
+            Utilidades.CAMPO_ID_PERSONA + ", " +
+            Utilidades.CAMPO_NOMBRE + ", " +
+            Utilidades.CAMPO_TELEFONO + ", " +
+            Utilidades.CAMPO_DOMICILIO + ", " +
+            Utilidades.CAMPO_DATOS_EXTRAS +
+            " FROM " +
+            Utilidades.TABLA_PERSONA + ", " +
+            Utilidades.TABLA_VENTAS +
+            " WHERE " +
+            Utilidades.CAMPO_PERSONA_VENTA + " = " + Utilidades.CAMPO_ID_PERSONA +
+            " AND " +
+            Utilidades.CAMPO_RESPALDO_VENTAS + " = " + 1;
 
     @Nullable
     @Override
@@ -50,10 +76,27 @@ public class SalesFragment extends Fragment {
 
         borrar = view.findViewById(R.id.borrar);
 
-        modificar = view.findViewById(R.id.modificar);
-
         listaPersonas = new ArrayList<>();
         listaVentas = new ArrayList<>();
+
+        if(administrator) {
+            borrar.setVisibility(View.VISIBLE);
+            borrar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (deleteButton) {
+                        deleteButton = false;
+                        borrar.setBackgroundColor(Color.TRANSPARENT);
+                    } else if (!false) {
+                        deleteButton = true;
+                        borrar.setBackgroundColor(Color.LTGRAY);
+                    }
+                    fillList();
+                }
+            });
+        }else{
+            borrar.setVisibility(View.GONE);
+        }
 
         fillList();
 
@@ -74,8 +117,16 @@ public class SalesFragment extends Fragment {
         listaVentas = new ArrayList<Ventas>();
         listaPersonas = new ArrayList<Persona>();
 
+        String SELECT;
+
+        if(deleteButton){
+            SELECT = admin;
+        }else if (!false) {
+            SELECT = normalUser;
+        }
+
         Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + Utilidades.VIEW_VENTAS, null
+                SELECT, null
         );
 
         while(cursor.moveToNext()) {
