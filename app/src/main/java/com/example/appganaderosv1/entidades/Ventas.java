@@ -10,18 +10,20 @@ public class Ventas implements Serializable {
     private Integer cantidad_animales;
     private Integer cantidad_cobrar;
     private Integer ganancias;
+    private Integer respaldo;
 
     public Ventas (){
 
     }
 
-    public Ventas(Integer id_ventas, Integer persona_venta, String fecha, Integer cantidad_animales, Integer cantidad_cobrar, Integer ganancias) {
+    public Ventas(Integer id_ventas, Integer persona_venta, String fecha, Integer cantidad_animales, Integer cantidad_cobrar, Integer ganancias, Integer respaldo) {
         this.id_ventas = id_ventas;
         this.persona_venta = persona_venta;
         this.fecha = fecha;
         this.cantidad_animales = cantidad_animales;
         this.cantidad_cobrar = cantidad_cobrar;
         this.ganancias = ganancias;
+        this.respaldo = respaldo;
     }
 
     public Integer getId_ventas() {
@@ -70,5 +72,13 @@ public class Ventas implements Serializable {
 
     public void setGanancias(Integer ganancias) {
         this.ganancias = ganancias;
+    }
+
+    public Integer getRespaldo() {
+        return respaldo;
+    }
+
+    public void setRespaldo(Integer respaldo) {
+        this.respaldo = respaldo;
     }
 }

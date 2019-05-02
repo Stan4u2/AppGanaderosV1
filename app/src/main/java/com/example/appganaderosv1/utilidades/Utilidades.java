@@ -75,7 +75,7 @@ public class Utilidades {
     public static final String CREAR_TABLA_COMPRAS =
             "CREATE TABLE " + TABLA_COMPRAS + "("
                     + CAMPO_ID_COMPRA + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + CAMPO_PERSONA_COMPRO + " INTEGER REFERENCES " + TABLA_PERSONA + "(" + CAMPO_ID_PERSONA + "), "
+                    + CAMPO_PERSONA_COMPRO + " INTEGER REFERENCES " + TABLA_PERSONA + "(" + CAMPO_ID_PERSONA + ") ON DELETE CASCADE, "
                     + CAMPO_FECHA_COMPRAS + " TEXT, "
                     + CAMPO_CANTIDAD_ANIMALES_COMPRAS + " INTEGER, "
                     + CAMPO_CANTIDAD_PAGAR + " REAL, "
@@ -129,7 +129,7 @@ public class Utilidades {
                     + CAMPO_TARA + " REAL, "
                     + CAMPO_TOTAL_PAGAR + " REAL, "
                     + CAMPO_NUMERO_ARETE + " INTEGER, "
-                    + CAMPO_COMPRA + " INTEGER REFERENCES " + TABLA_COMPRAS + "(" + CAMPO_ID_COMPRA + "))";
+                    + CAMPO_COMPRA + " INTEGER REFERENCES " + TABLA_COMPRAS + "(" + CAMPO_ID_COMPRA + ") ON DELETE CASCADE)";
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -146,7 +146,7 @@ public class Utilidades {
     public static final String CREAR_TABLA_VENTAS =
             "CREATE TABLE " + TABLA_VENTAS + "("
                     + CAMPO_ID_VENTAS + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + CAMPO_PERSONA_VENTA + " INTEGER REFERENCES " + TABLA_PERSONA + "(" + CAMPO_ID_PERSONA + "), "
+                    + CAMPO_PERSONA_VENTA + " INTEGER REFERENCES " + TABLA_PERSONA + "(" + CAMPO_ID_PERSONA + ") ON DELETE CASCADE, "
                     + CAMPO_FECHA_VENTAS + " TEXT, "
                     + CAMPO_CANTIDAD_ANIMALES_VENTAS + " INTEGER, "
                     + CAMPO_CANTIDAD_COBRAR + " REAL, "
@@ -171,7 +171,7 @@ public class Utilidades {
                     + CAMPO_PRECIO_VENTA + " REAL, "
                     + CAMPO_TARA_VENTA + " REAL, "
                     + CAMPO_TOTAL_VENTA + " REAL, "
-                    + CAMPO_VENTA + " INTEGER REFERENCES " + TABLA_VENTAS + "(" + CAMPO_ID_VENTA_DETALLE + "))";
+                    + CAMPO_VENTA + " INTEGER REFERENCES " + TABLA_VENTAS + "(" + CAMPO_ID_VENTA_DETALLE + ") ON DELETE CASCADE)";
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -212,6 +212,7 @@ public class Utilidades {
                     Utilidades.CAMPO_FECHA_COMPRAS + ", " +
                     Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + ", " +
                     Utilidades.CAMPO_CANTIDAD_PAGAR + ", " +
+                    Utilidades.CAMPO_RESPALDO_COMPRAS + ", " +
 
                     Utilidades.CAMPO_ID_PERSONA + ", " +
                     Utilidades.CAMPO_NOMBRE + ", " +
@@ -240,6 +241,7 @@ public class Utilidades {
                     Utilidades.CAMPO_CANTIDAD_ANIMALES_VENTAS + ", " +
                     Utilidades.CAMPO_CANTIDAD_COBRAR + ", " +
                     Utilidades.CAMPO_GANANCIAS + ", " +
+                    Utilidades.CAMPO_RESPALDO_VENTAS + ", " +
 
                     Utilidades.CAMPO_ID_PERSONA + ", " +
                     Utilidades.CAMPO_NOMBRE + ", " +
@@ -346,4 +348,5 @@ public class Utilidades {
                     Utilidades.CAMPO_VENTA + " IS NULL";
 
     public static final String CREAR_VISTA_ANIMAL_VENTA = "CREATE VIEW " + VIEW_ANIMAL_SALE_NO_OWNER + " AS " + SELECT_ANIMAL_SALE;
+
 }

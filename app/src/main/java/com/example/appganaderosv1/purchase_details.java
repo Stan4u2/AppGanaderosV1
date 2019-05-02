@@ -21,6 +21,8 @@ import com.example.appganaderosv1.entidades.Persona;
 import com.example.appganaderosv1.entidades.Raza;
 import com.example.appganaderosv1.utilidades.Utilidades;
 
+import static com.example.appganaderosv1.MainActivity.administrator;
+
 import java.util.ArrayList;
 
 public class purchase_details extends AppCompatActivity {
@@ -35,7 +37,7 @@ public class purchase_details extends AppCompatActivity {
     TextView name_person_purchase, cellphone_person_purchase, address_person_purchase, extra_data_person_purchase;
     TextView date_purchase, amount_animals_purchase, amount_to_pay;
     RecyclerView recycler_view_purchase;
-    ImageButton modifie_purchase, delete_purchase;
+    ImageButton modifie_purchase, delete_purchase, restore_purchase;
 
     //These ArrayLists are for the Lists Views
     ArrayList<CompraDetalle> listViewAnimalsBought;
@@ -66,6 +68,7 @@ public class purchase_details extends AppCompatActivity {
 
         modifie_purchase = findViewById(R.id.modifie_purchase);
         delete_purchase = findViewById(R.id.delete_purchase);
+        restore_purchase = findViewById(R.id.restore_purchase);
 
         listViewAnimalsBought = new ArrayList<>();
         listViewTypeAnimal = new ArrayList<>();
@@ -87,6 +90,14 @@ public class purchase_details extends AppCompatActivity {
             date_purchase.setText(compras.getFecha_compra());
             amount_animals_purchase.setText(compras.getCantidad_animales_compra().toString());
             amount_to_pay.setText(compras.getCantidad_pagar().toString());
+
+            if(compras.getRespaldo() == 0){
+                delete_purchase.setVisibility(View.VISIBLE);
+                restore_purchase.setVisibility(View.GONE);
+            }else if (compras.getRespaldo() == 1){
+                restore_purchase.setVisibility(View.VISIBLE);
+                delete_purchase.setVisibility(View.VISIBLE);
+            }
         }
 
         fillAnimalList();
@@ -96,10 +107,11 @@ public class purchase_details extends AppCompatActivity {
     public void onRestart() {
         super.onRestart();
 
-        getPurchaseData();
-        fillAnimalList();
         calculateQuantityAnimals();
         calculateSumPayAnimals();
+        getPurchaseData();
+        fillAnimalList();
+
     }
 
     private void getPurchaseData() {
@@ -263,12 +275,17 @@ public class purchase_details extends AppCompatActivity {
 
         amount_animals_purchase.setText(String.valueOf(count));
 
+        ContentValues values = new ContentValues();
+        values.put(Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS, count);
+
+        db.update(Utilidades.TABLA_COMPRAS, values, Utilidades.CAMPO_ID_COMPRA + " = " + idPurchase, null);
+
         db.close();
         cursor.close();
     }
 
     private void calculateSumPayAnimals() {
-        SQLiteDatabase db = conn.getReadableDatabase();
+        SQLiteDatabase db = conn.getWritableDatabase();
 
         Cursor cursor = db.rawQuery(
                 "SELECT " +
@@ -283,6 +300,12 @@ public class purchase_details extends AppCompatActivity {
             double total = cursor.getDouble(0);
 
             amount_to_pay.setText(String.valueOf(total));
+
+            ContentValues values = new ContentValues();
+            values.put(Utilidades.CAMPO_CANTIDAD_PAGAR, total);
+
+            db.update(Utilidades.TABLA_COMPRAS, values, Utilidades.CAMPO_ID_COMPRA + " = " + idPurchase, null);
+
         }
 
         db.close();
@@ -303,6 +326,14 @@ public class purchase_details extends AppCompatActivity {
     }
 
     public void delete_purchase(View view){
+        if(administrator){
+            delete();
+        }else if (!false){
+            sendGarbage();
+        }
+    }
+
+    private void sendGarbage() {
         //In this method I don´t really delete the data, i just send it tto the garbage can.
         SQLiteDatabase db = conn.getWritableDatabase();
 
@@ -315,6 +346,43 @@ public class purchase_details extends AppCompatActivity {
 
         if (updated == 1){
             Toast.makeText(getApplicationContext(), "Se ha mandado al bote de basura.", Toast.LENGTH_LONG).show();
+            finish();
+        }else{
+            Toast.makeText(getApplicationContext(), "Ha ocurrdio un error.", Toast.LENGTH_LONG).show();
+        }
+
+        db.close();
+    }
+
+    private void delete() {
+        SQLiteDatabase db = conn.getReadableDatabase();
+        String[] id_purchase = {String.valueOf(compras.getId_compras())};
+
+        int deleted = db.delete(Utilidades.TABLA_COMPRAS, Utilidades.CAMPO_ID_COMPRA + " = ?", id_purchase);
+
+        if(deleted == 1){
+            Toast.makeText(getApplicationContext(), "Compra Eliminada", Toast.LENGTH_LONG).show();
+        }else {
+            Toast.makeText(getApplicationContext(), "Datos no eliminados", Toast.LENGTH_LONG).show();
+        }
+
+        db.close();
+        finish();
+    }
+
+    public void restorePurchase(View view){
+        //In this method I restore the data.
+        SQLiteDatabase db = conn.getWritableDatabase();
+
+        String[] id_purchase = {String.valueOf(compras.getId_compras())};
+
+        ContentValues values = new ContentValues();
+        values.put(Utilidades.CAMPO_RESPALDO_COMPRAS, 0);
+
+        int updated = db.update(Utilidades.TABLA_COMPRAS, values, Utilidades.CAMPO_ID_COMPRA + " = ?", id_purchase);
+
+        if (updated == 1){
+            Toast.makeText(getApplicationContext(), "Se ha recuperado la compra.", Toast.LENGTH_LONG).show();
             finish();
         }else{
             Toast.makeText(getApplicationContext(), "Ha ocurrdio un error.", Toast.LENGTH_LONG).show();

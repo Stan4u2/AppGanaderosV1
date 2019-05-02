@@ -41,6 +41,7 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
     ConexionSQLiteHelper conn;
 
     String normalUser = "SELECT * FROM appointment_view";
+
     String admin = "SELECT " +
             Utilidades.CAMPO_ID_CITAS + ", " +
             Utilidades.CAMPO_CANTIDAD_GANADO + ", " +
@@ -128,19 +129,9 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
             SELECT = normalUser;
         }
 
-
-        Cursor cursor = db.rawQuery(
-                SELECT, null
-        );
+        Cursor cursor = db.rawQuery(SELECT, null);
 
         while(cursor.moveToNext()){
-            persona = new Persona();
-            persona.setId_persona(cursor.getInt(5));
-            persona.setNombre(cursor.getString(6));
-            persona.setTelefono(cursor.getString(7));
-            persona.setDomicilio(cursor.getString(8));
-            persona.setDatos_extras(cursor.getString(9));
-
             citas = new Citas();
             citas.setId_citas(cursor.getInt(0));
             citas.setCantidad_ganado(cursor.getInt(1));
@@ -148,8 +139,15 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
             citas.setFecha(cursor.getString(3));
             citas.setRespaldo(cursor.getInt(4));
 
-            listaPersona.add(persona);
+            persona = new Persona();
+            persona.setId_persona(cursor.getInt(5));
+            persona.setNombre(cursor.getString(6));
+            persona.setTelefono(cursor.getString(7));
+            persona.setDomicilio(cursor.getString(8));
+            persona.setDatos_extras(cursor.getString(9));
+
             listaCitas.add(citas);
+            listaPersona.add(persona);
         }
 
         cursor.close();

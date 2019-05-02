@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,8 @@ import com.example.appganaderosv1.entidades.VentaDetalle;
 import com.example.appganaderosv1.entidades.Ventas;
 import com.example.appganaderosv1.utilidades.Utilidades;
 
+import static com.example.appganaderosv1.MainActivity.administrator;
+
 import java.util.ArrayList;
 
 public class sales_details extends AppCompatActivity {
@@ -29,6 +32,8 @@ public class sales_details extends AppCompatActivity {
     TextView number_animals_sale, amount_to_charge, earnings;
 
     RecyclerView recycler_view_sale;
+
+    ImageButton modifie_sale, delete_sale, restore_sale;
 
     public String purchaseDate;
 
@@ -68,6 +73,11 @@ public class sales_details extends AppCompatActivity {
         recycler_view_sale = findViewById(R.id.recycler_view_sale);
         recycler_view_sale.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
+        //Image Button
+        modifie_sale = findViewById(R.id.modifie_sale);
+        delete_sale = findViewById(R.id.delete_sale);
+        restore_sale = findViewById(R.id.restore_sale);
+
         listViewAnimalsBought = new ArrayList<>();
         listViewTypeAnimal = new ArrayList<>();
         listViewRaceAnimal = new ArrayList<>();
@@ -89,6 +99,14 @@ public class sales_details extends AppCompatActivity {
             number_animals_sale.setText(ventas.getCantidad_animales().toString());
             amount_to_charge.setText(ventas.getCantidad_cobrar().toString());
             earnings.setText(ventas.getGanancias().toString());
+
+            if(ventas.getRespaldo() == 0){
+                delete_sale.setVisibility(View.VISIBLE);
+                restore_sale.setVisibility(View.GONE);
+            }else if (ventas.getRespaldo() == 1){
+                restore_sale.setVisibility(View.VISIBLE);
+                delete_sale.setVisibility(View.VISIBLE);
+            }
         }
 
         fillAnimalList();
@@ -97,8 +115,94 @@ public class sales_details extends AppCompatActivity {
     public void onRestart() {
         super.onRestart();
 
+        calculateQuantityAnimals();
+        calculateSumChargeAnimals();
+        calculateSumEarningsAnimals();
         getPurchaseData();
         fillAnimalList();
+    }
+
+    private void calculateSumEarningsAnimals() {
+
+        SQLiteDatabase db = conn.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        "(SUM(" + Utilidades.CAMPO_TOTAL_VENTA + ") - SUM(" + Utilidades.CAMPO_TOTAL_PAGAR + "))" +
+                        " FROM " +
+                        Utilidades.TABLA_VENTA_DETALLE + ", " +
+                        Utilidades.TABLA_COMPRA_DETALLE +
+                        " WHERE " +
+                        Utilidades.CAMPO_VENTA + " = " + idSale +
+                        " AND " +
+                        Utilidades.CAMPO_ID_COMPRA_DETALLE + " = " + Utilidades.CAMPO_COMPRA_GANADO
+                , null);
+
+        if (cursor.moveToFirst()) {
+            double total = cursor.getDouble(0);
+
+            earnings.setText(String.valueOf(total));
+
+            ContentValues values = new ContentValues();
+            values.put(Utilidades.CAMPO_GANANCIAS, total);
+
+            db.update(Utilidades.TABLA_VENTAS, values, Utilidades.CAMPO_ID_VENTAS + " = " + idSale, null);
+
+        }
+
+        db.close();
+        cursor.close();
+
+    }
+
+    private void calculateSumChargeAnimals() {
+
+        SQLiteDatabase db = conn.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        "SUM(" + Utilidades.CAMPO_TOTAL_VENTA + ") " +
+                        " FROM " +
+                        Utilidades.TABLA_VENTA_DETALLE +
+                        " WHERE " +
+                        Utilidades.CAMPO_VENTA + " = " + idSale
+                , null);
+
+        if (cursor.moveToFirst()) {
+            double total = cursor.getDouble(0);
+
+            amount_to_charge.setText(String.valueOf(total));
+
+            ContentValues values = new ContentValues();
+            values.put(Utilidades.CAMPO_CANTIDAD_COBRAR, total);
+
+            db.update(Utilidades.TABLA_VENTAS, values, Utilidades.CAMPO_ID_VENTAS + " = " + idSale, null);
+
+        }
+
+        db.close();
+        cursor.close();
+
+    }
+
+    private void calculateQuantityAnimals() {
+
+        SQLiteDatabase db = conn.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Utilidades.TABLA_VENTA_DETALLE + " WHERE " + Utilidades.CAMPO_VENTA + " = " + idSale, null);
+
+        int count = cursor.getCount();
+
+        number_animals_sale.setText(String.valueOf(count));
+
+        ContentValues values = new ContentValues();
+        values.put(Utilidades.CAMPO_CANTIDAD_ANIMALES_VENTAS, count);
+
+        db.update(Utilidades.TABLA_VENTAS, values, Utilidades.CAMPO_ID_VENTAS + " = " + idSale, null);
+
+        db.close();
+        cursor.close();
+
     }
 
     private void getPurchaseData() {
@@ -153,6 +257,7 @@ public class sales_details extends AppCompatActivity {
         number_animals_sale.setText(ventas.getCantidad_animales().toString());
         amount_to_charge.setText(ventas.getCantidad_cobrar().toString());
         earnings.setText(ventas.getGanancias().toString());
+
 
         cursor.close();
         db.close();
@@ -317,6 +422,14 @@ public class sales_details extends AppCompatActivity {
     }
 
     public void delete_sale(View view){
+        if(administrator){
+            delete();
+        }else if (!false){
+            sendGarbage();
+        }
+    }
+
+    private void sendGarbage() {
         //In this method I don´t really delete the data, i just send it tto the garbage can.
         SQLiteDatabase db = conn.getWritableDatabase();
 
@@ -329,6 +442,43 @@ public class sales_details extends AppCompatActivity {
 
         if (updated == 1){
             Toast.makeText(getApplicationContext(), "Se ha mandado al bote de basura.", Toast.LENGTH_LONG).show();
+            finish();
+        }else{
+            Toast.makeText(getApplicationContext(), "Ha ocurrdio un error.", Toast.LENGTH_LONG).show();
+        }
+
+        db.close();
+    }
+
+    private void delete() {
+        SQLiteDatabase db = conn.getReadableDatabase();
+        String[] id_sale = {String.valueOf(ventas.getId_ventas())};
+
+        int deleted = db.delete(Utilidades.TABLA_VENTAS, Utilidades.CAMPO_ID_VENTAS + " = ?", id_sale);
+
+        if(deleted == 1){
+            Toast.makeText(getApplicationContext(), "Venta Eliminada", Toast.LENGTH_LONG).show();
+        }else {
+            Toast.makeText(getApplicationContext(), "Datos no eliminados", Toast.LENGTH_LONG).show();
+        }
+
+        db.close();
+        finish();
+    }
+
+    public void restoreSale(View view){
+        //In this method I restore the data.
+        SQLiteDatabase db = conn.getWritableDatabase();
+
+        String[] id_sale = {String.valueOf(ventas.getId_ventas())};
+
+        ContentValues values = new ContentValues();
+        values.put(Utilidades.CAMPO_RESPALDO_VENTAS, 0);
+
+        int updated = db.update(Utilidades.TABLA_VENTAS, values, Utilidades.CAMPO_ID_VENTAS + " = ?", id_sale);
+
+        if (updated == 1){
+            Toast.makeText(getApplicationContext(), "Se ha recuperado la venta.", Toast.LENGTH_LONG).show();
             finish();
         }else{
             Toast.makeText(getApplicationContext(), "Ha ocurrdio un error.", Toast.LENGTH_LONG).show();

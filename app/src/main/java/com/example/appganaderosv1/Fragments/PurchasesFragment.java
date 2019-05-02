@@ -47,6 +47,7 @@ public class PurchasesFragment extends Fragment {
             Utilidades.CAMPO_FECHA_COMPRAS + ", " +
             Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + ", " +
             Utilidades.CAMPO_CANTIDAD_PAGAR + ", " +
+            Utilidades.CAMPO_RESPALDO_COMPRAS + ", " +
 
             Utilidades.CAMPO_ID_PERSONA + ", " +
             Utilidades.CAMPO_NOMBRE + ", " +
@@ -109,7 +110,6 @@ public class PurchasesFragment extends Fragment {
     }
 
     private void fillList() {
-        conn = new ConexionSQLiteHelper(getContext(), "bd_ganado", null, 2);
         SQLiteDatabase db = conn.getReadableDatabase();
 
         Compras compras = null;
@@ -126,10 +126,7 @@ public class PurchasesFragment extends Fragment {
             SELECT = normalUser;
         }
 
-        Cursor cursor = db.rawQuery(
-                //"SELECT * FROM " + Utilidades.VIEW_COMPRAS, null
-                SELECT, null
-        );
+        Cursor cursor = db.rawQuery(SELECT, null);
 
         while(cursor.moveToNext()){
             compras = new Compras();
@@ -137,16 +134,17 @@ public class PurchasesFragment extends Fragment {
             compras.setFecha_compra(cursor.getString(1));
             compras.setCantidad_animales_compra(cursor.getInt(2));
             compras.setCantidad_pagar(cursor.getInt(3));
+            compras.setRespaldo(cursor.getInt(4));
 
             persona = new Persona();
-            persona.setId_persona(cursor.getInt(4));
-            persona.setNombre(cursor.getString(5));
-            persona.setTelefono(cursor.getString(6));
-            persona.setDomicilio(cursor.getString(7));
-            persona.setDatos_extras(cursor.getString(8));
+            persona.setId_persona(cursor.getInt(5));
+            persona.setNombre(cursor.getString(6));
+            persona.setTelefono(cursor.getString(7));
+            persona.setDomicilio(cursor.getString(8));
+            persona.setDatos_extras(cursor.getString(9));
 
-            listaPersonas.add(persona);
             listaCompras.add(compras);
+            listaPersonas.add(persona);
         }
 
         cursor.close();
@@ -175,7 +173,6 @@ public class PurchasesFragment extends Fragment {
         recycler_view.setAdapter(adapter_purchases);
 
     }
-
 
     public void newPurchase(View view) {
         Intent miIntent = null;

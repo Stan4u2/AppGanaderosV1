@@ -835,4 +835,24 @@ public class insert_new_sales extends AppCompatActivity {
             return true;
         }
     }
+
+    public void cancel_sale(View view) {
+        deleteProgress();
+    }
+
+    public void onBackPressed() {
+        deleteProgress();
+    }
+
+    public void deleteProgress(){
+        SQLiteDatabase db = conn.getReadableDatabase();
+
+        int deleted = db.delete(Utilidades.TABLA_VENTA_DETALLE, Utilidades.CAMPO_VENTA + " IS NULL", null);
+
+        if(deleted >= 1){
+            Toast.makeText(getApplicationContext(), "Venta Cancelada", Toast.LENGTH_LONG).show();
+        }
+
+        finish();
+    }
 }
