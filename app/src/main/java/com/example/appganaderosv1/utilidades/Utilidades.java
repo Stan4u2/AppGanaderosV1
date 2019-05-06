@@ -171,7 +171,7 @@ public class Utilidades {
                     + CAMPO_PRECIO_VENTA + " REAL, "
                     + CAMPO_TARA_VENTA + " REAL, "
                     + CAMPO_TOTAL_VENTA + " REAL, "
-                    + CAMPO_VENTA + " INTEGER REFERENCES " + TABLA_VENTAS + "(" + CAMPO_ID_VENTA_DETALLE + ") ON DELETE CASCADE)";
+                    + CAMPO_VENTA + " INTEGER NULL REFERENCES " + TABLA_VENTAS + "(" + CAMPO_ID_VENTAS + ") ON DELETE CASCADE)";
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

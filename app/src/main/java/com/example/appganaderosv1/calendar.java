@@ -32,7 +32,15 @@ public class calendar extends AppCompatActivity {
         class_that_came_from();
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        calendarDate.setText(sdf.format(new Date(calendar.getDate())));
+        String [] dateCal = sdf.format(new Date(calendar.getDate())).split("/");
+
+        int [] dateNoCeros = new int[3];
+
+        dateNoCeros[0] = Integer.valueOf(dateCal[0]);
+        dateNoCeros[1] = Integer.valueOf(dateCal[1]);
+        dateNoCeros[2] = Integer.valueOf(dateCal[2]);
+
+        calendarDate.setText((dateNoCeros[0] + "/" + dateNoCeros[1] + "/" + dateNoCeros[2]));
 
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override

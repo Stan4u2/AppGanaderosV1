@@ -1,11 +1,13 @@
 package com.example.appganaderosv1.Fragments;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +16,20 @@ import android.widget.Button;
 
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
+import com.example.appganaderosv1.Adapter.Adapter_appointment;
+import com.example.appganaderosv1.Adapter.Adapter_purchases;
+import com.example.appganaderosv1.Adapter.Adapter_sales;
 import com.example.appganaderosv1.ConexionSQLiteHelper;
 import com.example.appganaderosv1.R;
+import com.example.appganaderosv1.appointment_details;
 import com.example.appganaderosv1.entidades.Citas;
 import com.example.appganaderosv1.entidades.Compras;
 import com.example.appganaderosv1.entidades.Persona;
 import com.example.appganaderosv1.entidades.Ventas;
 
 import com.applandeo.materialcalendarview.CalendarView;
+import com.example.appganaderosv1.purchase_details;
+import com.example.appganaderosv1.sales_details;
 import com.example.appganaderosv1.utilidades.Utilidades;
 
 import java.text.SimpleDateFormat;
@@ -42,7 +50,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     RecyclerView recycler_view_home;
 
     //RecyclerView Data
-    ArrayList<Persona> listaPersona;
+    ArrayList<Persona> listaPersonaCita;
+    ArrayList<Persona> listaPersonaCompra;
+    ArrayList<Persona> listaPersonaVenta;
     //Appointment
     ArrayList<Citas> listaCitas;
 
@@ -52,7 +62,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     //Sales
     ArrayList<Ventas> listaVentas;
 
-    String date;
+    static String date;
 
     Boolean appoint = false, purch = false, sale = false;
 
@@ -75,8 +85,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         calendarView = view.findViewById(R.id.calendarView);
 
+        recycler_view_home = view.findViewById(R.id.recycler_view_home);
+        recycler_view_home.setLayoutManager(new LinearLayoutManager(getContext()));
+
         //RecyclerView Data
-        listaPersona = new ArrayList<>();
+        listaPersonaCita = new ArrayList<>();
+        listaPersonaCompra = new ArrayList<>();
+        listaPersonaVenta = new ArrayList<>();
         //Appointment
         listaCitas = new ArrayList<>();
 
@@ -86,11 +101,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         //Sales
         listaVentas = new ArrayList<>();
 
+        fillListDates();
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         Calendar cal = Calendar.getInstance();
 
-        date = sdf.format(cal.getTime());
+        String [] dateCal = sdf.format(cal.getTime()).split("/");
+        int [] dateNoCeros = new int[3];
+
+        dateNoCeros[0] = Integer.valueOf(dateCal[0]);
+        dateNoCeros[1] = Integer.valueOf(dateCal[1]);
+        dateNoCeros[2] = Integer.valueOf(dateCal[2]);
+
+        date = (dateNoCeros[0] + "/" + dateNoCeros[1] + "/" + dateNoCeros[2]);
 
         calendarView.setOnDayClickListener(new OnDayClickListener() {
             @Override
@@ -98,37 +122,49 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 Calendar clickedDayCalendar = eventDay.getCalendar();
 
                 date = sdf.format(clickedDayCalendar.getTime());
+                String [] dateCa = sdf.format(clickedDayCalendar.getTime()).split("/");
+
+                dateNoCeros[0] = Integer.valueOf(dateCa[0]);
+                dateNoCeros[1] = Integer.valueOf(dateCa[1]);
+                dateNoCeros[2] = Integer.valueOf(dateCa[2]);
+
+                date = (dateNoCeros[0] + "/" + dateNoCeros[1] + "/" + dateNoCeros[2]);
+
+                setAllFalse();
+
+                recycler_view_home.setVisibility(View.GONE);
             }
         });
 
         appointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                recycler_view_home.setVisibility(View.VISIBLE);
                 setAllFalse();
-                appoint = true;
                 appointment.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.buttonColorSelected));
+                fillListAppointment();
             }
         });
 
         purchase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                recycler_view_home.setVisibility(View.VISIBLE);
                 setAllFalse();
-                purch = true;
                 purchase.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.buttonColorSelected));
+                fillListPurchase();
             }
         });
 
         sales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                recycler_view_home.setVisibility(View.VISIBLE);
                 setAllFalse();
-                sale = true;
                 sales.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.buttonColorSelected));
+                fillListSales();
             }
         });
-
-        fillListDates();
 
         return view;
     }
@@ -183,7 +219,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         for(String object : dates){
             Calendar calendar = Calendar.getInstance();
-            System.out.println(object);
             String [] dateCal = object.split("/");
 
             calendar.set(Integer.valueOf(dateCal[2]), Integer.valueOf(dateCal[1])-1, Integer.valueOf(dateCal[0]));
@@ -192,6 +227,244 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
 
         calendarView.setEvents(events);
+    }
+
+    private void fillListAppointment() {
+        SQLiteDatabase db = conn.getReadableDatabase();
+
+        Citas citas = null;
+        Persona persona = null;
+
+
+        listaPersonaCita = new ArrayList<Persona>();
+        listaCitas = new ArrayList<Citas>();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT DISTINCT " +
+                Utilidades.CAMPO_ID_CITAS + ", " +
+                Utilidades.CAMPO_CANTIDAD_GANADO + ", " +
+                Utilidades.CAMPO_DATOS + ", " +
+                Utilidades.CAMPO_FECHA_CITAS + ", " +
+                Utilidades.CAMPO_RESPALDO_CITAS + ", " +
+
+                Utilidades.CAMPO_ID_PERSONA + ", " +
+                Utilidades.CAMPO_NOMBRE + ", " +
+                Utilidades.CAMPO_TELEFONO + ", " +
+                Utilidades.CAMPO_DOMICILIO + ", " +
+                Utilidades.CAMPO_DATOS_EXTRAS +
+                " FROM " +
+                Utilidades.TABLA_PERSONA + ", " +
+                Utilidades.TABLA_CITAS +
+                " WHERE " +
+                Utilidades.CAMPO_FECHA_CITAS + " = '" + date + "'" +
+                " AND " +
+                Utilidades.CAMPO_PERSONA_CITA + " = " + Utilidades.CAMPO_ID_PERSONA +
+                " AND " +
+                Utilidades.CAMPO_RESPALDO_CITAS + " = " + 0, null);
+
+        while(cursor.moveToNext()){
+            System.out.println(date);
+            citas = new Citas();
+            citas.setId_citas(cursor.getInt(0));
+            citas.setCantidad_ganado(cursor.getInt(1));
+            citas.setDatos(cursor.getString(2));
+            citas.setFecha(cursor.getString(3));
+            citas.setRespaldo(cursor.getInt(4));
+
+            persona = new Persona();
+            persona.setId_persona(cursor.getInt(5));
+            persona.setNombre(cursor.getString(6));
+            persona.setTelefono(cursor.getString(7));
+            persona.setDomicilio(cursor.getString(8));
+            persona.setDatos_extras(cursor.getString(9));
+
+            listaCitas.add(citas);
+            listaPersonaCita.add(persona);
+        }
+
+        cursor.close();
+        db.close();
+
+        Adapter_appointment adapter_appointment = new Adapter_appointment(listaPersonaCita, listaCitas);
+
+        adapter_appointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Persona persona = listaPersonaCita.get(recycler_view_home.getChildAdapterPosition(view));
+                Citas citas = listaCitas.get(recycler_view_home.getChildAdapterPosition(view));
+
+                Intent intent = new Intent(view.getContext(), appointment_details.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("persona", persona);
+                bundle.putSerializable("citas", citas);
+
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+            }
+        });
+
+        recycler_view_home.setAdapter(adapter_appointment);
+    }
+
+    private void fillListPurchase() {
+        SQLiteDatabase db = conn.getReadableDatabase();
+
+        Compras compras = null;
+        Persona persona = null;
+
+        listaPersonaCompra = new ArrayList<Persona>();
+        listaCompras = new ArrayList<Compras>();
+
+        Cursor cursor = db.rawQuery("SELECT DISTINCT " +
+                Utilidades.CAMPO_ID_COMPRA + ", " +
+                Utilidades.CAMPO_FECHA_COMPRAS + ", " +
+                Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + ", " +
+                Utilidades.CAMPO_CANTIDAD_PAGAR + ", " +
+                Utilidades.CAMPO_RESPALDO_COMPRAS + ", " +
+
+                Utilidades.CAMPO_ID_PERSONA + ", " +
+                Utilidades.CAMPO_NOMBRE + ", " +
+                Utilidades.CAMPO_TELEFONO + ", " +
+                Utilidades.CAMPO_DOMICILIO + ", " +
+                Utilidades.CAMPO_DATOS_EXTRAS +
+                " FROM " +
+                Utilidades.TABLA_PERSONA + ", " +
+                Utilidades.TABLA_COMPRAS +
+                " WHERE " +
+                Utilidades.CAMPO_FECHA_COMPRAS + " = '" + date  + "'" +
+                " AND " +
+                Utilidades.CAMPO_PERSONA_COMPRO + " = " + Utilidades.CAMPO_ID_PERSONA +
+                " AND " +
+                Utilidades.CAMPO_RESPALDO_COMPRAS + " = " + 0, null);
+
+        while(cursor.moveToNext()){
+            System.out.println(date);
+            compras = new Compras();
+            compras.setId_compras(cursor.getInt(0));
+            compras.setFecha_compra(cursor.getString(1));
+            compras.setCantidad_animales_compra(cursor.getInt(2));
+            compras.setCantidad_pagar(cursor.getInt(3));
+            compras.setRespaldo(cursor.getInt(4));
+
+            persona = new Persona();
+            persona.setId_persona(cursor.getInt(5));
+            persona.setNombre(cursor.getString(6));
+            persona.setTelefono(cursor.getString(7));
+            persona.setDomicilio(cursor.getString(8));
+            persona.setDatos_extras(cursor.getString(9));
+
+            listaCompras.add(compras);
+            listaPersonaCompra.add(persona);
+        }
+
+        cursor.close();
+        db.close();
+
+        Adapter_purchases adapter_purchases = new Adapter_purchases(listaPersonaCompra, listaCompras);
+
+        adapter_purchases.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Compras compras = listaCompras.get(recycler_view_home.getChildAdapterPosition(view));
+                Persona persona = listaPersonaCompra.get(recycler_view_home.getChildAdapterPosition(view));
+
+                Intent intent = new Intent(view.getContext(), purchase_details.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("persona", persona);
+                bundle.putSerializable("compras", compras);
+
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
+        recycler_view_home.setAdapter(adapter_purchases);
+
+    }
+
+    private void fillListSales() {
+        SQLiteDatabase db = conn.getReadableDatabase();
+
+        Ventas ventas = null;
+        Persona persona = null;
+
+        listaVentas = new ArrayList<Ventas>();
+        listaPersonaVenta = new ArrayList<Persona>();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT DISTINCT " +
+                        Utilidades.CAMPO_ID_VENTAS + ", " +
+                        Utilidades.CAMPO_FECHA_VENTAS + ", " +
+                        Utilidades.CAMPO_CANTIDAD_ANIMALES_VENTAS + ", " +
+                        Utilidades.CAMPO_CANTIDAD_COBRAR + ", " +
+                        Utilidades.CAMPO_GANANCIAS + ", " +
+                        Utilidades.CAMPO_RESPALDO_VENTAS + ", " +
+
+                        Utilidades.CAMPO_ID_PERSONA + ", " +
+                        Utilidades.CAMPO_NOMBRE + ", " +
+                        Utilidades.CAMPO_TELEFONO + ", " +
+                        Utilidades.CAMPO_DOMICILIO + ", " +
+                        Utilidades.CAMPO_DATOS_EXTRAS +
+                        " FROM " +
+                        Utilidades.TABLA_PERSONA + ", " +
+                        Utilidades.TABLA_VENTAS +
+                        " WHERE " +
+                        Utilidades.CAMPO_FECHA_VENTAS + " = '" + date +"'" +
+                        " AND " +
+                        Utilidades.CAMPO_PERSONA_VENTA + " = " + Utilidades.CAMPO_ID_PERSONA +
+                        " AND " +
+                        Utilidades.CAMPO_RESPALDO_VENTAS + " = " + 0, null
+        );
+
+        while(cursor.moveToNext()) {
+            System.out.println(date);
+            ventas = new Ventas();
+            ventas.setId_ventas(cursor.getInt(0));
+            ventas.setFecha(cursor.getString(1));
+            ventas.setCantidad_animales(cursor.getInt(2));
+            ventas.setCantidad_cobrar(cursor.getInt(3));
+            ventas.setGanancias(cursor.getInt(4));
+            ventas.setRespaldo(cursor.getInt(5));
+
+            persona = new Persona();
+            persona.setId_persona(cursor.getInt(6));
+            persona.setNombre(cursor.getString(7));
+            persona.setTelefono(cursor.getString(8));
+            persona.setDomicilio(cursor.getString(9));
+            persona.setDatos_extras(cursor.getString(10));
+
+            listaVentas.add(ventas);
+            listaPersonaVenta.add(persona);
+        }
+
+        cursor.close();
+        db.close();
+
+        Adapter_sales adapter_sales = new Adapter_sales(listaPersonaVenta, listaVentas);
+
+        adapter_sales.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Ventas ventas = listaVentas.get(recycler_view_home.getChildAdapterPosition(view));
+                Persona persona = listaPersonaVenta.get(recycler_view_home.getChildAdapterPosition(view));
+
+                Intent intent = new Intent(view.getContext(), sales_details.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("persona", persona);
+                bundle.putSerializable("ventas", ventas);
+
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+            }
+        });
+
+        recycler_view_home.setAdapter(adapter_sales);
+
     }
 
     @Override
