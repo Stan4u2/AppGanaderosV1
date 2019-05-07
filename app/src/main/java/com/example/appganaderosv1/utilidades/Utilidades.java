@@ -93,6 +93,17 @@ public class Utilidades {
                     + CAMPO_ID_RAZA + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + CAMPO_TIPO_RAZA + " TEXT)";
 
+    public static final String INSERT_RAZA =
+            "INSERT INTO " + TABLA_RAZA + "("+CAMPO_TIPO_RAZA+") VALUES " +
+            "('Angus')," +
+            "('Jersey')," +
+            "('Charolesa')," +
+            "('Simmental')," +
+            "('Pardo Suizo')," +
+            "('Angus Rojo')," +
+            "('Limousin')," +
+            "('Pardo Suizo')";
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //Tabla Ganado
@@ -104,6 +115,13 @@ public class Utilidades {
             "CREATE TABLE " + TABLA_GANADO + "("
                     + CAMPO_ID_GANADO + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + CAMPO_TIPO_GANADO + " TEXT)";
+
+    public static final String INSERT_GANADO =
+            "INSERT INTO " + TABLA_GANADO + "("+CAMPO_TIPO_GANADO+") VALUES " +
+            "('Toro')," +
+            "('Vaca')," +
+            "('Becerro')," +
+            "('Beccerra')";
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -349,4 +367,30 @@ public class Utilidades {
 
     public static final String CREAR_VISTA_ANIMAL_VENTA = "CREATE VIEW " + VIEW_ANIMAL_SALE_NO_OWNER + " AS " + SELECT_ANIMAL_SALE;
 
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //Trigger Sumar Cantidad Animales en Compras
+    public static final String TRIGGER_PURCHASE_ANIMALS = "add_quantity_animals_purchase";
+
+    public static final String TRIGGER_ACTION_PURCHASE =
+            "UPDATE compras SET cantidad_animales = (SELECT COUNT (*) FROM compra_detalle WHERE new.compra = id_compras)";
+
+    public static final String CREAR_TRIGGER_COMPRA_ANIMALES =
+            "CREATE TRIGGER " + TRIGGER_PURCHASE_ANIMALS + " AFTER INSERT ON " + TABLA_COMPRA_DETALLE +
+            " BEGIN " +
+                    TRIGGER_ACTION_PURCHASE + ";" +
+            " END";
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //Trigger Restar Cantidad Animales en Compras
+    public static final String TRIGGER_SUBTRACT_PURCHASE_ANIMALS = "subtract_quantity_animals_purchase";
+
+    public static final String TRIGGER_SUBTRACT_ACTION_PURCHASE =
+            "UPDATE compras SET cantidad_animales = (SELECT COUNT (*) FROM compra_detalle WHERE old.compra = id_compras)";
+
+    public static final String CREAR_TRIGGER_COMPRA_ANIMALES_RESTAR =
+            "CREATE TRIGGER " + TRIGGER_PURCHASE_ANIMALS + " AFTER DELETE ON " + TABLA_COMPRA_DETALLE +
+                    " BEGIN " +
+                    TRIGGER_ACTION_PURCHASE + ";" +
+                    " END";
 }

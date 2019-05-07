@@ -169,7 +169,7 @@ public class animal_details_purchase extends AppCompatActivity {
         }
         //Now I compare if the user did really delete something, and if he did, then I´ll modify the purchase to substract one animal.
         if(continueProcess == true){
-            String[] id_purchase = {String.valueOf(id_purchase_modifie)};
+            /*String[] id_purchase = {String.valueOf(id_purchase_modifie)};
 
             db.execSQL(
                     "UPDATE " +
@@ -177,7 +177,7 @@ public class animal_details_purchase extends AppCompatActivity {
                     " SET " +
                             Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + " = " + Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + " - 1" +
                     " WHERE " +
-                        Utilidades.CAMPO_ID_COMPRA + " = ? ", id_purchase);
+                        Utilidades.CAMPO_ID_COMPRA + " = ? ", id_purchase);*/
             finish();
         }
 

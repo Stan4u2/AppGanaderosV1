@@ -372,7 +372,7 @@ public class insert_new_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total*tareAnimal)/100)));
         values.put(Utilidades.CAMPO_NUMERO_ARETE, earringNumber);
 
-        long idResult = db.insert(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_ID_CITAS, values);
+        long idResult = db.insert(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_ID_COMPRA_DETALLE, values);
 
         db.close();
 

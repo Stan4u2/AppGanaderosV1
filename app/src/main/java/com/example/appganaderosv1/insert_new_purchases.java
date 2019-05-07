@@ -536,16 +536,32 @@ public class insert_new_purchases extends AppCompatActivity {
     }
 
     private void calculateQuantityAnimals() {
+
         SQLiteDatabase db = conn.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + Utilidades.TABLA_COMPRA_DETALLE + " WHERE " + Utilidades.CAMPO_COMPRA + " = " + idPurchase, null);
+        /*Cursor cursor = db.rawQuery("SELECT * FROM " + Utilidades.TABLA_COMPRA_DETALLE + " WHERE " + Utilidades.CAMPO_COMPRA + " = " + idPurchase, null);
 
-        int count = cursor.getCount();
+        int count = cursor.getCount();*/
 
-        number_animals_purchase.setText(String.valueOf(count));
+        //number_animals_purchase.setText(String.valueOf(count));
+
+        Cursor cursor = db.rawQuery(
+            "SELECT " +
+                        Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS +
+                " FROM " +
+                        Utilidades.TABLA_COMPRAS +
+                " WHERE " +
+                        Utilidades.CAMPO_ID_COMPRA + " = " + idPurchase, null
+        );
+
+        if (cursor.moveToFirst()) {
+            int quantity = cursor.getInt(0);
+            number_animals_purchase.setText(String.valueOf(quantity));
+        }
 
         db.close();
         cursor.close();
+
     }
 
     private void calculateSumPayAnimals() {
