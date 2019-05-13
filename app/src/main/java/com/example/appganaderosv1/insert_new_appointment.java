@@ -73,11 +73,11 @@ public class insert_new_appointment extends AppCompatActivity {
 
         Bundle actionToDo = getIntent().getExtras();
 
-        if(actionToDo != null){
+        if (actionToDo != null) {
 
             action = actionToDo.getSerializable("action").toString();
 
-            switch(action){
+            switch (action) {
                 case "insert":
                     action_to_do.setText("Nueva Cita");
                     break;
@@ -100,13 +100,13 @@ public class insert_new_appointment extends AppCompatActivity {
 
         Bundle data = getIntent().getExtras();
 
-        if(data != null){
+        if (data != null) {
             person = (Persona) data.getSerializable("persona");
             citas = (Citas) data.getSerializable("citas");
 
             for (int i = 0; i < peopleData.size(); i++) {
-                if(peopleData.get(i).getId_persona().equals(person.getId_persona())){
-                    spinner_person_appointment.setSelection(i+1);
+                if (peopleData.get(i).getId_persona().equals(person.getId_persona())) {
+                    spinner_person_appointment.setSelection(i + 1);
                 }
             }
 
@@ -120,22 +120,22 @@ public class insert_new_appointment extends AppCompatActivity {
     }
 
     //When you start another activity and come back this method will be executed
-    public void onRestart(){
+    public void onRestart() {
         super.onRestart();
-        if(id_new_person != -1 && process == true) {
+        if (id_new_person != -1 && process == true) {
 
             consultListPeople_appointment();
 
             for (int i = 0; i < peopleData.size(); i++) {
-                if(peopleData.get(i).getId_persona() == id_new_person){
-                    spinner_person_appointment.setSelection(i+1);
+                if (peopleData.get(i).getId_persona() == id_new_person) {
+                    spinner_person_appointment.setSelection(i + 1);
                 }
             }
             process = false;
 
         }
 
-        if(dateAppointment == true){
+        if (dateAppointment == true) {
             dateAppointment = false;
             date_appointment.setText(DateAppointment);
         }
@@ -170,15 +170,15 @@ public class insert_new_appointment extends AppCompatActivity {
         spinner_person_appointment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if( position!= 0){
+                if (position != 0) {
 
-                    idPersonAppointment = peopleData.get(position-1).getId_persona();
-                    name_person_appointment.setText(peopleData.get(position-1).getNombre());
-                    cellphone_person_appointment.setText(peopleData.get(position-1).getTelefono());
-                    address_person_appointment.setText(peopleData.get(position-1).getDomicilio());
-                    extra_data_person_appointment.setText(peopleData.get(position-1).getDatos_extras());
+                    idPersonAppointment = peopleData.get(position - 1).getId_persona();
+                    name_person_appointment.setText(peopleData.get(position - 1).getNombre());
+                    cellphone_person_appointment.setText(peopleData.get(position - 1).getTelefono());
+                    address_person_appointment.setText(peopleData.get(position - 1).getDomicilio());
+                    extra_data_person_appointment.setText(peopleData.get(position - 1).getDatos_extras());
 
-                }else{
+                } else {
 
                     idPersonAppointment = 0;
                     name_person_appointment.setText("");
@@ -213,7 +213,7 @@ public class insert_new_appointment extends AppCompatActivity {
     }
 
 
-    public void new_person_appointment(View view){
+    public void new_person_appointment(View view) {
         Intent intent = null;
         if (view.getId() == R.id.add_person_appointment) {
             intent = new Intent(insert_new_appointment.this, insert_new_person.class);
@@ -226,7 +226,7 @@ public class insert_new_appointment extends AppCompatActivity {
     }
 
 
-    public void select_date_appointment(View view){
+    public void select_date_appointment(View view) {
         Intent intent = null;
         if (view.getId() == R.id.select_date_appointment) {
             intent = new Intent(insert_new_appointment.this, calendar.class);
@@ -239,51 +239,74 @@ public class insert_new_appointment extends AppCompatActivity {
     }
 
 
-    public void saveAppointmentDB(View view){
+    public void saveAppointmentDB(View view) {
         boolean complete = false;
-        if(
-           spinner_person_appointment.getSelectedItemId() == 0 ||
-           date_appointment.getText().toString().isEmpty()||
-           number_animals_appointment.getText().toString().isEmpty()||
-           extra_data_appointment.getText().toString().isEmpty()
+        boolean noBlankSpaces = true;
+        if (
+                spinner_person_appointment.getSelectedItemId() == 0 &&
+                        date_appointment.getText().toString().isEmpty() &&
+                        number_animals_appointment.getText().toString().isEmpty() &&
+                        extra_data_appointment.getText().toString().isEmpty()
         ) {
             Toast.makeText(getApplicationContext(), "¡¡Campos Vacios!!", Toast.LENGTH_LONG).show();
-        }else{
-            if(action.equals("insert")) {
+            noBlankSpaces = false;
+        } else {
+
+            if(spinner_person_appointment.getSelectedItemId() == 0){
+                Toast.makeText(getApplicationContext(), "¡¡Seleccione La Persona!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            }
+            if(date_appointment.getText().toString().isEmpty()){
+                Toast.makeText(getApplicationContext(), "¡¡Seleccione La Fecha!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            }
+            if(number_animals_appointment.getText().toString().isEmpty()){
+                Toast.makeText(getApplicationContext(), "¡¡Ingrese Una Cantidad De Animales!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            }
+            if(extra_data_appointment.getText().toString().isEmpty()){
+                Toast.makeText(getApplicationContext(), "¡¡Datos Extras Vacios!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            }
+
+        }
+        if (noBlankSpaces) {
+            if (action.equals("insert")) {
                 boolean inserted = insertNewAppointment(
                         Integer.valueOf(number_animals_appointment.getText().toString()),
                         extra_data_appointment.getText().toString(),
                         date_appointment.getText().toString(),
                         idPersonAppointment);
 
-                if(inserted == true){
+                if (inserted == true) {
                     Toast.makeText(getApplicationContext(), "Datos Insertados", Toast.LENGTH_LONG).show();
                     complete = true;
-                }else {
+                } else {
                     Toast.makeText(getApplicationContext(), "¡¡Datos No Insertados!!", Toast.LENGTH_LONG).show();
                 }
 
 
-            }else if(action.equals("modifie")){
+            } else if (action.equals("modifie")) {
                 int modified = modifieAppointment(
                         Integer.valueOf(number_animals_appointment.getText().toString()),
                         extra_data_appointment.getText().toString(),
                         date_appointment.getText().toString(),
                         idPersonAppointment
                 );
-                if(modified == 1){
+                if (modified == 1) {
                     Toast.makeText(getApplicationContext(), "Se han actualizado los datos", Toast.LENGTH_LONG).show();
                     complete = true;
-                }else{
+                } else {
                     Toast.makeText(getApplicationContext(), "Datos no actualizados", Toast.LENGTH_LONG).show();
                 }
 
             }
 
-            if(complete == true){
+            if (complete == true) {
                 finish();
             }
         }
+
     }
 
 
@@ -301,16 +324,16 @@ public class insert_new_appointment extends AppCompatActivity {
 
         db.close();
 
-        if(idResult == -1){
+        if (idResult == -1) {
             return false;
-        }else{
+        } else {
             insert_new_appointment.id_new_person = idResult.intValue();
             return true;
         }
     }
 
 
-    private int modifieAppointment(int numberAnimals, String data, String date, int idPerson){
+    private int modifieAppointment(int numberAnimals, String data, String date, int idPerson) {
         SQLiteDatabase db = conn.getWritableDatabase();
 
         String[] id_appointment = {String.valueOf(idAppointmentModifie)};

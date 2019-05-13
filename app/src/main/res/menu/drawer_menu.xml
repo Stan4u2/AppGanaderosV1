@@ -19,10 +19,6 @@
             android:id="@+id/nav_appointment"
             android:icon="@drawable/ic_appointment"
             android:title="Citas" />
-        <item
-            android:id="@+id/nav_garbage"
-            android:icon="@drawable/ic_garbage"
-            android:title="Basura" />
     </group>
 
     <item android:title="Acciones">

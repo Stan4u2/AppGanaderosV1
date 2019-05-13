@@ -106,6 +106,9 @@ public class insert_new_person extends AppCompatActivity {
             case "purchase":
                 finish();
                 break;
+            case "sale":
+                finish();
+                break;
         }
     }
 

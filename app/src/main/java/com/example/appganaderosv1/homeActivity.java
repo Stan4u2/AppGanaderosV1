@@ -86,11 +86,6 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_logout:
                 super.onBackPressed();
                 break;
-            case R.id.nav_garbage:
-                if (administrator == false) {
-                    Toast.makeText(getApplicationContext(), "Solo Administrador", Toast.LENGTH_LONG).show();
-                }
-                break;
 
         }
 

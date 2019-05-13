@@ -720,15 +720,20 @@ public class insert_new_sales extends AppCompatActivity {
         boolean noBlankSpaces = true;
         boolean complete = false;
 
-        if (spinner_person_sale.getSelectedItemId() == 0) {
-            Toast.makeText(getApplicationContext(), "¡¡Selecione El Comprador!!", Toast.LENGTH_LONG).show();
+        if(spinner_person_sale.getSelectedItemId() == 0 && date_sale.getText().toString().isEmpty() && number_animals_sale.getText().toString().equals("0")){
+            Toast.makeText(getApplicationContext(), "¡¡Campos Vacios!!", Toast.LENGTH_LONG).show();
             noBlankSpaces = false;
-        } else if (date_sale.getText().toString().isEmpty()) {
-            Toast.makeText(getApplicationContext(), "¡¡Selecione La Fecha!!", Toast.LENGTH_LONG).show();
-            noBlankSpaces = false;
-        } else if (number_animals_sale.getText().toString().equals("0")) {
-            Toast.makeText(getApplicationContext(), "¡¡Venda Almenos 1 Animal!!", Toast.LENGTH_LONG).show();
-            noBlankSpaces = false;
+        }else {
+            if (spinner_person_sale.getSelectedItemId() == 0) {
+                Toast.makeText(getApplicationContext(), "¡¡Selecione El Comprador!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            } else if (date_sale.getText().toString().isEmpty()) {
+                Toast.makeText(getApplicationContext(), "¡¡Selecione La Fecha!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            } else if (number_animals_sale.getText().toString().equals("0")) {
+                Toast.makeText(getApplicationContext(), "¡¡Venda Almenos 1 Animal!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            }
         }
 
         if (noBlankSpaces) {

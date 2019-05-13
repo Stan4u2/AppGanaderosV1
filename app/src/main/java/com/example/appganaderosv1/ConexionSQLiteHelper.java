@@ -32,6 +32,12 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(Utilidades.CREAR_VISTA_VENTAS);
         db.execSQL(Utilidades.CREAR_VISTA_ANIMAL_VENTA);
         db.execSQL(Utilidades.CREAR_TRIGGER_COMPRA_ANIMALES);
+        db.execSQL(Utilidades.CREAR_TRIGGER_COMPRA_ANIMALES_RESTAR);
+        db.execSQL(Utilidades.CREAR_TRIGGER_VENTA_ANIMALES);
+        db.execSQL(Utilidades.CREAR_TRIGGER_VENTA_ANIMALES_RESTAR);
+        db.execSQL(Utilidades.CREATE_INDEX_TABLE_APPOINTMENT);
+        db.execSQL(Utilidades.CREATE_INDEX_TABLE_PURCHASES);
+        db.execSQL(Utilidades.CREATE_INDEX_TABLE_SALES);
     }
 
     @Override
@@ -51,6 +57,12 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP VIEW IF EXISTS " + Utilidades.VIEW_VENTAS);
         db.execSQL("DROP VIEW IF EXISTS " +  Utilidades.VIEW_ANIMAL_SALE_NO_OWNER);
         db.execSQL("DROP TRIGGER IF EXISTS " + Utilidades.TRIGGER_PURCHASE_ANIMALS);
+        db.execSQL("DROP TRIGGER IF EXISTS " + Utilidades.TRIGGER_SUBTRACT_PURCHASE_ANIMALS);
+        db.execSQL("DROP TRIGGER IF EXISTS " + Utilidades.TRIGGER_SALE_ANIMALS);
+        db.execSQL("DROP TRIGGER IF EXISTS " + Utilidades.TRIGGER_SUBTRACT_SALE_ANIMALS);
+        db.execSQL("DROP INDEX IF EXISTS " + Utilidades.INDEX_TABLE_APPOINTMENT);
+        db.execSQL("DROP INDEX IF EXISTS " + Utilidades.INDEX_TABLE_PURCHASES);
+        db.execSQL("DROP INDEX IF EXISTS " + Utilidades.INDEX_TABLE_SALES);
         onCreate(db);
     }
 

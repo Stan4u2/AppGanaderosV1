@@ -182,6 +182,7 @@ public class insert_new_purchases extends AppCompatActivity {
                     }
                     break;
                 case "modifie":
+                    System.out.println("Si entro a mostrar la lista");
                     fillAnimalListOwner();
                     break;
 
@@ -190,7 +191,14 @@ public class insert_new_purchases extends AppCompatActivity {
 
         if (animalDeleted) {
             animalDeleted = false;
-            fillAnimalList();
+            switch (action) {
+                case "insert":
+                    fillAnimalList();
+                    break;
+                case "modifie":
+                    fillAnimalListOwner();
+                    break;
+            }
         }
 
         if (action.equals("insert")) {
@@ -591,15 +599,20 @@ public class insert_new_purchases extends AppCompatActivity {
             boolean noBlankSpaces = true;
             boolean complete = false;
 
-        if (spinner_person_purchase.getSelectedItemId() == 0) {
-            Toast.makeText(getApplicationContext(), "¡¡Selecione El Vendedor!!", Toast.LENGTH_LONG).show();
+        if(spinner_person_purchase.getSelectedItemId() == 0 && date_purchase.getText().toString().isEmpty() && number_animals_purchase.getText().toString().equals("0")){
+            Toast.makeText(getApplicationContext(), "¡¡Campos Vacios!!", Toast.LENGTH_LONG).show();
             noBlankSpaces = false;
-        } else if (date_purchase.getText().toString().isEmpty()) {
-            Toast.makeText(getApplicationContext(), "¡¡Selecione La Fecha!!", Toast.LENGTH_LONG).show();
-            noBlankSpaces = false;
-        } else if (number_animals_purchase.getText().toString().equals("0")) {
-            Toast.makeText(getApplicationContext(), "¡¡Registre Almenos 1 Animal!!", Toast.LENGTH_LONG).show();
-            noBlankSpaces = false;
+        }else {
+            if (spinner_person_purchase.getSelectedItemId() == 0) {
+                Toast.makeText(getApplicationContext(), "¡¡Selecione El Vendedor!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            } else if (date_purchase.getText().toString().isEmpty()) {
+                Toast.makeText(getApplicationContext(), "¡¡Selecione La Fecha!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            } else if (number_animals_purchase.getText().toString().equals("0")) {
+                Toast.makeText(getApplicationContext(), "¡¡Registre Almenos 1 Animal!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            }
         }
 
         if (noBlankSpaces) {

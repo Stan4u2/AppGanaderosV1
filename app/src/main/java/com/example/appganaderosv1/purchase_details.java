@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -358,13 +359,39 @@ public class purchase_details extends AppCompatActivity {
         SQLiteDatabase db = conn.getReadableDatabase();
         String[] id_purchase = {String.valueOf(compras.getId_compras())};
 
-        int deleted = db.delete(Utilidades.TABLA_COMPRAS, Utilidades.CAMPO_ID_COMPRA + " = ?", id_purchase);
+        int quantityAnimalsSold = 0;
 
-        if(deleted == 1){
-            Toast.makeText(getApplicationContext(), "Compra Eliminada", Toast.LENGTH_LONG).show();
-        }else {
-            Toast.makeText(getApplicationContext(), "Datos no eliminados", Toast.LENGTH_LONG).show();
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        "COUNT(*)" +
+                        " FROM " +
+                        "compra_detalle cd, " +
+                        "venta_detalle vd" +
+                        " WHERE " +
+                        "cd.compra = ?" +
+                        " AND " +
+                        "vd.compra_animal = cd.id_compra_detalle", id_purchase);
+
+        if (cursor.moveToFirst()) {
+            quantityAnimalsSold = cursor.getInt(0);
         }
+
+        if(quantityAnimalsSold > 0){
+            Toast toast = Toast.makeText(getApplicationContext(), "¡¡No puede eliminar esta compra!!\nYa realizo la venta de uno de estos animales", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER,0,0);
+            toast.show();
+
+        }else{
+            int deleted = db.delete(Utilidades.TABLA_COMPRAS, Utilidades.CAMPO_ID_COMPRA + " = ?", id_purchase);
+
+            if(deleted == 1){
+                Toast.makeText(getApplicationContext(), "Compra Eliminada", Toast.LENGTH_LONG).show();
+            }else {
+                Toast.makeText(getApplicationContext(), "Datos no eliminados", Toast.LENGTH_LONG).show();
+            }
+        }
+
+
 
         db.close();
         finish();

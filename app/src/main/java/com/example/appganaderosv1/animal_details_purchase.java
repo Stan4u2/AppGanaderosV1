@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -158,28 +159,34 @@ public class animal_details_purchase extends AppCompatActivity {
         boolean continueProcess = false;
         String[] id_animal = {String.valueOf(id_animal_modifie)};
         //In this part I delete the animal but I still have to change the number of animals
-        int deleted = db.delete(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_ID_COMPRA_DETALLE + " = ?", id_animal);
 
-        if(deleted == 1){
-            insert_new_purchases.animalDeleted = true;
-            Toast.makeText(getApplicationContext(), "Se ha eliminado el animal", Toast.LENGTH_LONG).show();
-            continueProcess = true;
-        }else {
-            Toast.makeText(getApplicationContext(), "Datos no eliminados", Toast.LENGTH_LONG).show();
-        }
-        //Now I compare if the user did really delete something, and if he did, then I´ll modify the purchase to substract one animal.
-        if(continueProcess == true){
-            /*String[] id_purchase = {String.valueOf(id_purchase_modifie)};
+        int exists = 0;
 
-            db.execSQL(
-                    "UPDATE " +
-                            Utilidades.TABLA_COMPRAS +
-                    " SET " +
-                            Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + " = " + Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + " - 1" +
-                    " WHERE " +
-                        Utilidades.CAMPO_ID_COMPRA + " = ? ", id_purchase);*/
-            finish();
+        Cursor cursor = db.rawQuery(
+                "SELECT EXISTS (SELECT * FROM venta_detalle where compra_animal = ?);", id_animal);
+
+        if (cursor.moveToFirst()) {
+            exists = cursor.getInt(0);
         }
+
+        if(exists == 0){
+            int deleted = db.delete(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_ID_COMPRA_DETALLE + " = ?", id_animal);
+
+            if(deleted == 1){
+                insert_new_purchases.animalDeleted = true;
+                Toast.makeText(getApplicationContext(), "Se ha eliminado el animal", Toast.LENGTH_LONG).show();
+                continueProcess = true;
+                finish();
+            }else {
+                Toast.makeText(getApplicationContext(), "Datos no eliminados", Toast.LENGTH_LONG).show();
+            }
+        }else{
+            Toast toast = Toast.makeText(getApplicationContext(), "¡¡No puede eliminar esta compra!!\nYa realizo la venta de este animal", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER,0,0);
+            toast.show();
+        }
+
+
 
         db.close();
     }

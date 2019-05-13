@@ -94,15 +94,15 @@ public class Utilidades {
                     + CAMPO_TIPO_RAZA + " TEXT)";
 
     public static final String INSERT_RAZA =
-            "INSERT INTO " + TABLA_RAZA + "("+CAMPO_TIPO_RAZA+") VALUES " +
-            "('Angus')," +
-            "('Jersey')," +
-            "('Charolesa')," +
-            "('Simmental')," +
-            "('Pardo Suizo')," +
-            "('Angus Rojo')," +
-            "('Limousin')," +
-            "('Pardo Suizo')";
+            "INSERT INTO " + TABLA_RAZA + "(" + CAMPO_TIPO_RAZA + ") VALUES " +
+                    "('Angus')," +
+                    "('Jersey')," +
+                    "('Charolesa')," +
+                    "('Simmental')," +
+                    "('Pardo Suizo')," +
+                    "('Angus Rojo')," +
+                    "('Limousin')," +
+                    "('Pardo Suizo')";
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -117,11 +117,11 @@ public class Utilidades {
                     + CAMPO_TIPO_GANADO + " TEXT)";
 
     public static final String INSERT_GANADO =
-            "INSERT INTO " + TABLA_GANADO + "("+CAMPO_TIPO_GANADO+") VALUES " +
-            "('Toro')," +
-            "('Vaca')," +
-            "('Becerro')," +
-            "('Beccerra')";
+            "INSERT INTO " + TABLA_GANADO + "(" + CAMPO_TIPO_GANADO + ") VALUES " +
+                    "('Toro')," +
+                    "('Vaca')," +
+                    "('Becerro')," +
+                    "('Beccerra')";
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -325,7 +325,7 @@ public class Utilidades {
 
                     Utilidades.CAMPO_ID_VENTA_DETALLE + ", " +
                     Utilidades.CAMPO_COMPRA_GANADO + ", " +
-                    Utilidades.CAMPO_PRECIO_VENTA  + ", " +
+                    Utilidades.CAMPO_PRECIO_VENTA + ", " +
                     Utilidades.CAMPO_TARA_VENTA + ", " +
                     Utilidades.CAMPO_TOTAL_VENTA + ", " +
 
@@ -373,24 +373,77 @@ public class Utilidades {
     public static final String TRIGGER_PURCHASE_ANIMALS = "add_quantity_animals_purchase";
 
     public static final String TRIGGER_ACTION_PURCHASE =
-            "UPDATE compras SET cantidad_animales = (SELECT COUNT (*) FROM compra_detalle WHERE new.compra = id_compras)";
+            "UPDATE compras SET cantidad_animales = (cantidad_animales + 1) WHERE id_compras = new.compra";
 
     public static final String CREAR_TRIGGER_COMPRA_ANIMALES =
-            "CREATE TRIGGER " + TRIGGER_PURCHASE_ANIMALS + " AFTER INSERT ON " + TABLA_COMPRA_DETALLE +
-            " BEGIN " +
+            "CREATE TRIGGER " + TRIGGER_PURCHASE_ANIMALS + " BEFORE INSERT ON " + TABLA_COMPRA_DETALLE +
+                    " BEGIN " +
                     TRIGGER_ACTION_PURCHASE + ";" +
-            " END";
+                    " END";
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //Trigger Restar Cantidad Animales en Compras
     public static final String TRIGGER_SUBTRACT_PURCHASE_ANIMALS = "subtract_quantity_animals_purchase";
 
     public static final String TRIGGER_SUBTRACT_ACTION_PURCHASE =
-            "UPDATE compras SET cantidad_animales = (SELECT COUNT (*) FROM compra_detalle WHERE old.compra = id_compras)";
+            "UPDATE compras SET cantidad_animales = (cantidad_animales - 1) WHERE id_compras = old.compra";
 
     public static final String CREAR_TRIGGER_COMPRA_ANIMALES_RESTAR =
-            "CREATE TRIGGER " + TRIGGER_PURCHASE_ANIMALS + " AFTER DELETE ON " + TABLA_COMPRA_DETALLE +
+            "CREATE TRIGGER " + TRIGGER_SUBTRACT_PURCHASE_ANIMALS + " BEFORE DELETE ON " + TABLA_COMPRA_DETALLE +
                     " BEGIN " +
-                    TRIGGER_ACTION_PURCHASE + ";" +
+                    TRIGGER_SUBTRACT_ACTION_PURCHASE + ";" +
                     " END";
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //Trigger Sumar Cantidad Animales en Ventas
+    public static final String TRIGGER_SALE_ANIMALS = "add_quantity_animals_sale";
+
+    public static final String TRIGGER_ACTION_SALE =
+            "UPDATE ventas SET cantidad_animales = (cantidad_animales + 1) WHERE id_ventas = new.venta";
+
+    public static final String CREAR_TRIGGER_VENTA_ANIMALES =
+            "CREATE TRIGGER " + TRIGGER_SALE_ANIMALS + " BEFORE INSERT ON " + TABLA_VENTA_DETALLE +
+                    " BEGIN " +
+                    TRIGGER_ACTION_SALE + ";" +
+                    " END";
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //Trigger Restar Cantidad Animales en Ventas
+    public static final String TRIGGER_SUBTRACT_SALE_ANIMALS = "subtract_quantity_animals_sale";
+
+    public static final String TRIGGER_SUBTRACT_ACTION_SALE =
+            "UPDATE ventas SET cantidad_animales = (cantidad_animales - 1) WHERE id_ventas = old.venta";
+
+    public static final String CREAR_TRIGGER_VENTA_ANIMALES_RESTAR =
+            "CREATE TRIGGER " + TRIGGER_SUBTRACT_SALE_ANIMALS + " BEFORE DELETE ON " + TABLA_VENTA_DETALLE +
+                    " BEGIN " +
+                    TRIGGER_SUBTRACT_ACTION_SALE + ";" +
+                    " END";
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //Index Purchase Table
+    public static final String INDEX_TABLE_PURCHASES = "purchaseTable";
+
+    public static final String CREATE_INDEX_TABLE_PURCHASES =
+            "CREATE INDEX " + INDEX_TABLE_PURCHASES + " ON " + TABLA_COMPRAS + "(persona_compro, cantidad_animales, fecha)";
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //Index Sales Table
+    public static final String INDEX_TABLE_SALES = "salesTable";
+
+    public static final String CREATE_INDEX_TABLE_SALES =
+            "CREATE INDEX " + INDEX_TABLE_SALES + " ON " + TABLA_VENTAS + "(persona_venta, cantidad_animales, fecha)";
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //Index Appointment Table
+    public static final String INDEX_TABLE_APPOINTMENT = "appointmentTable";
+
+    public static final String CREATE_INDEX_TABLE_APPOINTMENT =
+            "CREATE INDEX " + INDEX_TABLE_APPOINTMENT + " ON " + TABLA_CITAS + "(persona_cita, cantidad_ganado, fecha)";
 }
