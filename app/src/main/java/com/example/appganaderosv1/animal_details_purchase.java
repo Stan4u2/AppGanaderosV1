@@ -46,12 +46,12 @@ public class animal_details_purchase extends AppCompatActivity {
 
         Bundle objectSent = getIntent().getExtras();
 
-        if(objectSent != null){
+        if (objectSent != null) {
             compraDetalle = (CompraDetalle) objectSent.getSerializable("compraDetalle");
             ganado = (Ganado) objectSent.getSerializable("ganado");
             raza = (Raza) objectSent.getSerializable("raza");
 
-            if(String.valueOf(objectSent.getSerializable("tipo")).equals("existente")) {
+            if (String.valueOf(objectSent.getSerializable("tipo")).equals("existente")) {
                 id_purchase_modifie = compraDetalle.getCompra();
             }
             id_animal_modifie = compraDetalle.getId_compra_detalle();
@@ -67,14 +67,14 @@ public class animal_details_purchase extends AppCompatActivity {
 
     }
 
-    public void onRestart(){
+    public void onRestart() {
         super.onRestart();
 
         SQLiteDatabase db = conn.getReadableDatabase();
 
         String[] id_animal = {String.valueOf(id_animal_modifie)};
 
-        try{
+        try {
             Cursor cursor = db.rawQuery(
                     "SELECT DISTINCT " +
                             Utilidades.CAMPO_ID_COMPRA_DETALLE + ", " +
@@ -100,7 +100,7 @@ public class animal_details_purchase extends AppCompatActivity {
                             " AND " +
                             Utilidades.CAMPO_RAZA + " = " + Utilidades.CAMPO_ID_RAZA +
                             " AND " +
-                            Utilidades.CAMPO_ID_COMPRA_DETALLE + " = ?" , id_animal);
+                            Utilidades.CAMPO_ID_COMPRA_DETALLE + " = ?", id_animal);
 
             cursor.moveToFirst();
 
@@ -134,13 +134,13 @@ public class animal_details_purchase extends AppCompatActivity {
             cursor.close();
             db.close();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
         }
 
     }
 
-    public void modifieAnimal(View view){
+    public void modifieAnimal(View view) {
         Intent intent = new Intent(view.getContext(), insert_new_animal.class);
 
         Bundle bundle = new Bundle();
@@ -154,7 +154,7 @@ public class animal_details_purchase extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void deleteAnimal(View view){
+    public void deleteAnimal(View view) {
         SQLiteDatabase db = conn.getReadableDatabase();
         boolean continueProcess = false;
         String[] id_animal = {String.valueOf(id_animal_modifie)};
@@ -169,23 +169,22 @@ public class animal_details_purchase extends AppCompatActivity {
             exists = cursor.getInt(0);
         }
 
-        if(exists == 0){
+        if (exists == 0) {
             int deleted = db.delete(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_ID_COMPRA_DETALLE + " = ?", id_animal);
 
-            if(deleted == 1){
+            if (deleted == 1) {
                 insert_new_purchases.animalDeleted = true;
                 Toast.makeText(getApplicationContext(), "Se ha eliminado el animal", Toast.LENGTH_LONG).show();
                 continueProcess = true;
                 finish();
-            }else {
+            } else {
                 Toast.makeText(getApplicationContext(), "Datos no eliminados", Toast.LENGTH_LONG).show();
             }
-        }else{
+        } else {
             Toast toast = Toast.makeText(getApplicationContext(), "¡¡No puede eliminar esta compra!!\nYa realizo la venta de este animal", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER,0,0);
+            toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         }
-
 
 
         db.close();

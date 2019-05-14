@@ -51,7 +51,7 @@ public class appointment_details extends AppCompatActivity {
         Bundle objectSent = getIntent().getExtras();
 
 
-        if(objectSent != null){
+        if (objectSent != null) {
             person = (Persona) objectSent.getSerializable("persona");
             citas = (Citas) objectSent.getSerializable("citas");
 
@@ -65,10 +65,10 @@ public class appointment_details extends AppCompatActivity {
             number_animals_appointment.setText(citas.getCantidad_ganado().toString());
             extra_data_appointment.setText(citas.getDatos());
 
-            if(citas.getRespaldo() == 0){
+            if (citas.getRespaldo() == 0) {
                 delete_appointment.setVisibility(View.VISIBLE);
                 restore_appointment.setVisibility(View.GONE);
-            }else if (citas.getRespaldo() == 1){
+            } else if (citas.getRespaldo() == 1) {
                 restore_appointment.setVisibility(View.VISIBLE);
                 delete_appointment.setVisibility(View.VISIBLE);
             }
@@ -76,14 +76,14 @@ public class appointment_details extends AppCompatActivity {
 
     }
 
-    public void onRestart(){
+    public void onRestart() {
         super.onRestart();
 
         SQLiteDatabase db = conn.getReadableDatabase();
 
         String[] parameters = {String.valueOf(id_appointment)};
 
-        try{
+        try {
             Cursor cursor = db.rawQuery(
                     "SELECT " +
                             Utilidades.CAMPO_ID_PERSONA + ", " +//0
@@ -96,10 +96,10 @@ public class appointment_details extends AppCompatActivity {
                             Utilidades.CAMPO_FECHA_CITAS + ", " +//6
                             Utilidades.CAMPO_CANTIDAD_GANADO + ", " +//7
                             Utilidades.CAMPO_DATOS +//8
-                        " FROM " +
+                            " FROM " +
                             Utilidades.TABLA_CITAS + ", " +
                             Utilidades.TABLA_PERSONA +
-                        " WHERE " +
+                            " WHERE " +
                             Utilidades.CAMPO_PERSONA_CITA + " = " + Utilidades.CAMPO_ID_PERSONA +
                             " AND " +
                             Utilidades.CAMPO_ID_CITAS + " = ?", parameters);
@@ -134,29 +134,29 @@ public class appointment_details extends AppCompatActivity {
             db.close();
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
         }
     }
 
-    public void deleteAppointment(View view){
-        if(administrator){
+    public void deleteAppointment(View view) {
+        if (administrator) {
             delete();
-        }else if (!false){
+        } else if (!false) {
             sendGarbage();
         }
 
     }
 
-    private void delete(){
+    private void delete() {
         SQLiteDatabase db = conn.getReadableDatabase();
         String[] id_appointment = {String.valueOf(citas.getId_citas())};
 
         int deleted = db.delete(Utilidades.TABLA_CITAS, Utilidades.CAMPO_ID_CITAS + " = ?", id_appointment);
 
-        if(deleted == 1){
+        if (deleted == 1) {
             Toast.makeText(getApplicationContext(), "Cita Eliminada", Toast.LENGTH_LONG).show();
-        }else {
+        } else {
             Toast.makeText(getApplicationContext(), "Datos no eliminados", Toast.LENGTH_LONG).show();
         }
 
@@ -164,7 +164,7 @@ public class appointment_details extends AppCompatActivity {
         finish();
     }
 
-    private void sendGarbage(){
+    private void sendGarbage() {
         //In this method I don´t really delete the data, i just send it tto the garbage can.
         SQLiteDatabase db = conn.getWritableDatabase();
 
@@ -175,17 +175,17 @@ public class appointment_details extends AppCompatActivity {
 
         int updated = db.update(Utilidades.TABLA_CITAS, values, Utilidades.CAMPO_ID_CITAS + " = ?", id_appointment);
 
-        if (updated == 1){
+        if (updated == 1) {
             Toast.makeText(getApplicationContext(), "Se ha mandado al bote de basura.", Toast.LENGTH_LONG).show();
             finish();
-        }else{
+        } else {
             Toast.makeText(getApplicationContext(), "Ha ocurrdio un error.", Toast.LENGTH_LONG).show();
         }
 
         db.close();
     }
 
-    public void restoreAppointment(View view){
+    public void restoreAppointment(View view) {
         //In this method I restore the data.
         SQLiteDatabase db = conn.getWritableDatabase();
 
@@ -196,17 +196,17 @@ public class appointment_details extends AppCompatActivity {
 
         int updated = db.update(Utilidades.TABLA_CITAS, values, Utilidades.CAMPO_ID_CITAS + " = ?", id_appointment);
 
-        if (updated == 1){
+        if (updated == 1) {
             Toast.makeText(getApplicationContext(), "Se ha recuperado la cita.", Toast.LENGTH_LONG).show();
             finish();
-        }else{
+        } else {
             Toast.makeText(getApplicationContext(), "Ha ocurrdio un error.", Toast.LENGTH_LONG).show();
         }
 
         db.close();
     }
 
-    public void modifieAppointment(View view){
+    public void modifieAppointment(View view) {
         Intent intent = new Intent(view.getContext(), insert_new_appointment.class);
 
         Bundle bundle = new Bundle();

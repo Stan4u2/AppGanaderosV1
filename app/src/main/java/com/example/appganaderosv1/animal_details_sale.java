@@ -68,7 +68,7 @@ public class animal_details_sale extends AppCompatActivity {
 
         Bundle objectSent = getIntent().getExtras();
 
-        if(objectSent != null) {
+        if (objectSent != null) {
             owner = objectSent.getSerializable("owner").toString();
             persona = (Persona) objectSent.getSerializable("persona");
             ventaDetalle = (VentaDetalle) objectSent.getSerializable("ventaDetalle");
@@ -77,7 +77,7 @@ public class animal_details_sale extends AppCompatActivity {
             raza = (Raza) objectSent.getSerializable("raza");
             purchase_date = objectSent.getSerializable("fechaCompra").toString();
 
-            if(owner.equals("yes")){
+            if (owner.equals("yes")) {
                 System.out.println("si entro");
                 id_sale = ventaDetalle.getId_venta();
             }
@@ -111,7 +111,7 @@ public class animal_details_sale extends AppCompatActivity {
 
         String[] id_sale = {String.valueOf(id_sale_modifie)};
 
-        try{
+        try {
             Cursor cursor = db.rawQuery(
                     "SELECT DISTINCT " +
                             Utilidades.CAMPO_ID_PERSONA + ", " +
@@ -122,7 +122,7 @@ public class animal_details_sale extends AppCompatActivity {
 
                             Utilidades.CAMPO_ID_VENTA_DETALLE + ", " +
                             Utilidades.CAMPO_COMPRA_GANADO + ", " +
-                            Utilidades.CAMPO_PRECIO_VENTA  + ", " +
+                            Utilidades.CAMPO_PRECIO_VENTA + ", " +
                             Utilidades.CAMPO_TARA_VENTA + ", " +
                             Utilidades.CAMPO_TOTAL_VENTA + ", " +
 
@@ -160,7 +160,7 @@ public class animal_details_sale extends AppCompatActivity {
                             " AND " +
                             Utilidades.CAMPO_RAZA + " = " + Utilidades.CAMPO_ID_RAZA +
                             " AND " +
-                            Utilidades.CAMPO_ID_VENTA_DETALLE + " = ?" , id_sale);
+                            Utilidades.CAMPO_ID_VENTA_DETALLE + " = ?", id_sale);
 
             cursor.moveToFirst();
 
@@ -222,12 +222,12 @@ public class animal_details_sale extends AppCompatActivity {
 
             insert_new_sales.owner = owner;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
         }
     }
 
-    public void modifieSale(View view){
+    public void modifieSale(View view) {
         Intent intent = new Intent(view.getContext(), select_animal.class);
 
         Bundle bundle = new Bundle();
@@ -239,7 +239,7 @@ public class animal_details_sale extends AppCompatActivity {
         bundle.putSerializable("compraDetalle", compraDetalle);
         bundle.putSerializable("ganado", ganado);
         bundle.putSerializable("raza", raza);
-        if(owner.equals("yes")){
+        if (owner.equals("yes")) {
             bundle.putSerializable("idSale", id_sale);
         }
 
@@ -248,7 +248,7 @@ public class animal_details_sale extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void deleteSale(View view){
+    public void deleteSale(View view) {
         SQLiteDatabase db = conn.getReadableDatabase();
         boolean continueProcess = false;
         String[] id_sale = {String.valueOf(id_sale_modifie)};
@@ -256,15 +256,15 @@ public class animal_details_sale extends AppCompatActivity {
         //In this part I delete the animal but I still have to change the number of animals
         int deleted = db.delete(Utilidades.TABLA_VENTA_DETALLE, Utilidades.CAMPO_ID_VENTA_DETALLE + " = ?", id_sale);
 
-        if(deleted == 1){
+        if (deleted == 1) {
             insert_new_sales.saleDeleted = true;
             Toast.makeText(getApplicationContext(), "Se ha eliminado el animal", Toast.LENGTH_LONG).show();
             continueProcess = true;
-        }else {
+        } else {
             Toast.makeText(getApplicationContext(), "Datos no eliminados", Toast.LENGTH_LONG).show();
         }
 
-        if(continueProcess == true){
+        if (continueProcess == true) {
             finish();
         }
 

@@ -32,37 +32,37 @@ public class insert_new_race extends AppCompatActivity {
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
 
-        getWindow().setLayout((int) (width*.50), (int) (height*.50));
+        getWindow().setLayout((int) (width * .50), (int) (height * .50));
 
         raceEditText = findViewById(R.id.raceEditText);
     }
 
-    public void saveRace(View view){
+    public void saveRace(View view) {
         SQLiteDatabase db = conn.getReadableDatabase();
 
         String race = raceEditText.getText().toString();
 
         Boolean noData;
 
-        if(race.isEmpty()){
+        if (race.isEmpty()) {
             Toast.makeText(getApplicationContext(), "¡Campo Vacio!", Toast.LENGTH_LONG).show();
-        }else {
+        } else {
 
-            try{
+            try {
                 //These first lines of code are used to compare if the race that is going to be inserted is already in the DB
                 //SELECT * FROM raza WHERE tipo_raza LIKE 'A%';
-                Cursor cursor = db.rawQuery("SELECT * FROM " + Utilidades.TABLA_RAZA + " WHERE " + Utilidades.CAMPO_TIPO_RAZA + " LIKE '"+ race +"%'", null);
+                Cursor cursor = db.rawQuery("SELECT * FROM " + Utilidades.TABLA_RAZA + " WHERE " + Utilidades.CAMPO_TIPO_RAZA + " LIKE '" + race + "%'", null);
 
-                if(cursor.getCount() <= 0){
+                if (cursor.getCount() <= 0) {
                     cursor.close();
                     noData = true;
-                }else{
+                } else {
                     cursor.close();
                     noData = false;
                     Toast.makeText(getApplicationContext(), "Esa raza ya existe", Toast.LENGTH_LONG).show();
                 }
 
-                if(noData == true){
+                if (noData == true) {
                     ContentValues values = new ContentValues();
                     values.put(Utilidades.CAMPO_TIPO_RAZA, race);
 
@@ -70,22 +70,22 @@ public class insert_new_race extends AppCompatActivity {
 
                     db.close();
 
-                    if(idResult == -1){
+                    if (idResult == -1) {
                         Toast.makeText(getApplicationContext(), "¡Datos No Insertados!", Toast.LENGTH_LONG).show();
-                    }else{
+                    } else {
                         Toast.makeText(getApplicationContext(), "Datos Insertados", Toast.LENGTH_LONG).show();
                         insert_new_animal.id_new_race = idResult.intValue();
                         insert_new_animal.process_race = true;
                         finish();
                     }
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
             }
         }
     }
 
-    public void cancel(View view){
+    public void cancel(View view) {
         finish();
     }
 }

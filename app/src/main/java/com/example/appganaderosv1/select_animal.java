@@ -191,30 +191,30 @@ public class select_animal extends AppCompatActivity {
 
             //if (owner.equals("no")) {
 
-                id_sale_modifie = ventaDetalle.getId_venta_detalle();
+            id_sale_modifie = ventaDetalle.getId_venta_detalle();
 
-                for (int i = 0; i < peopleData.size(); i++) {
-                    if (peopleData.get(i).getId_persona().equals(persona.getId_persona())) {
-                        spinner_owner.setSelection(i + 1);
-                        posA = i + 1;
-                        consultListDates();
-                    }
+            for (int i = 0; i < peopleData.size(); i++) {
+                if (peopleData.get(i).getId_persona().equals(persona.getId_persona())) {
+                    spinner_owner.setSelection(i + 1);
+                    posA = i + 1;
+                    consultListDates();
                 }
+            }
 
-                for (int i = 0; i < purchaseData.size(); i++) {
-                    if (purchaseData.get(i).getFecha_compra().equals(purchaseDate)) {
-                        spinner_purchase_date.setSelection(i + 1);
-                        posB = i + 1;
-                        consultListAnimals();
-                    }
+            for (int i = 0; i < purchaseData.size(); i++) {
+                if (purchaseData.get(i).getFecha_compra().equals(purchaseDate)) {
+                    spinner_purchase_date.setSelection(i + 1);
+                    posB = i + 1;
+                    consultListAnimals();
                 }
+            }
 
-                for (int i = 0; i < animalData.size(); i++) {
-                    if (animalData.get(i).getId_compra_detalle().equals(compraDetalle.getId_compra_detalle())) {
-                        spinner_animal.setSelection(i + 1);
-                        posC = i + 1;
-                    }
+            for (int i = 0; i < animalData.size(); i++) {
+                if (animalData.get(i).getId_compra_detalle().equals(compraDetalle.getId_compra_detalle())) {
+                    spinner_animal.setSelection(i + 1);
+                    posC = i + 1;
                 }
+            }
             //}
 
 

@@ -16,11 +16,11 @@ import java.util.ArrayList;
 public class Adapter_sales extends RecyclerView.Adapter<Adapter_sales.ViewHolderSales> implements View.OnClickListener {
 
     ArrayList<Persona> listaPersonas;
-    ArrayList <Ventas> listaVentas;
+    ArrayList<Ventas> listaVentas;
 
     private View.OnClickListener listener;
 
-    public Adapter_sales(ArrayList<Persona> listaPersonas, ArrayList<Ventas> listaVentas){
+    public Adapter_sales(ArrayList<Persona> listaPersonas, ArrayList<Ventas> listaVentas) {
         this.listaPersonas = listaPersonas;
         this.listaVentas = listaVentas;
     }
@@ -47,13 +47,13 @@ public class Adapter_sales extends RecyclerView.Adapter<Adapter_sales.ViewHolder
         return listaVentas.size();
     }
 
-    public void setOnClickListener(View.OnClickListener listener){
+    public void setOnClickListener(View.OnClickListener listener) {
         this.listener = listener;
     }
 
     @Override
     public void onClick(View v) {
-        if(listener!=null){
+        if (listener != null) {
             listener.onClick(v);
         }
     }

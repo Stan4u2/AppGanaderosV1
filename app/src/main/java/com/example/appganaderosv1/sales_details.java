@@ -100,10 +100,10 @@ public class sales_details extends AppCompatActivity {
             amount_to_charge.setText(ventas.getCantidad_cobrar().toString());
             earnings.setText(ventas.getGanancias().toString());
 
-            if(ventas.getRespaldo() == 0){
+            if (ventas.getRespaldo() == 0) {
                 delete_sale.setVisibility(View.VISIBLE);
                 restore_sale.setVisibility(View.GONE);
-            }else if (ventas.getRespaldo() == 1){
+            } else if (ventas.getRespaldo() == 1) {
                 restore_sale.setVisibility(View.VISIBLE);
                 delete_sale.setVisibility(View.VISIBLE);
             }
@@ -288,7 +288,7 @@ public class sales_details extends AppCompatActivity {
 
                         Utilidades.CAMPO_ID_VENTA_DETALLE + ", " +
                         Utilidades.CAMPO_COMPRA_GANADO + ", " +
-                        Utilidades.CAMPO_PRECIO_VENTA  + ", " +
+                        Utilidades.CAMPO_PRECIO_VENTA + ", " +
                         Utilidades.CAMPO_TARA_VENTA + ", " +
                         Utilidades.CAMPO_TOTAL_VENTA + ", " +
                         Utilidades.CAMPO_VENTA + ", " +
@@ -408,12 +408,12 @@ public class sales_details extends AppCompatActivity {
         recycler_view_sale.setAdapter(adapter_animals);
     }
 
-    public void modifySale(View view){
+    public void modifySale(View view) {
         Intent intent = new Intent(view.getContext(), insert_new_sales.class);
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("action", "modifie");
-        bundle.putSerializable("owner" , "yes");
+        bundle.putSerializable("owner", "yes");
         bundle.putSerializable("persona", persona);
         bundle.putSerializable("ventas", ventas);
 
@@ -421,10 +421,10 @@ public class sales_details extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void delete_sale(View view){
-        if(administrator){
+    public void delete_sale(View view) {
+        if (administrator) {
             delete();
-        }else if (!false){
+        } else if (!false) {
             sendGarbage();
         }
     }
@@ -440,10 +440,10 @@ public class sales_details extends AppCompatActivity {
 
         int updated = db.update(Utilidades.TABLA_VENTAS, values, Utilidades.CAMPO_ID_VENTAS + " = ?", id_sale);
 
-        if (updated == 1){
+        if (updated == 1) {
             Toast.makeText(getApplicationContext(), "Se ha mandado al bote de basura.", Toast.LENGTH_LONG).show();
             finish();
-        }else{
+        } else {
             Toast.makeText(getApplicationContext(), "Ha ocurrdio un error.", Toast.LENGTH_LONG).show();
         }
 
@@ -456,9 +456,9 @@ public class sales_details extends AppCompatActivity {
 
         int deleted = db.delete(Utilidades.TABLA_VENTAS, Utilidades.CAMPO_ID_VENTAS + " = ?", id_sale);
 
-        if(deleted == 1){
+        if (deleted == 1) {
             Toast.makeText(getApplicationContext(), "Venta Eliminada", Toast.LENGTH_LONG).show();
-        }else {
+        } else {
             Toast.makeText(getApplicationContext(), "Datos no eliminados", Toast.LENGTH_LONG).show();
         }
 
@@ -466,7 +466,7 @@ public class sales_details extends AppCompatActivity {
         finish();
     }
 
-    public void restoreSale(View view){
+    public void restoreSale(View view) {
         //In this method I restore the data.
         SQLiteDatabase db = conn.getWritableDatabase();
 
@@ -477,10 +477,10 @@ public class sales_details extends AppCompatActivity {
 
         int updated = db.update(Utilidades.TABLA_VENTAS, values, Utilidades.CAMPO_ID_VENTAS + " = ?", id_sale);
 
-        if (updated == 1){
+        if (updated == 1) {
             Toast.makeText(getApplicationContext(), "Se ha recuperado la venta.", Toast.LENGTH_LONG).show();
             finish();
-        }else{
+        } else {
             Toast.makeText(getApplicationContext(), "Ha ocurrdio un error.", Toast.LENGTH_LONG).show();
         }
 

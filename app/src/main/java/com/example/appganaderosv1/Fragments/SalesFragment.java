@@ -66,7 +66,7 @@ public class SalesFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sales, container ,false);
+        View view = inflater.inflate(R.layout.fragment_sales, container, false);
 
         conn = new ConexionSQLiteHelper(getContext(), "bd_ganado", null, 2);
 
@@ -80,7 +80,7 @@ public class SalesFragment extends Fragment {
         listaPersonas = new ArrayList<>();
         listaVentas = new ArrayList<>();
 
-        if(administrator) {
+        if (administrator) {
             borrar.setVisibility(View.VISIBLE);
             borrar.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -95,7 +95,7 @@ public class SalesFragment extends Fragment {
                     fillList();
                 }
             });
-        }else{
+        } else {
             borrar.setVisibility(View.GONE);
         }
 
@@ -104,7 +104,7 @@ public class SalesFragment extends Fragment {
         return view;
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         fillList();
     }
@@ -120,9 +120,9 @@ public class SalesFragment extends Fragment {
 
         String SELECT;
 
-        if(deleteButton){
+        if (deleteButton) {
             SELECT = admin;
-        }else if (!false) {
+        } else if (!false) {
             SELECT = normalUser;
         }
 
@@ -130,7 +130,7 @@ public class SalesFragment extends Fragment {
                 SELECT, null
         );
 
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             ventas = new Ventas();
             ventas.setId_ventas(cursor.getInt(0));
             ventas.setFecha(cursor.getString(1));
@@ -179,19 +179,19 @@ public class SalesFragment extends Fragment {
     }
 
 
-    public void newSale(View view){
+    public void newSale(View view) {
 
         Intent miIntent = null;
         Bundle bundle = new Bundle();
 
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.agregar_venta:
                 miIntent = new Intent(view.getContext(), insert_new_sales.class);
                 bundle.putSerializable("action", "insert");
                 bundle.putSerializable("owner", "no");
                 break;
         }
-        if(miIntent!=null){
+        if (miIntent != null) {
             miIntent.putExtras(bundle);
             view.getContext().startActivity(miIntent);
         }

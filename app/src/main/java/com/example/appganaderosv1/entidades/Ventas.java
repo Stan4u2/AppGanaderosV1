@@ -12,7 +12,7 @@ public class Ventas implements Serializable {
     private Integer ganancias;
     private Integer respaldo;
 
-    public Ventas (){
+    public Ventas() {
 
     }
 

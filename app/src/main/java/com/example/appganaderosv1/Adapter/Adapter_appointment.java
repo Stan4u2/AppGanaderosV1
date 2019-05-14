@@ -46,13 +46,13 @@ public class Adapter_appointment extends RecyclerView.Adapter<Adapter_appointmen
         return listaCitas.size();
     }
 
-    public void setOnClickListener(View.OnClickListener listener){
+    public void setOnClickListener(View.OnClickListener listener) {
         this.listener = listener;
     }
 
     @Override
     public void onClick(View v) {
-        if(listener!=null){
+        if (listener != null) {
             listener.onClick(v);
         }
     }

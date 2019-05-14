@@ -69,7 +69,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     List<EventDay> events = new ArrayList<>();
 
 
-
     ArrayList<String> dates = new ArrayList<String>();
 
     @Nullable
@@ -107,8 +106,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         Calendar cal = Calendar.getInstance();
 
-        String [] dateCal = sdf.format(cal.getTime()).split("/");
-        int [] dateNoCeros = new int[3];
+        String[] dateCal = sdf.format(cal.getTime()).split("/");
+        int[] dateNoCeros = new int[3];
 
         dateNoCeros[0] = Integer.valueOf(dateCal[0]);
         dateNoCeros[1] = Integer.valueOf(dateCal[1]);
@@ -122,7 +121,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 Calendar clickedDayCalendar = eventDay.getCalendar();
 
                 date = sdf.format(clickedDayCalendar.getTime());
-                String [] dateCa = sdf.format(clickedDayCalendar.getTime()).split("/");
+                String[] dateCa = sdf.format(clickedDayCalendar.getTime()).split("/");
 
                 dateNoCeros[0] = Integer.valueOf(dateCa[0]);
                 dateNoCeros[1] = Integer.valueOf(dateCa[1]);
@@ -217,11 +216,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         }
 
-        for(String object : dates){
+        for (String object : dates) {
             Calendar calendar = Calendar.getInstance();
-            String [] dateCal = object.split("/");
+            String[] dateCal = object.split("/");
 
-            calendar.set(Integer.valueOf(dateCal[2]), Integer.valueOf(dateCal[1])-1, Integer.valueOf(dateCal[0]));
+            calendar.set(Integer.valueOf(dateCal[2]), Integer.valueOf(dateCal[1]) - 1, Integer.valueOf(dateCal[0]));
             events.add(new EventDay(calendar, R.drawable.toro));
 
         }
@@ -241,28 +240,28 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         Cursor cursor = db.rawQuery(
                 "SELECT DISTINCT " +
-                Utilidades.CAMPO_ID_CITAS + ", " +
-                Utilidades.CAMPO_CANTIDAD_GANADO + ", " +
-                Utilidades.CAMPO_DATOS + ", " +
-                Utilidades.CAMPO_FECHA_CITAS + ", " +
-                Utilidades.CAMPO_RESPALDO_CITAS + ", " +
+                        Utilidades.CAMPO_ID_CITAS + ", " +
+                        Utilidades.CAMPO_CANTIDAD_GANADO + ", " +
+                        Utilidades.CAMPO_DATOS + ", " +
+                        Utilidades.CAMPO_FECHA_CITAS + ", " +
+                        Utilidades.CAMPO_RESPALDO_CITAS + ", " +
 
-                Utilidades.CAMPO_ID_PERSONA + ", " +
-                Utilidades.CAMPO_NOMBRE + ", " +
-                Utilidades.CAMPO_TELEFONO + ", " +
-                Utilidades.CAMPO_DOMICILIO + ", " +
-                Utilidades.CAMPO_DATOS_EXTRAS +
-                " FROM " +
-                Utilidades.TABLA_PERSONA + ", " +
-                Utilidades.TABLA_CITAS +
-                " WHERE " +
-                Utilidades.CAMPO_FECHA_CITAS + " = '" + date + "'" +
-                " AND " +
-                Utilidades.CAMPO_PERSONA_CITA + " = " + Utilidades.CAMPO_ID_PERSONA +
-                " AND " +
-                Utilidades.CAMPO_RESPALDO_CITAS + " = " + 0, null);
+                        Utilidades.CAMPO_ID_PERSONA + ", " +
+                        Utilidades.CAMPO_NOMBRE + ", " +
+                        Utilidades.CAMPO_TELEFONO + ", " +
+                        Utilidades.CAMPO_DOMICILIO + ", " +
+                        Utilidades.CAMPO_DATOS_EXTRAS +
+                        " FROM " +
+                        Utilidades.TABLA_PERSONA + ", " +
+                        Utilidades.TABLA_CITAS +
+                        " WHERE " +
+                        Utilidades.CAMPO_FECHA_CITAS + " = '" + date + "'" +
+                        " AND " +
+                        Utilidades.CAMPO_PERSONA_CITA + " = " + Utilidades.CAMPO_ID_PERSONA +
+                        " AND " +
+                        Utilidades.CAMPO_RESPALDO_CITAS + " = " + 0, null);
 
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             System.out.println(date);
             citas = new Citas();
             citas.setId_citas(cursor.getInt(0));
@@ -333,13 +332,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 Utilidades.TABLA_PERSONA + ", " +
                 Utilidades.TABLA_COMPRAS +
                 " WHERE " +
-                Utilidades.CAMPO_FECHA_COMPRAS + " = '" + date  + "'" +
+                Utilidades.CAMPO_FECHA_COMPRAS + " = '" + date + "'" +
                 " AND " +
                 Utilidades.CAMPO_PERSONA_COMPRO + " = " + Utilidades.CAMPO_ID_PERSONA +
                 " AND " +
                 Utilidades.CAMPO_RESPALDO_COMPRAS + " = " + 0, null);
 
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             System.out.println(date);
             compras = new Compras();
             compras.setId_compras(cursor.getInt(0));
@@ -412,14 +411,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         Utilidades.TABLA_PERSONA + ", " +
                         Utilidades.TABLA_VENTAS +
                         " WHERE " +
-                        Utilidades.CAMPO_FECHA_VENTAS + " = '" + date +"'" +
+                        Utilidades.CAMPO_FECHA_VENTAS + " = '" + date + "'" +
                         " AND " +
                         Utilidades.CAMPO_PERSONA_VENTA + " = " + Utilidades.CAMPO_ID_PERSONA +
                         " AND " +
                         Utilidades.CAMPO_RESPALDO_VENTAS + " = " + 0, null
         );
 
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             System.out.println(date);
             ventas = new Ventas();
             ventas.setId_ventas(cursor.getInt(0));

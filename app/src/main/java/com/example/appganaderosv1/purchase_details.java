@@ -78,7 +78,7 @@ public class purchase_details extends AppCompatActivity {
         Bundle objectSent = getIntent().getExtras();
 
 
-        if(objectSent != null) {
+        if (objectSent != null) {
             person = (Persona) objectSent.getSerializable("persona");
             compras = (Compras) objectSent.getSerializable("compras");
 
@@ -92,10 +92,10 @@ public class purchase_details extends AppCompatActivity {
             amount_animals_purchase.setText(compras.getCantidad_animales_compra().toString());
             amount_to_pay.setText(compras.getCantidad_pagar().toString());
 
-            if(compras.getRespaldo() == 0){
+            if (compras.getRespaldo() == 0) {
                 delete_purchase.setVisibility(View.VISIBLE);
                 restore_purchase.setVisibility(View.GONE);
-            }else if (compras.getRespaldo() == 1){
+            } else if (compras.getRespaldo() == 1) {
                 restore_purchase.setVisibility(View.VISIBLE);
                 delete_purchase.setVisibility(View.VISIBLE);
             }
@@ -235,7 +235,6 @@ public class purchase_details extends AppCompatActivity {
         }
 
 
-
         db.close();
         cursor.close();
 
@@ -313,7 +312,7 @@ public class purchase_details extends AppCompatActivity {
         cursor.close();
     }
 
-    public void modifie_purchase(View view){
+    public void modifie_purchase(View view) {
         Intent intent = new Intent(view.getContext(), insert_new_purchases.class);
 
         Bundle bundle = new Bundle();
@@ -326,10 +325,10 @@ public class purchase_details extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void delete_purchase(View view){
-        if(administrator){
+    public void delete_purchase(View view) {
+        if (administrator) {
             delete();
-        }else if (!false){
+        } else if (!false) {
             sendGarbage();
         }
     }
@@ -345,10 +344,10 @@ public class purchase_details extends AppCompatActivity {
 
         int updated = db.update(Utilidades.TABLA_COMPRAS, values, Utilidades.CAMPO_ID_COMPRA + " = ?", id_purchase);
 
-        if (updated == 1){
+        if (updated == 1) {
             Toast.makeText(getApplicationContext(), "Se ha mandado al bote de basura.", Toast.LENGTH_LONG).show();
             finish();
-        }else{
+        } else {
             Toast.makeText(getApplicationContext(), "Ha ocurrdio un error.", Toast.LENGTH_LONG).show();
         }
 
@@ -376,28 +375,27 @@ public class purchase_details extends AppCompatActivity {
             quantityAnimalsSold = cursor.getInt(0);
         }
 
-        if(quantityAnimalsSold > 0){
+        if (quantityAnimalsSold > 0) {
             Toast toast = Toast.makeText(getApplicationContext(), "¡¡No puede eliminar esta compra!!\nYa realizo la venta de uno de estos animales", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER,0,0);
+            toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
 
-        }else{
+        } else {
             int deleted = db.delete(Utilidades.TABLA_COMPRAS, Utilidades.CAMPO_ID_COMPRA + " = ?", id_purchase);
 
-            if(deleted == 1){
+            if (deleted == 1) {
                 Toast.makeText(getApplicationContext(), "Compra Eliminada", Toast.LENGTH_LONG).show();
-            }else {
+            } else {
                 Toast.makeText(getApplicationContext(), "Datos no eliminados", Toast.LENGTH_LONG).show();
             }
         }
-
 
 
         db.close();
         finish();
     }
 
-    public void restorePurchase(View view){
+    public void restorePurchase(View view) {
         //In this method I restore the data.
         SQLiteDatabase db = conn.getWritableDatabase();
 
@@ -408,10 +406,10 @@ public class purchase_details extends AppCompatActivity {
 
         int updated = db.update(Utilidades.TABLA_COMPRAS, values, Utilidades.CAMPO_ID_COMPRA + " = ?", id_purchase);
 
-        if (updated == 1){
+        if (updated == 1) {
             Toast.makeText(getApplicationContext(), "Se ha recuperado la compra.", Toast.LENGTH_LONG).show();
             finish();
-        }else{
+        } else {
             Toast.makeText(getApplicationContext(), "Ha ocurrdio un error.", Toast.LENGTH_LONG).show();
         }
 

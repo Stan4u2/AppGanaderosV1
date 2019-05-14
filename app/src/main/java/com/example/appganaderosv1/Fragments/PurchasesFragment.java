@@ -79,7 +79,7 @@ public class PurchasesFragment extends Fragment {
         listaPersonas = new ArrayList<>();
         listaCompras = new ArrayList<>();
 
-        if(administrator) {
+        if (administrator) {
             borrar.setVisibility(View.VISIBLE);
             borrar.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -94,7 +94,7 @@ public class PurchasesFragment extends Fragment {
                     fillList();
                 }
             });
-        }else{
+        } else {
             borrar.setVisibility(View.GONE);
         }
 
@@ -104,7 +104,7 @@ public class PurchasesFragment extends Fragment {
 
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         fillList();
     }
@@ -120,15 +120,15 @@ public class PurchasesFragment extends Fragment {
 
         String SELECT;
 
-        if(deleteButton){
+        if (deleteButton) {
             SELECT = admin;
-        }else if (!false) {
+        } else if (!false) {
             SELECT = normalUser;
         }
 
         Cursor cursor = db.rawQuery(SELECT, null);
 
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             compras = new Compras();
             compras.setId_compras(cursor.getInt(0));
             compras.setFecha_compra(cursor.getString(1));
@@ -178,13 +178,13 @@ public class PurchasesFragment extends Fragment {
         Intent miIntent = null;
         Bundle bundle = new Bundle();
 
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.agregar:
                 miIntent = new Intent(view.getContext(), insert_new_purchases.class);
                 bundle.putSerializable("action", "insert");
                 break;
         }
-        if(miIntent!=null){
+        if (miIntent != null) {
             miIntent.putExtras(bundle);
             view.getContext().startActivity(miIntent);
         }

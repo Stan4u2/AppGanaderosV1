@@ -126,18 +126,18 @@ public class insert_new_purchases extends AppCompatActivity {
 
     }
 
-    public void loadData(){
+    public void loadData() {
         Persona person = null;
         Compras compras = null;
 
         Bundle data = getIntent().getExtras();
-        if(data != null){
+        if (data != null) {
             person = (Persona) data.getSerializable("persona");
             compras = (Compras) data.getSerializable("compras");
 
             for (int i = 0; i < peopleData.size(); i++) {
-                if(peopleData.get(i).getId_persona().equals(person.getId_persona())){
-                    spinner_person_purchase.setSelection(i+1);
+                if (peopleData.get(i).getId_persona().equals(person.getId_persona())) {
+                    spinner_person_purchase.setSelection(i + 1);
                 }
             }
 
@@ -175,9 +175,9 @@ public class insert_new_purchases extends AppCompatActivity {
             switch (action) {
                 case "insert":
                     //In these if´s I compare if the animal inserted has an owner, and depending the case will e the list that will be shown
-                    if(InsertNewAnimal.equals("no owner")){
+                    if (InsertNewAnimal.equals("no owner")) {
                         fillAnimalList();
-                    }else if(InsertNewAnimal.equals("owner")){
+                    } else if (InsertNewAnimal.equals("owner")) {
                         fillAnimalListOwner();
                     }
                     break;
@@ -206,7 +206,7 @@ public class insert_new_purchases extends AppCompatActivity {
             calculateSumPayAnimalsNotSaved();
         }
 
-        if(action.equals("modifie")){
+        if (action.equals("modifie")) {
             calculateQuantityAnimals();
             calculateSumPayAnimals();
         }
@@ -285,12 +285,12 @@ public class insert_new_purchases extends AppCompatActivity {
         deleteProgress();
     }
 
-    public void deleteProgress(){
+    public void deleteProgress() {
         SQLiteDatabase db = conn.getReadableDatabase();
 
         int deleted = db.delete(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_COMPRA + " IS NULL", null);
 
-        if(deleted >= 1){
+        if (deleted >= 1) {
             Toast.makeText(getApplicationContext(), "Compra Cancelada", Toast.LENGTH_LONG).show();
         }
 
@@ -325,12 +325,12 @@ public class insert_new_purchases extends AppCompatActivity {
         Bundle bundle = new Bundle();
         Intent intent = null;
         if (view.getId() == R.id.add_animal) {
-            if(action.equals("insert")) {
+            if (action.equals("insert")) {
                 intent = new Intent(insert_new_purchases.this, insert_new_animal.class);
                 bundle.putSerializable("action", "insert");
                 bundle.putSerializable("WhereCameFrom", "new");
                 InsertNewAnimal = "no owner";
-            }else if(action.equals("modifie")){
+            } else if (action.equals("modifie")) {
                 intent = new Intent(insert_new_purchases.this, insert_new_animal.class);
                 bundle.putSerializable("action", "insert");
                 bundle.putSerializable("WhereCameFrom", "change");
@@ -345,7 +345,7 @@ public class insert_new_purchases extends AppCompatActivity {
         }
     }
 
-    public void fillAnimalListOwner(){
+    public void fillAnimalListOwner() {
         SQLiteDatabase db = conn.getReadableDatabase();
 
         CompraDetalle compraDetalle = null;
@@ -554,11 +554,11 @@ public class insert_new_purchases extends AppCompatActivity {
         //number_animals_purchase.setText(String.valueOf(count));
 
         Cursor cursor = db.rawQuery(
-            "SELECT " +
+                "SELECT " +
                         Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS +
-                " FROM " +
+                        " FROM " +
                         Utilidades.TABLA_COMPRAS +
-                " WHERE " +
+                        " WHERE " +
                         Utilidades.CAMPO_ID_COMPRA + " = " + idPurchase, null
         );
 
@@ -596,13 +596,13 @@ public class insert_new_purchases extends AppCompatActivity {
 
     public void savePurchase(View view) {
 
-            boolean noBlankSpaces = true;
-            boolean complete = false;
+        boolean noBlankSpaces = true;
+        boolean complete = false;
 
-        if(spinner_person_purchase.getSelectedItemId() == 0 && date_purchase.getText().toString().isEmpty() && number_animals_purchase.getText().toString().equals("0")){
+        if (spinner_person_purchase.getSelectedItemId() == 0 && date_purchase.getText().toString().isEmpty() && number_animals_purchase.getText().toString().equals("0")) {
             Toast.makeText(getApplicationContext(), "¡¡Campos Vacios!!", Toast.LENGTH_LONG).show();
             noBlankSpaces = false;
-        }else {
+        } else {
             if (spinner_person_purchase.getSelectedItemId() == 0) {
                 Toast.makeText(getApplicationContext(), "¡¡Selecione El Vendedor!!", Toast.LENGTH_LONG).show();
                 noBlankSpaces = false;
@@ -630,7 +630,7 @@ public class insert_new_purchases extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "¡¡Datos No Insertados!!", Toast.LENGTH_LONG).show();
                 }
-            }else if (action.equals("modifie")){
+            } else if (action.equals("modifie")) {
                 int modified = modifiePurchase(
                         idPersonPurchase,
                         date_purchase.getText().toString(),
@@ -638,15 +638,15 @@ public class insert_new_purchases extends AppCompatActivity {
                         Double.valueOf(amount_to_pay.getText().toString())
                 );
 
-                if(modified == 1){
+                if (modified == 1) {
                     Toast.makeText(getApplicationContext(), "Se han actualizado los datos", Toast.LENGTH_LONG).show();
                     complete = true;
-                }else{
+                } else {
                     Toast.makeText(getApplicationContext(), "Datos no actualizados", Toast.LENGTH_LONG).show();
                 }
             }
 
-            if(complete) finish();
+            if (complete) finish();
         }
     }
 
@@ -690,9 +690,9 @@ public class insert_new_purchases extends AppCompatActivity {
         if (idResult == -1) {
             return false;
         } else {
-            if(setIDPurchase(idResult.intValue())){
+            if (setIDPurchase(idResult.intValue())) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
 
@@ -705,13 +705,13 @@ public class insert_new_purchases extends AppCompatActivity {
         ContentValues values = new ContentValues();
         values.put(Utilidades.CAMPO_COMPRA, idPurchase);
 
-        int updated =db.update(Utilidades.TABLA_COMPRA_DETALLE, values, Utilidades.CAMPO_COMPRA + " IS NULL", null);
+        int updated = db.update(Utilidades.TABLA_COMPRA_DETALLE, values, Utilidades.CAMPO_COMPRA + " IS NULL", null);
 
         db.close();
-        if(updated < 1){
+        if (updated < 1) {
             Toast.makeText(getApplicationContext(), "Animales no insertados", Toast.LENGTH_LONG).show();
             return false;
-        }else{
+        } else {
             return true;
         }
     }

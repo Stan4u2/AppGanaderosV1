@@ -10,7 +10,7 @@ public class Persona implements Serializable {
     private String domicilio;
     private String datos_extras;
 
-    public Persona(){
+    public Persona() {
 
     }
 

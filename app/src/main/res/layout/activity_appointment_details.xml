@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".appointment_details"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".appointment_details">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="DETALLE DE CITA"
             android:textSize="25dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Persona"
             android:textSize="20dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -121,8 +122,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
@@ -135,7 +136,7 @@
             android:layout_height="wrap_content"
             android:text="Ganado"
             android:textSize="20dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -202,16 +203,16 @@
             android:id="@+id/extra_data_appointment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Datos extras"
             android:gravity="center"
+            android:hint="Datos extras"
             android:textSize="17dp" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="bottom"
         android:orientation="horizontal">
 
         <ImageButton
@@ -229,10 +230,10 @@
             android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:layout_weight="1"
-            android:src="@android:drawable/ic_menu_delete"
-            android:scaleType="fitCenter"
             android:background="@null"
-            android:onClick="deleteAppointment"/>
+            android:onClick="deleteAppointment"
+            android:scaleType="fitCenter"
+            android:src="@android:drawable/ic_menu_delete" />
 
         <ImageButton
             android:id="@+id/restore_appointment"

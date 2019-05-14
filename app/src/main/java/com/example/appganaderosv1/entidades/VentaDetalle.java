@@ -12,7 +12,7 @@ public class VentaDetalle implements Serializable {
     private Integer id_venta;
 
 
-    public VentaDetalle(){
+    public VentaDetalle() {
 
     }
 

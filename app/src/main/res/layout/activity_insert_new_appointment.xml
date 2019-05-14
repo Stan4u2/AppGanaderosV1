@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:launchMode="singleTask"
     android:orientation="vertical"
-    tools:context=".insert_new_appointment"
-    android:launchMode="singleTask">
+    tools:context=".insert_new_appointment">
 
     <TextView
         android:id="@+id/action_to_do"
@@ -230,12 +230,13 @@
                 android:id="@+id/extra_data_appointment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Datos extras"
                 android:gravity="center"
+                android:hint="Datos extras"
                 android:textSize="17dp" />
 
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

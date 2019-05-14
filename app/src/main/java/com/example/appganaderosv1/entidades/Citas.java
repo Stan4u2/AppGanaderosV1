@@ -11,7 +11,7 @@ public class Citas implements Serializable {
     private Integer persona_cita;
     private Integer respaldo;
 
-    public Citas(){
+    public Citas() {
 
     }
 

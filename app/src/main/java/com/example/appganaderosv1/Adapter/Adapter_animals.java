@@ -14,7 +14,7 @@ import com.example.appganaderosv1.entidades.Raza;
 
 import java.util.ArrayList;
 
-public class Adapter_animals extends RecyclerView.Adapter<Adapter_animals.ViewHolderAnimals> implements View.OnClickListener{
+public class Adapter_animals extends RecyclerView.Adapter<Adapter_animals.ViewHolderAnimals> implements View.OnClickListener {
 
     ArrayList<CompraDetalle> listaCompraDetalle;
     ArrayList<Ganado> listaGanado;
@@ -49,13 +49,13 @@ public class Adapter_animals extends RecyclerView.Adapter<Adapter_animals.ViewHo
         return listaCompraDetalle.size();
     }
 
-    public void setOnClickListener(View.OnClickListener listener){
+    public void setOnClickListener(View.OnClickListener listener) {
         this.listener = listener;
     }
 
     @Override
     public void onClick(View v) {
-        if(listener!=null){
+        if (listener != null) {
             listener.onClick(v);
         }
     }

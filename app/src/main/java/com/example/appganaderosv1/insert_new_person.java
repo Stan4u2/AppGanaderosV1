@@ -30,24 +30,24 @@ public class insert_new_person extends AppCompatActivity {
         class_that_came_from();
     }
 
-    public void class_that_came_from(){
+    public void class_that_came_from() {
         Intent intent = getIntent();
         button_class = intent.getExtras().getString("button");
     }
 
-    public void save_person (View view){
+    public void save_person(View view) {
 
         boolean inserted = false;
 
-        if(name_person.getText().toString().isEmpty() || cellphone_person.getText().toString().isEmpty() || address_person.getText().toString().isEmpty() || extra_data_person.getText().toString().isEmpty()){
-            Toast.makeText(getApplicationContext(),"¡¡Llene todos los campos!!",Toast.LENGTH_LONG).show();
-        }else{
+        if (name_person.getText().toString().isEmpty() || cellphone_person.getText().toString().isEmpty() || address_person.getText().toString().isEmpty() || extra_data_person.getText().toString().isEmpty()) {
+            Toast.makeText(getApplicationContext(), "¡¡Llene todos los campos!!", Toast.LENGTH_LONG).show();
+        } else {
             inserted = registerPerson(name_person.getText().toString(), cellphone_person.getText().toString(), address_person.getText().toString(), extra_data_person.getText().toString());
         }
 
-        if(inserted == true){
+        if (inserted == true) {
             Toast.makeText(insert_new_person.this, "Datos Insertados", Toast.LENGTH_LONG).show();
-            switch (button_class){
+            switch (button_class) {
                 case "appointment":
                     insert_new_appointment.process = true;
                     break;
@@ -59,13 +59,13 @@ public class insert_new_person extends AppCompatActivity {
                     break;
             }
             finish();
-        }else {
+        } else {
             Toast.makeText(insert_new_person.this, "¡¡Datos No Insertados!!", Toast.LENGTH_LONG).show();
         }
 
     }
 
-    private boolean registerPerson(String name, String cellphone, String address, String extraData){
+    private boolean registerPerson(String name, String cellphone, String address, String extraData) {
         ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "bd_ganado", null, 2);
         SQLiteDatabase db = conn.getWritableDatabase();
 
@@ -79,10 +79,10 @@ public class insert_new_person extends AppCompatActivity {
 
         db.close();
 
-        if(idResult == -1){
+        if (idResult == -1) {
             return false;
-        }else{
-            switch (button_class){
+        } else {
+            switch (button_class) {
                 case "appointment":
                     insert_new_appointment.id_new_person = idResult.intValue();
                     break;
@@ -98,8 +98,8 @@ public class insert_new_person extends AppCompatActivity {
         }
     }
 
-    public void cancel_person (View view){
-        switch (button_class){
+    public void cancel_person(View view) {
+        switch (button_class) {
             case "appointment":
                 finish();
                 break;

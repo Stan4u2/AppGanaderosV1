@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.appganaderosv1.Fragments.AppointmentFragment;
 import com.example.appganaderosv1.Fragments.HomeFragment;
+import com.example.appganaderosv1.Fragments.PeopleFragment;
 import com.example.appganaderosv1.Fragments.PurchasesFragment;
 import com.example.appganaderosv1.Fragments.SalesFragment;
 
@@ -83,9 +84,13 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_appointment:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AppointmentFragment()).commit();
                 break;
+            case R.id.nav_people:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PeopleFragment()).commit();
+                break;
             case R.id.nav_logout:
                 super.onBackPressed();
                 break;
+
 
         }
 
@@ -100,12 +105,12 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
         AF.onClick(view);
     }
 
-    public void newPurchase(View view){
+    public void newPurchase(View view) {
         PurchasesFragment PF = new PurchasesFragment();
         PF.newPurchase(view);
     }
 
-    public void newSale(View view){
+    public void newSale(View view) {
         SalesFragment SF = new SalesFragment();
         SF.newSale(view);
     }

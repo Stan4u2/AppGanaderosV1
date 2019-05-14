@@ -252,19 +252,19 @@ public class insert_new_appointment extends AppCompatActivity {
             noBlankSpaces = false;
         } else {
 
-            if(spinner_person_appointment.getSelectedItemId() == 0){
+            if (spinner_person_appointment.getSelectedItemId() == 0) {
                 Toast.makeText(getApplicationContext(), "¡¡Seleccione La Persona!!", Toast.LENGTH_LONG).show();
                 noBlankSpaces = false;
             }
-            if(date_appointment.getText().toString().isEmpty()){
+            if (date_appointment.getText().toString().isEmpty()) {
                 Toast.makeText(getApplicationContext(), "¡¡Seleccione La Fecha!!", Toast.LENGTH_LONG).show();
                 noBlankSpaces = false;
             }
-            if(number_animals_appointment.getText().toString().isEmpty()){
+            if (number_animals_appointment.getText().toString().isEmpty()) {
                 Toast.makeText(getApplicationContext(), "¡¡Ingrese Una Cantidad De Animales!!", Toast.LENGTH_LONG).show();
                 noBlankSpaces = false;
             }
-            if(extra_data_appointment.getText().toString().isEmpty()){
+            if (extra_data_appointment.getText().toString().isEmpty()) {
                 Toast.makeText(getApplicationContext(), "¡¡Datos Extras Vacios!!", Toast.LENGTH_LONG).show();
                 noBlankSpaces = false;
             }

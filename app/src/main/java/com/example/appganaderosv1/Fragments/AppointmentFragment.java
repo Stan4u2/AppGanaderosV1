@@ -80,7 +80,7 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
         listaPersona = new ArrayList<>();
         listaCitas = new ArrayList<>();
 
-        if(administrator) {
+        if (administrator) {
             borrar.setVisibility(View.VISIBLE);
             borrar.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -95,7 +95,7 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
                     fillList();
                 }
             });
-        }else{
+        } else {
             borrar.setVisibility(View.GONE);
         }
 
@@ -106,7 +106,7 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
     }
 
     //This part of the code updates the ListView in case that you made a modification
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         fillList();
     }
@@ -123,15 +123,15 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
 
         String SELECT;
 
-        if(deleteButton){
+        if (deleteButton) {
             SELECT = admin;
-        }else if (!false) {
+        } else if (!false) {
             SELECT = normalUser;
         }
 
         Cursor cursor = db.rawQuery(SELECT, null);
 
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             citas = new Citas();
             citas.setId_citas(cursor.getInt(0));
             citas.setCantidad_ganado(cursor.getInt(1));
@@ -176,24 +176,21 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
         recycler_view.setAdapter(adapter_appointment);
     }
 
-    public void onClick(View view){
+    public void onClick(View view) {
         Intent miIntent = null;
         Bundle bundle = new Bundle();
 
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.agregar:
                 miIntent = new Intent(view.getContext(), insert_new_appointment.class);
                 bundle.putSerializable("action", "insert");
                 break;
         }
-        if(miIntent!=null){
+        if (miIntent != null) {
             miIntent.putExtras(bundle);
             view.getContext().startActivity(miIntent);
         }
     }
-
-
-
 
 
 }

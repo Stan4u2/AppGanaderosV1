@@ -3,20 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".animal_details_purchase"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".animal_details_purchase">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="DETALLE DE GANADO"
             android:textSize="25sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -29,14 +30,14 @@
             android:layout_height="wrap_content"
             android:text="Tipo Ganado: "
             android:textSize="17sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/typeAnimal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Toro"
-            android:textSize="17sp"/>
+            android:textSize="17sp" />
 
     </LinearLayout>
 
@@ -50,14 +51,14 @@
             android:layout_height="wrap_content"
             android:text="Raza Ganado: "
             android:textSize="17sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/raceAnimal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cebu"
-            android:textSize="17sp"/>
+            android:textSize="17sp" />
 
     </LinearLayout>
 
@@ -72,20 +73,20 @@
             android:layout_height="wrap_content"
             android:text="Peso: "
             android:textSize="17sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/weightAnimal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="320"
-            android:textSize="17sp"/>
+            android:textSize="17sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="kg"
-            android:textSize="17sp"/>
+            android:textSize="17sp" />
 
     </LinearLayout>
 
@@ -99,20 +100,20 @@
             android:layout_height="wrap_content"
             android:text="Precio: "
             android:textSize="17sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$"
-            android:textSize="17sp"/>
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/priceAnimal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="20"
-            android:textSize="17sp"/>
+            android:textSize="17sp" />
 
     </LinearLayout>
 
@@ -126,20 +127,20 @@
             android:layout_height="wrap_content"
             android:text="Tara: "
             android:textSize="17sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tareAnimal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="5"
-            android:textSize="17sp"/>
+            android:textSize="17sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="%"
-            android:textSize="17sp"/>
+            android:textSize="17sp" />
 
     </LinearLayout>
 
@@ -153,14 +154,14 @@
             android:layout_height="wrap_content"
             android:text="Numero Arete: "
             android:textSize="17sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/earingNumberAnimal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="123456789"
-            android:textSize="17sp"/>
+            android:textSize="17sp" />
 
     </LinearLayout>
 
@@ -174,27 +175,27 @@
             android:layout_height="wrap_content"
             android:text="Total: "
             android:textSize="17sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$"
-            android:textSize="17sp"/>
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="10000"
-            android:textSize="17sp"/>
+            android:textSize="17sp" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="bottom"
         android:orientation="horizontal">
 
         <ImageButton

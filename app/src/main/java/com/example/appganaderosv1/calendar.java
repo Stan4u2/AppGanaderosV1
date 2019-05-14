@@ -32,9 +32,9 @@ public class calendar extends AppCompatActivity {
         class_that_came_from();
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        String [] dateCal = sdf.format(new Date(calendar.getDate())).split("/");
+        String[] dateCal = sdf.format(new Date(calendar.getDate())).split("/");
 
-        int [] dateNoCeros = new int[3];
+        int[] dateNoCeros = new int[3];
 
         dateNoCeros[0] = Integer.valueOf(dateCal[0]);
         dateNoCeros[1] = Integer.valueOf(dateCal[1]);
@@ -51,15 +51,15 @@ public class calendar extends AppCompatActivity {
         });
     }
 
-    public void class_that_came_from(){
+    public void class_that_came_from() {
         Intent intent = getIntent();
         button_class = intent.getExtras().getString("button");
     }
 
-    public void saveDate(View view){
-        if(calendarDate.getText().toString().equals("DD/MM/AAAA")){
+    public void saveDate(View view) {
+        if (calendarDate.getText().toString().equals("DD/MM/AAAA")) {
             Toast.makeText(getApplicationContext(), "Selecione una fecha", Toast.LENGTH_LONG).show();
-        }else {
+        } else {
             switch (button_class) {
                 case "appointment":
                     insert_new_appointment.DateAppointment = calendarDate.getText().toString();

@@ -78,15 +78,15 @@ public class insert_new_animal extends AppCompatActivity {
 
         Bundle actionToDo = getIntent().getExtras();
 
-        if(actionToDo != null){
+        if (actionToDo != null) {
 
             action = actionToDo.getSerializable("action").toString();
             WhereCameFrom = actionToDo.getSerializable("WhereCameFrom").toString();
 
 
-            switch(action){
+            switch (action) {
                 case "insert":
-                    if(WhereCameFrom.equals("change")) {
+                    if (WhereCameFrom.equals("change")) {
                         idPurchase = Integer.valueOf(actionToDo.getSerializable("idPurchase").toString());
                     }
                     break;
@@ -106,7 +106,7 @@ public class insert_new_animal extends AppCompatActivity {
 
         Bundle objectSent = getIntent().getExtras();
 
-        if(objectSent != null){
+        if (objectSent != null) {
             compraDetalle = (CompraDetalle) objectSent.getSerializable("compraDetalle");
             ganado = (Ganado) objectSent.getSerializable("ganado");
             raza = (Raza) objectSent.getSerializable("raza");
@@ -114,14 +114,14 @@ public class insert_new_animal extends AppCompatActivity {
             id_animal_modifie = compraDetalle.getId_compra_detalle();
 
             for (int i = 0; i < typeAnimal.size(); i++) {
-                if(typeAnimal.get(i).getId_ganado().equals(ganado.getId_ganado())){
-                    spinner_types_animal.setSelection(i+1);
+                if (typeAnimal.get(i).getId_ganado().equals(ganado.getId_ganado())) {
+                    spinner_types_animal.setSelection(i + 1);
                 }
             }
 
             for (int i = 0; i < raceAnimal.size(); i++) {
-                if(raceAnimal.get(i).getId_raza().equals(raza.getId_raza())){
-                    spinner_race_animal.setSelection(i+1);
+                if (raceAnimal.get(i).getId_raza().equals(raza.getId_raza())) {
+                    spinner_race_animal.setSelection(i + 1);
                 }
             }
 
@@ -133,26 +133,26 @@ public class insert_new_animal extends AppCompatActivity {
         }
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
-        if(process_race){
+        if (process_race) {
             consultListRaceAnimals();
 
-            for(int i = 0; i < raceAnimal.size(); i++){
-                if(raceAnimal.get(i).getId_raza() == id_new_race){
-                    spinner_race_animal.setSelection(i+1);
+            for (int i = 0; i < raceAnimal.size(); i++) {
+                if (raceAnimal.get(i).getId_raza() == id_new_race) {
+                    spinner_race_animal.setSelection(i + 1);
                 }
             }
             process_race = false;
         }
 
-        if(process_type){
+        if (process_type) {
             consultListTypesAnimals();
 
-            for(int i = 0; i < typeAnimal.size(); i++){
-                if(typeAnimal.get(i).getId_ganado() == id_new_type){
-                    spinner_types_animal.setSelection(i+1);
+            for (int i = 0; i < typeAnimal.size(); i++) {
+                if (typeAnimal.get(i).getId_ganado() == id_new_type) {
+                    spinner_types_animal.setSelection(i + 1);
                 }
             }
             process_type = false;
@@ -168,7 +168,7 @@ public class insert_new_animal extends AppCompatActivity {
 
         //SELECT * FROM RAZA;
         Cursor cursor = db.rawQuery("SELECT * FROM " + Utilidades.TABLA_RAZA + " ORDER BY " + Utilidades.CAMPO_TIPO_RAZA, null);
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             raza = new Raza();
             raza.setId_raza(cursor.getInt(0));
             raza.setTipo_raza(cursor.getString(1));
@@ -188,9 +188,9 @@ public class insert_new_animal extends AppCompatActivity {
         spinner_race_animal.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position != 0){
-                    selectedRace = raceAnimal.get(position-1).getId_raza();
-                }else{
+                if (position != 0) {
+                    selectedRace = raceAnimal.get(position - 1).getId_raza();
+                } else {
                     selectedRace = 0;
                 }
             }
@@ -206,7 +206,7 @@ public class insert_new_animal extends AppCompatActivity {
         raceAnimalList = new ArrayList<String>();
         raceAnimalList.add("Seleccione");
 
-        for (int i = 0; i < raceAnimal.size(); i++){
+        for (int i = 0; i < raceAnimal.size(); i++) {
             raceAnimalList.add(raceAnimal.get(i).getTipo_raza());
         }
     }
@@ -238,9 +238,9 @@ public class insert_new_animal extends AppCompatActivity {
         spinner_types_animal.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position != 0){
-                    selectedType = typeAnimal.get(position-1).getId_ganado();
-                }else{
+                if (position != 0) {
+                    selectedType = typeAnimal.get(position - 1).getId_ganado();
+                } else {
                     selectedType = 0;
                 }
             }
@@ -263,7 +263,7 @@ public class insert_new_animal extends AppCompatActivity {
         }
     }
 
-    public void insertNewRace(View view){
+    public void insertNewRace(View view) {
         Intent intent = null;
         if (view.getId() == R.id.add_race_animal) {
             intent = new Intent(insert_new_animal.this, insert_new_race.class);
@@ -274,7 +274,7 @@ public class insert_new_animal extends AppCompatActivity {
         }
     }
 
-    public void insertNewType(View view){
+    public void insertNewType(View view) {
         Intent intent = null;
         if (view.getId() == R.id.add_type_animal) {
             intent = new Intent(insert_new_animal.this, insert_new_type.class);
@@ -285,26 +285,26 @@ public class insert_new_animal extends AppCompatActivity {
         }
     }
 
-    public void saveAnimal(View view){
+    public void saveAnimal(View view) {
         boolean complete = false;
-        if(
-            spinner_types_animal.getSelectedItemId() == 0 ||
-            spinner_race_animal.getSelectedItemId() == 0 ||
-            weight_animal.getText().toString().isEmpty() ||
-            price_animal.getText().toString().isEmpty()
-        ){
+        if (
+                spinner_types_animal.getSelectedItemId() == 0 ||
+                        spinner_race_animal.getSelectedItemId() == 0 ||
+                        weight_animal.getText().toString().isEmpty() ||
+                        price_animal.getText().toString().isEmpty()
+        ) {
             Toast.makeText(getApplicationContext(), "¡¡Campos Vacios!!", Toast.LENGTH_LONG).show();
-        }else{
+        } else {
             int tare = 0, earring = 0;
-            if(!tare_animal.getText().toString().isEmpty()){
+            if (!tare_animal.getText().toString().isEmpty()) {
                 tare = Integer.valueOf(tare_animal.getText().toString());
             }
-            if(!number_earring_animal.getText().toString().isEmpty()){
+            if (!number_earring_animal.getText().toString().isEmpty()) {
                 earring = Integer.valueOf(number_earring_animal.getText().toString());
             }
-            if(action.equals("insert")){
+            if (action.equals("insert")) {
                 boolean inserted = false;
-                if(WhereCameFrom.equals("new")) {
+                if (WhereCameFrom.equals("new")) {
                     inserted = insertNewAnimal(
                             selectedType,
                             selectedRace,
@@ -313,7 +313,7 @@ public class insert_new_animal extends AppCompatActivity {
                             tare,
                             earring
                     );
-                }else if (WhereCameFrom.equals("change")){
+                } else if (WhereCameFrom.equals("change")) {
                     inserted = insertNewAnimalCurrentPurchase(
                             idPurchase,
                             selectedType,
@@ -325,13 +325,13 @@ public class insert_new_animal extends AppCompatActivity {
                     );
                 }
 
-                if(inserted){
+                if (inserted) {
                     Toast.makeText(getApplicationContext(), "Datos Insertados", Toast.LENGTH_LONG).show();
                     complete = true;
-                }else {
+                } else {
                     Toast.makeText(getApplicationContext(), "¡¡Datos No Insertados!!", Toast.LENGTH_LONG).show();
                 }
-            }else if (action.equals("modifie")){
+            } else if (action.equals("modifie")) {
                 int modified = modifieAnimal(
                         selectedType,
                         selectedRace,
@@ -341,22 +341,22 @@ public class insert_new_animal extends AppCompatActivity {
                         earring
                 );
 
-                if(modified == 1){
+                if (modified == 1) {
                     Toast.makeText(getApplicationContext(), "Se han actualizado los datos", Toast.LENGTH_LONG).show();
                     complete = true;
-                }else{
+                } else {
                     Toast.makeText(getApplicationContext(), "Datos no actualizados", Toast.LENGTH_LONG).show();
                 }
             }
 
-            if(complete){
+            if (complete) {
                 insert_new_purchases.newAnimalInserted = true;
                 finish();
             }
         }
     }
 
-    private boolean insertNewAnimalCurrentPurchase( int idPurchase, int typeAnimal, int raceAnimal, double weightAnimal, double priceAnimal, int tareAnimal, int earringNumber) {
+    private boolean insertNewAnimalCurrentPurchase(int idPurchase, int typeAnimal, int raceAnimal, double weightAnimal, double priceAnimal, int tareAnimal, int earringNumber) {
         SQLiteDatabase db = conn.getWritableDatabase();
 
 
@@ -369,16 +369,16 @@ public class insert_new_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_PESO, weightAnimal);
         values.put(Utilidades.CAMPO_PRECIO, priceAnimal);
         values.put(Utilidades.CAMPO_TARA, tareAnimal);
-        values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total*tareAnimal)/100)));
+        values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total * tareAnimal) / 100)));
         values.put(Utilidades.CAMPO_NUMERO_ARETE, earringNumber);
 
         long idResult = db.insert(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_ID_COMPRA_DETALLE, values);
 
         db.close();
 
-        if(idResult == -1){
+        if (idResult == -1) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -395,21 +395,21 @@ public class insert_new_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_PESO, weightAnimal);
         values.put(Utilidades.CAMPO_PRECIO, priceAnimal);
         values.put(Utilidades.CAMPO_TARA, tareAnimal);
-        values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total*tareAnimal)/100)));
+        values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total * tareAnimal) / 100)));
         values.put(Utilidades.CAMPO_NUMERO_ARETE, earringNumber);
 
         long idResult = db.insert(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_ID_COMPRA_DETALLE, values);
 
         db.close();
 
-        if(idResult == -1){
+        if (idResult == -1) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
 
-    private int modifieAnimal(int typeAnimal, int raceAnimal, double weightAnimal, double priceAnimal, int tareAnimal, int earringNumber){
+    private int modifieAnimal(int typeAnimal, int raceAnimal, double weightAnimal, double priceAnimal, int tareAnimal, int earringNumber) {
         SQLiteDatabase db = conn.getWritableDatabase();
 
         double total = (weightAnimal * priceAnimal);
@@ -423,7 +423,7 @@ public class insert_new_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_PESO, weightAnimal);
         values.put(Utilidades.CAMPO_PRECIO, priceAnimal);
         values.put(Utilidades.CAMPO_TARA, tareAnimal);
-        values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total*tareAnimal)/100)));
+        values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total * tareAnimal) / 100)));
         values.put(Utilidades.CAMPO_NUMERO_ARETE, earringNumber);
 
         int updated = db.update(Utilidades.TABLA_COMPRA_DETALLE, values, Utilidades.CAMPO_ID_COMPRA_DETALLE + " = ?", id_animal);
@@ -433,7 +433,7 @@ public class insert_new_animal extends AppCompatActivity {
         return updated;
     }
 
-    public void cancelAnimal(View view){
+    public void cancelAnimal(View view) {
         finish();
     }
 
