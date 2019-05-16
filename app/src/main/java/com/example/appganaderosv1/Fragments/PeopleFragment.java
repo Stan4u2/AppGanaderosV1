@@ -9,6 +9,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,8 +32,6 @@ public class PeopleFragment extends Fragment {
 
     RecyclerView recycler_view;
 
-    ImageButton SearchButton;
-
     EditText SearchText;
 
     //RecyclerView Data
@@ -44,8 +44,6 @@ public class PeopleFragment extends Fragment {
 
         SearchText = view.findViewById(R.id.SearchText);
 
-        SearchButton = view.findViewById(R.id.SearchButton);
-
         recycler_view = view.findViewById(R.id.recycler_view);
         recycler_view.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -53,10 +51,20 @@ public class PeopleFragment extends Fragment {
 
         fillList();
 
-        SearchButton.setOnClickListener(new View.OnClickListener() {
+        SearchText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View view) {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 fillList();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 

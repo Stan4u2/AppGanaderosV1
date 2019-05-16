@@ -30,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
         Contrasena = (TextView) findViewById(R.id.Contrasena);
     }
 
+    public void onResume(){
+        super.onResume();
+        limpiar();
+    }
+
     public void verificarUsuarios(View view) {
         conn = new ConexionSQLiteHelper(getApplicationContext(), "bd_ganado", null, 2);
         SQLiteDatabase db = conn.getReadableDatabase();
@@ -64,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
             if (Login == true) {
                 userName = Usuario.getText().toString();
-                limpiar();
                 Intent miIntent = new Intent(MainActivity.this, homeActivity.class);
                 startActivity(miIntent);
             }
