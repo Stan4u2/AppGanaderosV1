@@ -31,6 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:hint="Nombre"
+        android:textAlignment="center"
         android:textSize="25sp" />
 
 
@@ -49,6 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:hint="Telefono"
+        android:textAlignment="center"
         android:textSize="25sp" />
 
 
@@ -67,6 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:hint="Domicilio"
+        android:textAlignment="center"
         android:textSize="25sp" />
 
 
@@ -85,6 +88,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:hint="Datos Extras"
+        android:textAlignment="center"
         android:textSize="25sp" />
 
     <LinearLayout
@@ -99,6 +103,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginRight="40dp"
+            android:onClick="cancel"
             android:scaleType="centerCrop"
             android:src="@android:drawable/ic_menu_close_clear_cancel" />
 

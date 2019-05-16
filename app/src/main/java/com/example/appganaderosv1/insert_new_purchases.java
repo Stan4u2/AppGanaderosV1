@@ -547,12 +547,6 @@ public class insert_new_purchases extends AppCompatActivity {
 
         SQLiteDatabase db = conn.getReadableDatabase();
 
-        /*Cursor cursor = db.rawQuery("SELECT * FROM " + Utilidades.TABLA_COMPRA_DETALLE + " WHERE " + Utilidades.CAMPO_COMPRA + " = " + idPurchase, null);
-
-        int count = cursor.getCount();*/
-
-        //number_animals_purchase.setText(String.valueOf(count));
-
         Cursor cursor = db.rawQuery(
                 "SELECT " +
                         Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS +

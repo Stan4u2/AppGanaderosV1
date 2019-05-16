@@ -63,6 +63,11 @@ public class PeopleFragment extends Fragment {
         return view;
     }
 
+    public void onResume() {
+        super.onResume();
+        fillList();
+    }
+
     private void fillList() {
         SQLiteDatabase db = conn.getReadableDatabase();
 
