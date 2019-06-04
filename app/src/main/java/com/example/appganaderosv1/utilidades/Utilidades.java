@@ -9,19 +9,21 @@ public class Utilidades {
     public static final String CAMPO_USUARIO = "usuario";
     public static final String CAMPO_CONTRASENA = "contrasena";
     public static final String CAMPO_TIPO_USUARIO = "tipo_usuario";
+    public static final String CAMPO_ACTIVO = "activo";
 
     public static final String CREAR_TABLA_USUARIO =
             "CREATE TABLE " + TABLA_USUARIO + "("
                     + CAMPO_ID_USUARIO + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + CAMPO_USUARIO + " TEXT, "
                     + CAMPO_CONTRASENA + " TEXT, "
-                    + CAMPO_TIPO_USUARIO + " TEXT)";
+                    + CAMPO_TIPO_USUARIO + " TEXT, "
+                    + CAMPO_ACTIVO + " INTEGER)";
     public static final String INSERTAR_USUARIOS =
             "INSERT INTO usuario " +
-                    "(usuario, contrasena, tipo_usuario)" +
-                    "values" +
-                    "('Felipe', '123', 'Normal')," +
-                    "('Admin', 'admin', 'Administrador')";
+                    "(usuario, contrasena, tipo_usuario, activo)" +
+                    " values " +
+                    "('Felipe', '123', 'Normal', 0)," +
+                    "('Admin', 'admin', 'Administrador', 0)";
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -191,6 +193,36 @@ public class Utilidades {
                     + CAMPO_TOTAL_VENTA + " REAL, "
                     + CAMPO_VENTA + " INTEGER NULL REFERENCES " + TABLA_VENTAS + "(" + CAMPO_ID_VENTAS + ") ON DELETE CASCADE)";
 
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //Tabla Bitacora
+    public static final String TABLA_BITACORA = "bitacora";
+    public static final String CAMPO_ID_BITACORA = "id_bit";
+    public static final String CAMPO_ID_USUARIO_BIT = "id_usuario";
+    public static final String CAMPO_ID_CITA_BIT = "id_cita";
+    public static final String CAMPO_ID_COMPRA_BIT = "id_compra";
+    public static final String CAMPO_ID_VENTA_BIT = "id_venta";
+    public static final String CAMPO_ACCION = "action";
+    public static final String CAMPO_FECHA = "date";
+
+    public static final String CREAR_TABLA_BITACORA =
+            "CREATE TABLE " + TABLA_BITACORA + " ("
+                    + CAMPO_ID_BITACORA + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + CAMPO_ID_USUARIO_BIT + " INTEGER REFERENCES " + TABLA_USUARIO + " (" + CAMPO_ID_USUARIO + "), "
+                    + CAMPO_ID_CITA_BIT + " INTEGER REFERENCES " + TABLA_CITAS + " ("+ CAMPO_ID_CITAS +"), "
+                    + CAMPO_ID_COMPRA_BIT + " INTEGER REFERENCES " + TABLA_COMPRAS +" (" + CAMPO_ID_COMPRA + "), "
+                    + CAMPO_ID_VENTA_BIT + " INTEGER REFERENCES "+ TABLA_VENTAS +" (" + CAMPO_ID_VENTAS + "), "
+                    + CAMPO_ACCION + " TEXT NOT NULL, "
+                    + CAMPO_FECHA + " DATE NOT NULL)";
+
+    /*
+    CREATE TABLE "bitacora" ("id_bit" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+    "id_usuario" INTEGER NOT NULL REFERENCES "usuario" ("id_usuario"),
+    "id_cita" INTEGER REFERENCES "citas" ("id_cita"),
+    "id_compra" INTEGER REFERENCES "compras" ("id_compras"),
+    "id_venta" INTEGER REFERENCES "ventas" ("id_ventas"),
+    "action" TEXT NOT NULL, "date" DATE NOT NULL)
+     */
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //Vista de citas
@@ -422,6 +454,66 @@ public class Utilidades {
                     " BEGIN " +
                     TRIGGER_SUBTRACT_ACTION_SALE + ";" +
                     " END";
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //Trigger Citas Bitacora
+    public static  final String TRIGGER_INSERT_APPOINTMENT_BIT = "cita_bit";
+
+    public static final String TRIGGER_INSERT_APPOINTMENT_BIT_ACTION =
+            "INSERT INTO bitacora (id_usuario, id_cita, action, date)" +
+                    "values (" +
+                        "(SELECT id_usuario FROM " + TABLA_USUARIO + " WHERE activo = 1)," +
+                        "new.id_cita," +
+                        "'insert'," +
+                        "(select datetime('now'))" +
+                        ")";
+
+    public static final String CREAR_TRIGGER_INSERT_APPOINTMENT_BIT =
+            "CREATE TRIGGER "+ TRIGGER_INSERT_APPOINTMENT_BIT + " AFTER INSERT ON "+ TABLA_CITAS +
+                    " BEGIN " +
+                    TRIGGER_INSERT_APPOINTMENT_BIT_ACTION + ";" +
+                    "END";
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //Trigger Compras Bitacora
+    public static  final String TRIGGER_INSERT_PURCHASE_BIT = "compra_bit";
+
+    public static final String TRIGGER_INSERT_PURCHASE_BIT_ACTION =
+            "INSERT INTO bitacora (id_usuario, id_compra, action, date)" +
+                    "values (" +
+                    "(SELECT id_usuario FROM " + TABLA_USUARIO + " WHERE activo = 1)," +
+                    "new.id_compras," +
+                    "'insert'," +
+                    "(select datetime('now'))" +
+                    ")";
+
+    public static final String CREAR_TRIGGER_INSERT_PURCHASE_BIT =
+            "CREATE TRIGGER "+ TRIGGER_INSERT_PURCHASE_BIT + " AFTER INSERT ON "+ TABLA_COMPRAS +
+                    " BEGIN " +
+                    TRIGGER_INSERT_PURCHASE_BIT_ACTION + ";" +
+                    "END";
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //Trigger Compras Bitacora
+    public static  final String TRIGGER_INSERT_SALE_BIT = "venta_bit";
+
+    public static final String TRIGGER_INSERT_SALE_BIT_ACTION =
+            "INSERT INTO bitacora (id_usuario, id_venta, action, date)" +
+                    "values (" +
+                    "(SELECT id_usuario FROM " + TABLA_USUARIO + " WHERE activo = 1)," +
+                    "new.id_ventas," +
+                    "'insert'," +
+                    "(select datetime('now'))" +
+                    ")";
+
+    public static final String CREAR_TRIGGER_INSERT_SALE_BIT =
+            "CREATE TRIGGER "+ TRIGGER_INSERT_SALE_BIT + " AFTER INSERT ON "+ TABLA_VENTAS +
+                    " BEGIN " +
+                    TRIGGER_INSERT_SALE_BIT_ACTION + ";" +
+                    "END";
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

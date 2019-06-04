@@ -26,6 +26,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(Utilidades.CREAR_TABLA_COMPRA_DETALLE);
         db.execSQL(Utilidades.CREAR_TABLA_VENTAS);
         db.execSQL(Utilidades.CREAR_TABLA_VENTA_DETALLE);
+        db.execSQL(Utilidades.CREAR_TABLA_BITACORA);
         db.execSQL(Utilidades.CREAR_VISTA_CITAS);
         db.execSQL(Utilidades.CREAR_VISTA_COMPRAS);
         db.execSQL(Utilidades.CREAR_VISTA_ANIMAL);
@@ -35,6 +36,9 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(Utilidades.CREAR_TRIGGER_COMPRA_ANIMALES_RESTAR);
         db.execSQL(Utilidades.CREAR_TRIGGER_VENTA_ANIMALES);
         db.execSQL(Utilidades.CREAR_TRIGGER_VENTA_ANIMALES_RESTAR);
+        db.execSQL(Utilidades.CREAR_TRIGGER_INSERT_APPOINTMENT_BIT);
+        db.execSQL(Utilidades.CREAR_TRIGGER_INSERT_PURCHASE_BIT);
+        db.execSQL(Utilidades.CREAR_TRIGGER_INSERT_SALE_BIT);
         db.execSQL(Utilidades.CREATE_INDEX_TABLE_APPOINTMENT);
         db.execSQL(Utilidades.CREATE_INDEX_TABLE_PURCHASES);
         db.execSQL(Utilidades.CREATE_INDEX_TABLE_SALES);
@@ -51,6 +55,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + Utilidades.TABLA_COMPRA_DETALLE);
         db.execSQL("DROP TABLE IF EXISTS " + Utilidades.TABLA_VENTAS);
         db.execSQL("DROP TABLE IF EXISTS " + Utilidades.TABLA_VENTA_DETALLE);
+        db.execSQL("DROP TABLE IF EXISTS " + Utilidades.TABLA_BITACORA);
         db.execSQL("DROP VIEW IF EXISTS " + Utilidades.VIEW_CITA);
         db.execSQL("DROP VIEW IF EXISTS " + Utilidades.VIEW_COMPRAS);
         db.execSQL("DROP VIEW IF EXISTS " + Utilidades.VIEW_ANIMAL_NO_OWNER);
@@ -60,6 +65,9 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TRIGGER IF EXISTS " + Utilidades.TRIGGER_SUBTRACT_PURCHASE_ANIMALS);
         db.execSQL("DROP TRIGGER IF EXISTS " + Utilidades.TRIGGER_SALE_ANIMALS);
         db.execSQL("DROP TRIGGER IF EXISTS " + Utilidades.TRIGGER_SUBTRACT_SALE_ANIMALS);
+        db.execSQL("DROP TRIGGER IF EXISTS " + Utilidades.TRIGGER_INSERT_APPOINTMENT_BIT);
+        db.execSQL("DROP TRIGGER IF EXISTS " + Utilidades.TRIGGER_INSERT_PURCHASE_BIT);
+        db.execSQL("DROP TRIGGER IF EXISTS " + Utilidades.TRIGGER_INSERT_SALE_BIT);
         db.execSQL("DROP INDEX IF EXISTS " + Utilidades.INDEX_TABLE_APPOINTMENT);
         db.execSQL("DROP INDEX IF EXISTS " + Utilidades.INDEX_TABLE_PURCHASES);
         db.execSQL("DROP INDEX IF EXISTS " + Utilidades.INDEX_TABLE_SALES);
