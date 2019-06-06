@@ -209,20 +209,12 @@ public class Utilidades {
             "CREATE TABLE " + TABLA_BITACORA + " ("
                     + CAMPO_ID_BITACORA + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + CAMPO_ID_USUARIO_BIT + " INTEGER REFERENCES " + TABLA_USUARIO + " (" + CAMPO_ID_USUARIO + "), "
-                    + CAMPO_ID_CITA_BIT + " INTEGER REFERENCES " + TABLA_CITAS + " ("+ CAMPO_ID_CITAS +"), "
-                    + CAMPO_ID_COMPRA_BIT + " INTEGER REFERENCES " + TABLA_COMPRAS +" (" + CAMPO_ID_COMPRA + "), "
-                    + CAMPO_ID_VENTA_BIT + " INTEGER REFERENCES "+ TABLA_VENTAS +" (" + CAMPO_ID_VENTAS + "), "
+                    + CAMPO_ID_CITA_BIT + " INTEGER REFERENCES " + TABLA_CITAS + " ("+ CAMPO_ID_CITAS +") ON DELETE CASCADE, "
+                    + CAMPO_ID_COMPRA_BIT + " INTEGER REFERENCES " + TABLA_COMPRAS +" (" + CAMPO_ID_COMPRA + ") ON DELETE CASCADE, "
+                    + CAMPO_ID_VENTA_BIT + " INTEGER REFERENCES "+ TABLA_VENTAS +" (" + CAMPO_ID_VENTAS + ") ON DELETE CASCADE, "
                     + CAMPO_ACCION + " TEXT NOT NULL, "
                     + CAMPO_FECHA + " DATE NOT NULL)";
 
-    /*
-    CREATE TABLE "bitacora" ("id_bit" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
-    "id_usuario" INTEGER NOT NULL REFERENCES "usuario" ("id_usuario"),
-    "id_cita" INTEGER REFERENCES "citas" ("id_cita"),
-    "id_compra" INTEGER REFERENCES "compras" ("id_compras"),
-    "id_venta" INTEGER REFERENCES "ventas" ("id_ventas"),
-    "action" TEXT NOT NULL, "date" DATE NOT NULL)
-     */
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //Vista de citas
