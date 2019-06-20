@@ -132,7 +132,8 @@ public class Utilidades {
     public static final String CAMPO_ID_COMPRA_DETALLE = "id_compra_detalle";
     public static final String CAMPO_GANADO = "ganado";
     public static final String CAMPO_RAZA = "raza";
-    public static final String CAMPO_PESO = "peso";
+    public static final String CAMPO_PESO_PIE_COMPRA = "peso_pie_compra";
+    public static final String CAMPO_PESO_CANAL_COMPRA = "peso_canal_compra";
     public static final String CAMPO_PRECIO = "precio_compra";
     public static final String CAMPO_TARA = "tara_compra";
     public static final String CAMPO_TOTAL_PAGAR = "total";
@@ -144,7 +145,8 @@ public class Utilidades {
                     + CAMPO_ID_COMPRA_DETALLE + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + CAMPO_GANADO + " INTEGER REFERENCES " + TABLA_GANADO + "(" + CAMPO_ID_GANADO + "), "
                     + CAMPO_RAZA + " INTEGER REFERENCES " + TABLA_RAZA + "(" + CAMPO_ID_RAZA + "), "
-                    + CAMPO_PESO + " REAL, "
+                    + CAMPO_PESO_PIE_COMPRA + " REAL, "
+                    + CAMPO_PESO_CANAL_COMPRA + " REAL, "
                     + CAMPO_PRECIO + " REAL, "
                     + CAMPO_TARA + " REAL, "
                     + CAMPO_TOTAL_PAGAR + " REAL, "
@@ -179,6 +181,7 @@ public class Utilidades {
     public static final String TABLA_VENTA_DETALLE = "venta_detalle";
     public static final String CAMPO_ID_VENTA_DETALLE = "id_venta_detalle";
     public static final String CAMPO_COMPRA_GANADO = "compra_animal";
+    public static final String CAMPO_PESO_CANAL_VENTA = "peso_canal_venta";
     public static final String CAMPO_PRECIO_VENTA = "precio_venta";
     public static final String CAMPO_TARA_VENTA = "tara_venta";
     public static final String CAMPO_TOTAL_VENTA = "total_ct";
@@ -188,6 +191,7 @@ public class Utilidades {
             "CREATE TABLE " + TABLA_VENTA_DETALLE + "("
                     + CAMPO_ID_VENTA_DETALLE + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + CAMPO_COMPRA_GANADO + " INTEGER REFERENCES " + TABLA_COMPRA_DETALLE + "(" + CAMPO_ID_COMPRA_DETALLE + "), "
+                    + CAMPO_PESO_CANAL_VENTA + " REAL, "
                     + CAMPO_PRECIO_VENTA + " REAL, "
                     + CAMPO_TARA_VENTA + " REAL, "
                     + CAMPO_TOTAL_VENTA + " REAL, "
@@ -310,7 +314,8 @@ public class Utilidades {
                     Utilidades.CAMPO_ID_COMPRA_DETALLE + ", " +
                     Utilidades.CAMPO_GANADO + ", " +
                     Utilidades.CAMPO_RAZA + ", " +
-                    Utilidades.CAMPO_PESO + ", " +
+                    Utilidades.CAMPO_PESO_PIE_COMPRA + ", " +
+                    Utilidades.CAMPO_PESO_CANAL_COMPRA + ", " +
                     Utilidades.CAMPO_PRECIO + ", " +
                     Utilidades.CAMPO_TARA + ", " +
                     Utilidades.CAMPO_TOTAL_PAGAR + ", " +
@@ -349,6 +354,7 @@ public class Utilidades {
 
                     Utilidades.CAMPO_ID_VENTA_DETALLE + ", " +
                     Utilidades.CAMPO_COMPRA_GANADO + ", " +
+                    Utilidades.CAMPO_PESO_CANAL_VENTA + ", " +
                     Utilidades.CAMPO_PRECIO_VENTA + ", " +
                     Utilidades.CAMPO_TARA_VENTA + ", " +
                     Utilidades.CAMPO_TOTAL_VENTA + ", " +
@@ -356,7 +362,8 @@ public class Utilidades {
                     Utilidades.CAMPO_ID_COMPRA_DETALLE + ", " +
                     Utilidades.CAMPO_GANADO + ", " +
                     Utilidades.CAMPO_RAZA + ", " +
-                    Utilidades.CAMPO_PESO + ", " +
+                    Utilidades.CAMPO_PESO_PIE_COMPRA + ", " +
+                    Utilidades.CAMPO_PESO_CANAL_COMPRA + ", " +
                     Utilidades.CAMPO_PRECIO + ", " +
                     Utilidades.CAMPO_TARA + ", " +
                     Utilidades.CAMPO_TOTAL_PAGAR + ", " +

@@ -18,7 +18,7 @@ import com.example.appganaderosv1.utilidades.Utilidades;
 
 public class animal_details_purchase extends AppCompatActivity {
 
-    TextView typeAnimal, raceAnimal, weightAnimal, priceAnimal, tareAnimal, earingNumberAnimal, total;
+    TextView typeAnimal, raceAnimal, weightAnimal, priceAnimal, tareAnimal, earingNumberAnimal, total, typeWeightAnimal;
 
     CompraDetalle compraDetalle = null;
     Ganado ganado = null;
@@ -43,6 +43,7 @@ public class animal_details_purchase extends AppCompatActivity {
         tareAnimal = findViewById(R.id.tareAnimal);
         earingNumberAnimal = findViewById(R.id.earingNumberAnimal);
         total = findViewById(R.id.total);
+        typeWeightAnimal = findViewById(R.id.typeWeightAnimal);
 
         Bundle objectSent = getIntent().getExtras();
 
@@ -57,7 +58,17 @@ public class animal_details_purchase extends AppCompatActivity {
             id_animal_modifie = compraDetalle.getId_compra_detalle();
             typeAnimal.setText(ganado.getTipo_ganado());
             raceAnimal.setText(raza.getTipo_raza());
-            weightAnimal.setText(compraDetalle.getPeso().toString());
+
+            if((compraDetalle.getPeso_pie_compra().toString().equals("0.0"))&&(compraDetalle.getPeso_canal_compra().toString().equals("0.0"))){
+                weightAnimal.setText("0.0");
+            }else if(!compraDetalle.getPeso_pie_compra().toString().equals("0.0")){
+                typeWeightAnimal.setText("Pie ");
+                weightAnimal.setText(compraDetalle.getPeso_pie_compra().toString());
+            }else if (!compraDetalle.getPeso_canal_compra().toString().equals("0.0")){
+                typeWeightAnimal.setText("Canal ");
+                weightAnimal.setText(compraDetalle.getPeso_canal_compra().toString());
+            }
+
             priceAnimal.setText(compraDetalle.getPrecio().toString());
             tareAnimal.setText(compraDetalle.getTara().toString());
             earingNumberAnimal.setText(compraDetalle.getNumero_arete().toString());
@@ -80,7 +91,8 @@ public class animal_details_purchase extends AppCompatActivity {
                             Utilidades.CAMPO_ID_COMPRA_DETALLE + ", " +
                             Utilidades.CAMPO_GANADO + ", " +
                             Utilidades.CAMPO_RAZA + ", " +
-                            Utilidades.CAMPO_PESO + ", " +
+                            Utilidades.CAMPO_PESO_PIE_COMPRA + ", " +
+                            Utilidades.CAMPO_PESO_CANAL_COMPRA + ", " +
                             Utilidades.CAMPO_PRECIO + ", " +
                             Utilidades.CAMPO_TARA + ", " +
                             Utilidades.CAMPO_TOTAL_PAGAR + ", " +
@@ -109,23 +121,34 @@ public class animal_details_purchase extends AppCompatActivity {
             compraDetalle.setId_compra_detalle(cursor.getInt(0));
             compraDetalle.setGanado(cursor.getInt(1));
             compraDetalle.setRaza(cursor.getInt(2));
-            compraDetalle.setPeso(cursor.getDouble(3));
-            compraDetalle.setPrecio(cursor.getDouble(4));
-            compraDetalle.setTara(cursor.getInt(5));
-            compraDetalle.setTotal(cursor.getDouble(6));
-            compraDetalle.setNumero_arete(cursor.getInt(7));
+            compraDetalle.setPeso_pie_compra(cursor.getDouble(3));
+            compraDetalle.setPeso_canal_compra(cursor.getDouble(4));
+            compraDetalle.setPrecio(cursor.getDouble(5));
+            compraDetalle.setTara(cursor.getInt(6));
+            compraDetalle.setTotal(cursor.getDouble(7));
+            compraDetalle.setNumero_arete(cursor.getInt(8));
 
             ganado = new Ganado();
-            ganado.setId_ganado(cursor.getInt(8));
-            ganado.setTipo_ganado(cursor.getString(9));
+            ganado.setId_ganado(cursor.getInt(9));
+            ganado.setTipo_ganado(cursor.getString(10));
 
             raza = new Raza();
-            raza.setId_raza(cursor.getInt(10));
-            raza.setTipo_raza(cursor.getString(11));
+            raza.setId_raza(cursor.getInt(11));
+            raza.setTipo_raza(cursor.getString(12));
 
             typeAnimal.setText(ganado.getTipo_ganado());
             raceAnimal.setText(raza.getTipo_raza());
-            weightAnimal.setText(compraDetalle.getPeso().toString());
+
+            if((compraDetalle.getPeso_pie_compra().toString().equals("0.0"))&&(compraDetalle.getPeso_canal_compra().toString().equals("0.0"))){
+                weightAnimal.setText("0.0");
+            }else if(!compraDetalle.getPeso_pie_compra().toString().equals("0.0")){
+                typeWeightAnimal.setText("Pie ");
+                weightAnimal.setText(compraDetalle.getPeso_pie_compra().toString());
+            }else if (!compraDetalle.getPeso_canal_compra().toString().equals("0.0")){
+                typeWeightAnimal.setText("Canal ");
+                weightAnimal.setText(compraDetalle.getPeso_canal_compra().toString());
+            }
+
             priceAnimal.setText(compraDetalle.getPrecio().toString());
             tareAnimal.setText(compraDetalle.getTara().toString());
             earingNumberAnimal.setText(compraDetalle.getNumero_arete().toString());

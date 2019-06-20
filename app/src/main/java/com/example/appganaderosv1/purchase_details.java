@@ -185,7 +185,8 @@ public class purchase_details extends AppCompatActivity {
                         Utilidades.CAMPO_ID_COMPRA_DETALLE + ", " +
                         Utilidades.CAMPO_GANADO + ", " +
                         Utilidades.CAMPO_RAZA + ", " +
-                        Utilidades.CAMPO_PESO + ", " +
+                        Utilidades.CAMPO_PESO_PIE_COMPRA + ", " +
+                        Utilidades.CAMPO_PESO_CANAL_COMPRA + ", " +
                         Utilidades.CAMPO_PRECIO + ", " +
                         Utilidades.CAMPO_TARA + ", " +
                         Utilidades.CAMPO_TOTAL_PAGAR + ", " +
@@ -214,20 +215,21 @@ public class purchase_details extends AppCompatActivity {
             compraDetalle.setId_compra_detalle(cursor.getInt(0));
             compraDetalle.setGanado(cursor.getInt(1));
             compraDetalle.setRaza(cursor.getInt(2));
-            compraDetalle.setPeso(cursor.getDouble(3));
-            compraDetalle.setPrecio(cursor.getDouble(4));
-            compraDetalle.setTara(cursor.getInt(5));
-            compraDetalle.setTotal(cursor.getDouble(6));
-            compraDetalle.setNumero_arete(cursor.getInt(7));
-            compraDetalle.setCompra(cursor.getInt(8));
+            compraDetalle.setPeso_pie_compra(cursor.getDouble(3));
+            compraDetalle.setPeso_canal_compra(cursor.getDouble(4));
+            compraDetalle.setPrecio(cursor.getDouble(5));
+            compraDetalle.setTara(cursor.getInt(6));
+            compraDetalle.setTotal(cursor.getDouble(7));
+            compraDetalle.setNumero_arete(cursor.getInt(8));
+            compraDetalle.setCompra(cursor.getInt(9));
 
             ganado = new Ganado();
-            ganado.setId_ganado(cursor.getInt(9));
-            ganado.setTipo_ganado(cursor.getString(10));
+            ganado.setId_ganado(cursor.getInt(10));
+            ganado.setTipo_ganado(cursor.getString(11));
 
             raza = new Raza();
-            raza.setId_raza(cursor.getInt(11));
-            raza.setTipo_raza(cursor.getString(12));
+            raza.setId_raza(cursor.getInt(12));
+            raza.setTipo_raza(cursor.getString(13));
 
             listViewAnimalsBought.add(compraDetalle);
             listViewTypeAnimal.add((ganado));

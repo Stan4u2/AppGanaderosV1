@@ -41,7 +41,13 @@ public class Adapter_animals extends RecyclerView.Adapter<Adapter_animals.ViewHo
     public void onBindViewHolder(@NonNull ViewHolderAnimals holder, int i) {
         holder.tipo_ganado.setText(listaGanado.get(i).getTipo_ganado());
         holder.raza_ganado.setText(listaRaza.get(i).getTipo_raza());
-        holder.peso_ganado.setText(listaCompraDetalle.get(i).getPeso().toString());
+        if((listaCompraDetalle.get(i).getPeso_pie_compra().toString().equals("0.0"))&&(listaCompraDetalle.get(i).getPeso_canal_compra().toString().equals("0.0"))){
+            holder.peso_ganado.setText(listaCompraDetalle.get(i).getPeso_pie_compra().toString());
+        }else if (!listaCompraDetalle.get(i).getPeso_pie_compra().toString().equals("0.0")){
+            holder.peso_ganado.setText(listaCompraDetalle.get(i).getPeso_pie_compra().toString());
+        }else if(!listaCompraDetalle.get(i).getPeso_canal_compra().toString().equals("0.0")){
+            holder.peso_ganado.setText(listaCompraDetalle.get(i).getPeso_canal_compra().toString());
+        }
     }
 
     @Override

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.appganaderosv1.Adapter.Adapter_animals;
+import com.example.appganaderosv1.Adapter.Adapter_animals_sale;
 import com.example.appganaderosv1.entidades.CompraDetalle;
 import com.example.appganaderosv1.entidades.Ganado;
 import com.example.appganaderosv1.entidades.Persona;
@@ -288,6 +289,7 @@ public class sales_details extends AppCompatActivity {
 
                         Utilidades.CAMPO_ID_VENTA_DETALLE + ", " +
                         Utilidades.CAMPO_COMPRA_GANADO + ", " +
+                        Utilidades.CAMPO_PESO_CANAL_VENTA + ", " +
                         Utilidades.CAMPO_PRECIO_VENTA + ", " +
                         Utilidades.CAMPO_TARA_VENTA + ", " +
                         Utilidades.CAMPO_TOTAL_VENTA + ", " +
@@ -296,7 +298,8 @@ public class sales_details extends AppCompatActivity {
                         Utilidades.CAMPO_ID_COMPRA_DETALLE + ", " +
                         Utilidades.CAMPO_GANADO + ", " +
                         Utilidades.CAMPO_RAZA + ", " +
-                        Utilidades.CAMPO_PESO + ", " +
+                        Utilidades.CAMPO_PESO_PIE_COMPRA + ", " +
+                        Utilidades.CAMPO_PESO_CANAL_COMPRA + ", " +
                         Utilidades.CAMPO_PRECIO + ", " +
                         Utilidades.CAMPO_TARA + ", " +
                         Utilidades.CAMPO_TOTAL_PAGAR + ", " +
@@ -341,30 +344,32 @@ public class sales_details extends AppCompatActivity {
             ventaDetalle = new VentaDetalle();
             ventaDetalle.setId_venta_detalle(cursor.getInt(5));
             ventaDetalle.setId_ganado(cursor.getInt(6));
-            ventaDetalle.setPrecio_venta(cursor.getInt(7));
-            ventaDetalle.setTara_venta(cursor.getInt(8));
-            ventaDetalle.setTotal_venta(cursor.getInt(9));
-            ventaDetalle.setId_venta(cursor.getInt(10));
+            ventaDetalle.setPeso_canal_venta(cursor.getDouble(7));
+            ventaDetalle.setPrecio_venta(cursor.getInt(8));
+            ventaDetalle.setTara_venta(cursor.getInt(9));
+            ventaDetalle.setTotal_venta(cursor.getInt(10));
+            ventaDetalle.setId_venta(cursor.getInt(11));
 
             compraDetalle = new CompraDetalle();
-            compraDetalle.setId_compra_detalle(cursor.getInt(11));
-            compraDetalle.setGanado(cursor.getInt(12));
-            compraDetalle.setRaza(cursor.getInt(13));
-            compraDetalle.setPeso(cursor.getDouble(14));
-            compraDetalle.setPrecio(cursor.getDouble(15));
-            compraDetalle.setTara(cursor.getInt(16));
-            compraDetalle.setTotal(cursor.getDouble(17));
-            compraDetalle.setNumero_arete(cursor.getInt(18));
+            compraDetalle.setId_compra_detalle(cursor.getInt(12));
+            compraDetalle.setGanado(cursor.getInt(13));
+            compraDetalle.setRaza(cursor.getInt(14));
+            compraDetalle.setPeso_pie_compra(cursor.getDouble(15));
+            compraDetalle.setPeso_canal_compra(cursor.getDouble(16));
+            compraDetalle.setPrecio(cursor.getDouble(17));
+            compraDetalle.setTara(cursor.getInt(18));
+            compraDetalle.setTotal(cursor.getDouble(19));
+            compraDetalle.setNumero_arete(cursor.getInt(20));
 
             ganado = new Ganado();
-            ganado.setId_ganado(cursor.getInt(19));
-            ganado.setTipo_ganado(cursor.getString(20));
+            ganado.setId_ganado(cursor.getInt(21));
+            ganado.setTipo_ganado(cursor.getString(22));
 
             raza = new Raza();
-            raza.setId_raza(cursor.getInt(21));
-            raza.setTipo_raza(cursor.getString(22));
+            raza.setId_raza(cursor.getInt(23));
+            raza.setTipo_raza(cursor.getString(24));
 
-            purchaseDate = cursor.getString(23);
+            purchaseDate = cursor.getString(25);
 
             listOwners.add(persona);
             listSales.add(ventaDetalle);
@@ -376,9 +381,9 @@ public class sales_details extends AppCompatActivity {
         db.close();
         cursor.close();
 
-        Adapter_animals adapter_animals = new Adapter_animals(listViewAnimalsBought, listViewTypeAnimal, listViewRaceAnimal);
+        Adapter_animals_sale adapter_animals_sale = new Adapter_animals_sale(listSales, listViewAnimalsBought, listViewTypeAnimal, listViewRaceAnimal);
 
-        adapter_animals.setOnClickListener(new View.OnClickListener() {
+        adapter_animals_sale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Persona persona = listOwners.get(recycler_view_sale.getChildAdapterPosition(view));
@@ -401,11 +406,10 @@ public class sales_details extends AppCompatActivity {
 
                 intent.putExtras(bundle);
                 startActivity(intent);
-
             }
         });
 
-        recycler_view_sale.setAdapter(adapter_animals);
+        recycler_view_sale.setAdapter(adapter_animals_sale);
     }
 
     public void modifySale(View view) {

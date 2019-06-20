@@ -6,12 +6,30 @@ public class CompraDetalle implements Serializable {
     private Integer id_compra_detalle;
     private Integer ganado;
     private Integer raza;
-    private Double peso;
+    private Double peso_pie_compra;
+    private Double peso_canal_compra;
     private Double precio;
     private Integer tara;
     private Double total;
     private Integer numero_arete;
     private Integer compra;
+
+    public CompraDetalle(){
+
+    }
+
+    public CompraDetalle(Integer id_compra_detalle, Integer ganado, Integer raza, Double peso_pie_compra, Double peso_canal_compra, Double precio, Integer tara, Double total, Integer numero_arete, Integer compra) {
+        this.id_compra_detalle = id_compra_detalle;
+        this.ganado = ganado;
+        this.raza = raza;
+        this.peso_pie_compra = peso_pie_compra;
+        this.peso_canal_compra = peso_canal_compra;
+        this.precio = precio;
+        this.tara = tara;
+        this.total = total;
+        this.numero_arete = numero_arete;
+        this.compra = compra;
+    }
 
     public Integer getId_compra_detalle() {
         return id_compra_detalle;
@@ -37,12 +55,20 @@ public class CompraDetalle implements Serializable {
         this.raza = raza;
     }
 
-    public Double getPeso() {
-        return peso;
+    public Double getPeso_pie_compra() {
+        return peso_pie_compra;
     }
 
-    public void setPeso(Double peso) {
-        this.peso = peso;
+    public void setPeso_pie_compra(Double peso_pie_compra) {
+        this.peso_pie_compra = peso_pie_compra;
+    }
+
+    public Double getPeso_canal_compra() {
+        return peso_canal_compra;
+    }
+
+    public void setPeso_canal_compra(Double peso_canal_compra) {
+        this.peso_canal_compra = peso_canal_compra;
     }
 
     public Double getPrecio() {

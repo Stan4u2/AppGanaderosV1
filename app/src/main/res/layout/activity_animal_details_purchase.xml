@@ -76,6 +76,13 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/typeWeightAnimal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Canal"
+            android:textSize="17sp" />
+
+        <TextView
             android:id="@+id/weightAnimal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ public class insert_new_animal extends AppCompatActivity {
     Spinner spinner_types_animal, spinner_race_animal;
     ImageButton add_type_animal, add_race_animal, cancelAnimal, saveAnimal;
     EditText weight_animal, price_animal, tare_animal, number_earring_animal;
+    RadioButton PesoPieRB, PesoCanalRB;
 
     //Thhese ArrayLists are for the spinners
     ArrayList<CompraDetalle> animalData;
@@ -73,6 +76,10 @@ public class insert_new_animal extends AppCompatActivity {
         tare_animal = findViewById(R.id.tare_animal);
         number_earring_animal = findViewById(R.id.number_earring_animal);
 
+        //Radio Button
+        PesoPieRB = findViewById(R.id.PesoPieRB);
+        PesoCanalRB = findViewById(R.id.PesoCanalRB);
+
         consultListTypesAnimals();
         consultListRaceAnimals();
 
@@ -97,6 +104,23 @@ public class insert_new_animal extends AppCompatActivity {
             }
 
         }
+
+        PesoPieRB.setOnCheckedChangeListener((compoundButton, b) -> {
+            if(b){
+                PesoCanalRB.setChecked(false);
+            } else{
+                PesoPieRB.setChecked(false);
+            }
+        });
+
+        PesoCanalRB.setOnCheckedChangeListener((compoundButton, b) -> {
+            if(b){
+                PesoPieRB.setChecked(false);
+            } else {
+                PesoCanalRB.setChecked(false);
+            }
+        });
+
     }
 
     private void loadData() {
@@ -125,7 +149,16 @@ public class insert_new_animal extends AppCompatActivity {
                 }
             }
 
-            weight_animal.setText(compraDetalle.getPeso().toString());
+            if((compraDetalle.getPeso_pie_compra().toString().equals("0.0"))&&(compraDetalle.getPeso_canal_compra().toString().equals("0.0"))){
+                weight_animal.setText("0.0");
+            }else if(!compraDetalle.getPeso_pie_compra().toString().equals("0.0")){
+                weight_animal.setText(compraDetalle.getPeso_pie_compra().toString());
+                PesoPieRB.setChecked(true);
+            }else if (!compraDetalle.getPeso_canal_compra().toString().equals("0.0")){
+                weight_animal.setText(compraDetalle.getPeso_canal_compra().toString());
+                PesoCanalRB.setChecked(true);
+            }
+
             price_animal.setText(compraDetalle.getPrecio().toString());
             tare_animal.setText(compraDetalle.getTara().toString());
             number_earring_animal.setText(compraDetalle.getNumero_arete().toString());
@@ -135,6 +168,22 @@ public class insert_new_animal extends AppCompatActivity {
 
     public void onResume() {
         super.onResume();
+
+        PesoPieRB.setOnCheckedChangeListener((compoundButton, b) -> {
+            if(b){
+                PesoCanalRB.setChecked(false);
+            } else{
+                PesoPieRB.setChecked(false);
+            }
+        });
+
+        PesoCanalRB.setOnCheckedChangeListener((compoundButton, b) -> {
+            if(b){
+                PesoPieRB.setChecked(false);
+            } else {
+                PesoCanalRB.setChecked(false);
+            }
+        });
 
         if (process_race) {
             consultListRaceAnimals();
@@ -366,7 +415,13 @@ public class insert_new_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_COMPRA, idPurchase);
         values.put(Utilidades.CAMPO_GANADO, typeAnimal);
         values.put(Utilidades.CAMPO_RAZA, raceAnimal);
-        values.put(Utilidades.CAMPO_PESO, weightAnimal);
+        if(PesoPieRB.isChecked()){
+            values.put(Utilidades.CAMPO_PESO_PIE_COMPRA, weightAnimal);
+            values.put(Utilidades.CAMPO_PESO_CANAL_COMPRA, 0.0);
+        }else if (PesoCanalRB.isChecked()){
+            values.put(Utilidades.CAMPO_PESO_CANAL_COMPRA, weightAnimal);
+            values.put(Utilidades.CAMPO_PESO_PIE_COMPRA, 0.0);
+        }
         values.put(Utilidades.CAMPO_PRECIO, priceAnimal);
         values.put(Utilidades.CAMPO_TARA, tareAnimal);
         values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total * tareAnimal) / 100)));
@@ -392,7 +447,13 @@ public class insert_new_animal extends AppCompatActivity {
         ContentValues values = new ContentValues();
         values.put(Utilidades.CAMPO_GANADO, typeAnimal);
         values.put(Utilidades.CAMPO_RAZA, raceAnimal);
-        values.put(Utilidades.CAMPO_PESO, weightAnimal);
+        if(PesoPieRB.isChecked()){
+            values.put(Utilidades.CAMPO_PESO_PIE_COMPRA, weightAnimal);
+            values.put(Utilidades.CAMPO_PESO_CANAL_COMPRA, 0.0);
+        }else if (PesoCanalRB.isChecked()){
+            values.put(Utilidades.CAMPO_PESO_CANAL_COMPRA, weightAnimal);
+            values.put(Utilidades.CAMPO_PESO_PIE_COMPRA, 0.0);
+        }
         values.put(Utilidades.CAMPO_PRECIO, priceAnimal);
         values.put(Utilidades.CAMPO_TARA, tareAnimal);
         values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total * tareAnimal) / 100)));
@@ -420,7 +481,13 @@ public class insert_new_animal extends AppCompatActivity {
 
         values.put(Utilidades.CAMPO_GANADO, typeAnimal);
         values.put(Utilidades.CAMPO_RAZA, raceAnimal);
-        values.put(Utilidades.CAMPO_PESO, weightAnimal);
+        if(PesoPieRB.isChecked()){
+            values.put(Utilidades.CAMPO_PESO_PIE_COMPRA, weightAnimal);
+            values.put(Utilidades.CAMPO_PESO_CANAL_COMPRA, 0.0);
+        }else if (PesoCanalRB.isChecked()){
+            values.put(Utilidades.CAMPO_PESO_CANAL_COMPRA, weightAnimal);
+            values.put(Utilidades.CAMPO_PESO_PIE_COMPRA, 0.0);
+        }
         values.put(Utilidades.CAMPO_PRECIO, priceAnimal);
         values.put(Utilidades.CAMPO_TARA, tareAnimal);
         values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total * tareAnimal) / 100)));
