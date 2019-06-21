@@ -1,5 +1,6 @@
 package com.example.appganaderosv1;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -64,6 +65,7 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
@@ -88,10 +90,9 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PeopleFragment()).commit();
                 break;
             case R.id.nav_logout:
-                super.onBackPressed();
+                Intent miIntent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(miIntent);
                 break;
-
-
         }
 
         drawer.closeDrawer(GravityCompat.START);
