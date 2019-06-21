@@ -75,6 +75,7 @@ public class select_animal extends AppCompatActivity {
     Raza raza = null;
 
     int posA, posB, posC;
+    double pesoPie = 0, pesoCanal = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +122,8 @@ public class select_animal extends AppCompatActivity {
 
         blockRadioButtons();
 
+        loadingData = false;
+
         consultListOwners();
         consultListAnimals();
         consultListDates();
@@ -131,7 +134,7 @@ public class select_animal extends AppCompatActivity {
                 PesoCanalRBVenta.setChecked(false);
                 peso_venta.setEnabled(false);
             } else {
-                //PesoPieRBVenta.setChecked(false);
+                PesoPieRBVenta.setChecked(false);
             }
         });
 
@@ -141,7 +144,7 @@ public class select_animal extends AppCompatActivity {
                 PesoPieRBVenta.setChecked(false);
                 peso_venta.setEnabled(true);
             } else {
-                //PesoCanalRBVenta.setChecked(false);
+                PesoCanalRBVenta.setChecked(false);
                 peso_venta.setEnabled(false);
             }
         });
@@ -215,18 +218,17 @@ public class select_animal extends AppCompatActivity {
                     break;
 
                 case "modifie":
-                    loadingData = false;
 
-                    if (actionToDo != null) {
-                        persona = (Persona) actionToDo.getSerializable("persona");
-                        ventaDetalle = (VentaDetalle) actionToDo.getSerializable("ventaDetalle");
-                        compraDetalle = (CompraDetalle) actionToDo.getSerializable("compraDetalle");
-                        ganado = (Ganado) actionToDo.getSerializable("ganado");
-                        raza = (Raza) actionToDo.getSerializable("raza");
-                        purchaseDate = actionToDo.getSerializable("fechaCompra").toString();
+                    //if (actionToDo != null) {
+                    persona = (Persona) actionToDo.getSerializable("persona");
+                    ventaDetalle = (VentaDetalle) actionToDo.getSerializable("ventaDetalle");
+                    compraDetalle = (CompraDetalle) actionToDo.getSerializable("compraDetalle");
+                    ganado = (Ganado) actionToDo.getSerializable("ganado");
+                    raza = (Raza) actionToDo.getSerializable("raza");
+                    purchaseDate = actionToDo.getSerializable("fechaCompra").toString();
 
-                        loadingData = true;
-                    }
+                    loadingData = true;
+                    //}
 
                     if (owner.equals("yes")) {
                         idSale = Integer.valueOf(actionToDo.getSerializable("idSale").toString());
@@ -594,6 +596,9 @@ public class select_animal extends AppCompatActivity {
             compraDetalle.setNumero_arete(cursor.getInt(8));
             compraDetalle.setCompra(cursor.getInt(9));
 
+            pesoPie = compraDetalle.getPeso_pie_compra();
+            pesoCanal = compraDetalle.getPeso_canal_compra();
+
             ganado = new Ganado();
             ganado.setId_ganado(cursor.getInt(10));
             ganado.setTipo_ganado(cursor.getString(11));
@@ -626,7 +631,6 @@ public class select_animal extends AppCompatActivity {
                     } else {
                         blockRadioButtons();
                     }
-
 
                     idAnimal = animalData.get(position - 1).getId_compra_detalle();
                     typeAnimal.setText(animalType.get(position - 1).getTipo_ganado());
@@ -665,7 +669,6 @@ public class select_animal extends AppCompatActivity {
                 }
 
                 calculateTotal();
-
             }
 
             @Override
@@ -819,7 +822,7 @@ public class select_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_TOTAL_VENTA, total);
 
         if (PesoCanalRBVenta.isChecked()) {
-            if (compraDetalle.getPeso_canal_compra().toString().equals("0.0")) {
+            if (String.valueOf(pesoCanal).equals("0.0")) {
                 values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble(peso_venta.getText().toString()));
             } else {
                 values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble("0.0"));
@@ -847,7 +850,7 @@ public class select_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_TOTAL_VENTA, total);
 
         if (PesoCanalRBVenta.isChecked()) {
-            if (compraDetalle.getPeso_canal_compra().toString().equals("0.0")) {
+            if (String.valueOf(pesoCanal).equals("0.0")) {
                 values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble(peso_venta.getText().toString()));
             } else {
                 values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble("0.0"));
@@ -879,11 +882,13 @@ public class select_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_VENTA, idSale);
 
         if (PesoCanalRBVenta.isChecked()) {
-            if (compraDetalle.getPeso_canal_compra().toString().equals("0.0")) {
+            if (String.valueOf(pesoCanal).equals("0.0")) {
                 values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble(peso_venta.getText().toString()));
             } else {
                 values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble("0.0"));
             }
+        } else {
+            values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble("0.0"));
         }
 
         long idResult = db.insert(Utilidades.TABLA_VENTA_DETALLE, Utilidades.CAMPO_ID_VENTA_DETALLE, values);
