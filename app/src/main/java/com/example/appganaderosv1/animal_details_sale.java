@@ -250,14 +250,18 @@ public class animal_details_sale extends AppCompatActivity {
             */
 
             if (!ventaDetalle.getPeso_canal_venta().toString().equals("0.0")){
+                peso_canal.setVisibility(View.VISIBLE);
                 tipo_peso_compra.setText("Pie ");
                 weightAnimal.setText(compraDetalle.getPeso_pie_compra().toString());
                 peso_canal.setText(ventaDetalle.getPeso_canal_venta().toString());
+                peso_canal.setText(ventaDetalle.getPeso_canal_venta().toString());
+                System.out.println("Hola");
             } else {
                 if(!compraDetalle.getPeso_pie_compra().toString().equals("0.0")){
                     tipo_peso_compra.setText("Pie ");
                     weightAnimal.setText(compraDetalle.getPeso_pie_compra().toString());
                     peso_canal.setVisibility(View.INVISIBLE);
+                    System.out.println("Adios");
                 } else if (!compraDetalle.getPeso_canal_compra().toString().equals("0.0")){
                     tipo_peso_compra.setText("Canal ");
                     weightAnimal.setText(compraDetalle.getPeso_canal_compra().toString());
@@ -266,6 +270,8 @@ public class animal_details_sale extends AppCompatActivity {
                     weightAnimal.setText("0.0");
                 }
             }
+
+            System.out.println(ventaDetalle.getPeso_canal_venta().toString());
 
 
             priceAnimal.setText(compraDetalle.getPrecio().toString());

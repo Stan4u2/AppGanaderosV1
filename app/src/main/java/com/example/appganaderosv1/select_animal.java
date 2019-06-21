@@ -127,20 +127,20 @@ public class select_animal extends AppCompatActivity {
 
         PesoPieRBVenta.setOnCheckedChangeListener((compoundButton, b) -> {
             peso_venta.setText("");
-            if(b){
+            if (b) {
                 PesoCanalRBVenta.setChecked(false);
                 peso_venta.setEnabled(false);
-            }else {
+            } else {
                 //PesoPieRBVenta.setChecked(false);
             }
         });
 
         PesoCanalRBVenta.setOnCheckedChangeListener((compoundButton, b) -> {
             peso_venta.setText("");
-            if(b){
+            if (b) {
                 PesoPieRBVenta.setChecked(false);
                 peso_venta.setEnabled(true);
-            }else {
+            } else {
                 //PesoCanalRBVenta.setChecked(false);
                 peso_venta.setEnabled(false);
             }
@@ -203,6 +203,9 @@ public class select_animal extends AppCompatActivity {
             action = actionToDo.getSerializable("action").toString();
             owner = actionToDo.getSerializable("owner").toString();
 
+            System.out.println(action);
+            System.out.println(owner);
+
             switch (action) {
                 case "insert":
 
@@ -241,7 +244,7 @@ public class select_animal extends AppCompatActivity {
 
     public void loadData() {
 
-        if(!ventaDetalle.getId_venta_detalle().toString().isEmpty()) {
+        if (!ventaDetalle.getId_venta_detalle().toString().isEmpty()) {
             id_sale_modifie = ventaDetalle.getId_venta_detalle();
 
 
@@ -290,23 +293,23 @@ public class select_animal extends AppCompatActivity {
         }
     }
 
-    public void loadSaleData(){
-        if(!ventaDetalle.getPeso_canal_venta().toString().equals("0.0")){
+    public void loadSaleData() {
+        if (!ventaDetalle.getPeso_canal_venta().toString().equals("0.0")) {
             PesoCanalRBVenta.setChecked(true);
             peso_venta.setText(ventaDetalle.getPeso_canal_venta().toString());
             System.out.println("Peso en Canal Venta");
         } else {
-            if(!compraDetalle.getPeso_pie_compra().toString().equals("0.0")){
+            if (!compraDetalle.getPeso_pie_compra().toString().equals("0.0")) {
                 //PesoPieRBVenta.setChecked(true);
                 //weightAnimal.setText(compraDetalle.getPeso_pie_compra().toString());
                 System.out.println("Peso en Pie");
                 PesoPieRBVenta.setChecked(true);
-            } else if (!compraDetalle.getPeso_canal_compra().toString().equals("0.0")){
+            } else if (!compraDetalle.getPeso_canal_compra().toString().equals("0.0")) {
                 System.out.println("Peso en Canal Compra");
                 PesoCanalRBVenta.setChecked(true);
                 //weightAnimal.setText(compraDetalle.getPeso_canal_compra().toString());
                 peso_venta.setText(weightAnimal.getText());
-            } else{
+            } else {
                 peso_venta.setText("");
             }
         }
@@ -618,26 +621,25 @@ public class select_animal extends AppCompatActivity {
                 if (position != 0) {
                     blockRadioButtons();
 
-                    if(loadingData && position == posC){
+                    if (loadingData && position == posC) {
                         loadSaleData();
-                    }else{
+                    } else {
                         blockRadioButtons();
                     }
-
 
 
                     idAnimal = animalData.get(position - 1).getId_compra_detalle();
                     typeAnimal.setText(animalType.get(position - 1).getTipo_ganado());
                     raceAnimal.setText(animalRace.get(position - 1).getTipo_raza());
-                    if((animalData.get(position - 1).getPeso_pie_compra().toString().equals("0.0"))&&(animalData.get(position - 1).getPeso_canal_compra().toString().equals("0.0"))){
+                    if ((animalData.get(position - 1).getPeso_pie_compra().toString().equals("0.0")) && (animalData.get(position - 1).getPeso_canal_compra().toString().equals("0.0"))) {
                         weightAnimal.setText("0.0");
                         PesoPieRBVenta.setEnabled(true);
                         PesoPieRBVenta.setChecked(true);
-                    }else if (!animalData.get(position - 1).getPeso_pie_compra().toString().equals("0.0")){
+                    } else if (!animalData.get(position - 1).getPeso_pie_compra().toString().equals("0.0")) {
                         weightAnimal.setText(animalData.get(position - 1).getPeso_pie_compra().toString());
                         PesoPieRBVenta.setEnabled(true);
                         PesoCanalRBVenta.setEnabled(true);
-                    } else if (!animalData.get(position - 1).getPeso_canal_compra().toString().equals("0.0")){
+                    } else if (!animalData.get(position - 1).getPeso_canal_compra().toString().equals("0.0")) {
                         weightAnimal.setText(animalData.get(position - 1).getPeso_canal_compra().toString());
                         PesoCanalRBVenta.setEnabled(true);
                         PesoCanalRBVenta.setChecked(true);
@@ -682,11 +684,11 @@ public class select_animal extends AppCompatActivity {
         animalList.add("Seleccione:");
 
         for (int i = 0; i < animalData.size(); i++) {
-            if((animalData.get(i).getPeso_pie_compra().toString().equals("0.0"))&&(animalData.get(i).getPeso_canal_compra().toString().equals("0.0"))){
+            if ((animalData.get(i).getPeso_pie_compra().toString().equals("0.0")) && (animalData.get(i).getPeso_canal_compra().toString().equals("0.0"))) {
                 animalList.add(animalType.get(i).getTipo_ganado() + " " + animalRace.get(i).getTipo_raza() + " " + animalData.get(i).getPeso_pie_compra() + "kg");
-            } else if (!animalData.get(i).getPeso_pie_compra().toString().equals("0.0")){
+            } else if (!animalData.get(i).getPeso_pie_compra().toString().equals("0.0")) {
                 animalList.add(animalType.get(i).getTipo_ganado() + " " + animalRace.get(i).getTipo_raza() + " " + animalData.get(i).getPeso_pie_compra() + "kg En Pie");
-            } else if (!animalData.get(i).getPeso_canal_compra().toString().equals("0.0")){
+            } else if (!animalData.get(i).getPeso_canal_compra().toString().equals("0.0")) {
                 animalList.add(animalType.get(i).getTipo_ganado() + " " + animalRace.get(i).getTipo_raza() + " " + animalData.get(i).getPeso_canal_compra() + "kg En Canal");
             }
         }
@@ -702,11 +704,11 @@ public class select_animal extends AppCompatActivity {
         if (!tare_sale.getText().toString().isEmpty()) {
             tare = Integer.valueOf(tare_sale.getText().toString());
         }
-        if(PesoPieRBVenta.isChecked()) {
+        if (PesoPieRBVenta.isChecked()) {
             if (!weightAnimal.getText().toString().isEmpty()) {
                 weight = Double.parseDouble(weightAnimal.getText().toString());
             }
-        } else if (PesoCanalRBVenta.isChecked()){
+        } else if (PesoCanalRBVenta.isChecked()) {
             if (!peso_venta.getText().toString().isEmpty()) {
                 weight = Double.parseDouble(peso_venta.getText().toString());
             }
@@ -743,7 +745,7 @@ public class select_animal extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "¡¡Ingrese El Precio De Venta!!", Toast.LENGTH_LONG).show();
                 noBlankSpaces = false;
             }
-            if(!PesoPieRBVenta.isChecked() && !PesoCanalRBVenta.isChecked()){
+            if (!PesoPieRBVenta.isChecked() && !PesoCanalRBVenta.isChecked()) {
                 Toast.makeText(getApplicationContext(), "¡¡Selecione Peso!!", Toast.LENGTH_LONG).show();
                 noBlankSpaces = false;
             }
@@ -816,13 +818,13 @@ public class select_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_TARA_VENTA, tare);
         values.put(Utilidades.CAMPO_TOTAL_VENTA, total);
 
-        if(PesoCanalRBVenta.isChecked()){
-            if(compraDetalle.getPeso_canal_compra().toString().equals("0.0")) {
+        if (PesoCanalRBVenta.isChecked()) {
+            if (compraDetalle.getPeso_canal_compra().toString().equals("0.0")) {
                 values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble(peso_venta.getText().toString()));
-            }else{
+            } else {
                 values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble("0.0"));
             }
-        }else{
+        } else {
             values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble("0.0"));
         }
 
@@ -844,13 +846,13 @@ public class select_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_TARA_VENTA, tare);
         values.put(Utilidades.CAMPO_TOTAL_VENTA, total);
 
-        if(PesoCanalRBVenta.isChecked()){
-            if(compraDetalle.getPeso_canal_compra().toString().equals("0.0")) {
+        if (PesoCanalRBVenta.isChecked()) {
+            if (compraDetalle.getPeso_canal_compra().toString().equals("0.0")) {
                 values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble(peso_venta.getText().toString()));
-            }else{
+            } else {
                 values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble("0.0"));
             }
-        }else{
+        } else {
             values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble("0.0"));
         }
 
@@ -876,10 +878,10 @@ public class select_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_TOTAL_VENTA, total);
         values.put(Utilidades.CAMPO_VENTA, idSale);
 
-        if(PesoCanalRBVenta.isChecked()){
-            if(compraDetalle.getPeso_canal_compra().toString().equals("0.0")) {
+        if (PesoCanalRBVenta.isChecked()) {
+            if (compraDetalle.getPeso_canal_compra().toString().equals("0.0")) {
                 values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble(peso_venta.getText().toString()));
-            }else{
+            } else {
                 values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble("0.0"));
             }
         }
@@ -899,7 +901,7 @@ public class select_animal extends AppCompatActivity {
         finish();
     }
 
-    public void blockRadioButtons(){
+    public void blockRadioButtons() {
         PesoPieRBVenta.setEnabled(false);
         PesoPieRBVenta.setChecked(false);
         PesoCanalRBVenta.setEnabled(false);
