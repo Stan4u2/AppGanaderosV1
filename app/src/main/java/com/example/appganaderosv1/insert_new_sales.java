@@ -201,6 +201,7 @@ public class insert_new_sales extends AppCompatActivity {
                         calculateQuantityAnimalsNotSaved();
                         calculateSumPayAnimalsNotSaved();
                     } else if (owner.equals("yes")) {
+                        loadData();
                         fillAnimalListOwner();
                         calculateQuantityAnimalsSaved();
                         calculateSumPayAnimalsSaved();

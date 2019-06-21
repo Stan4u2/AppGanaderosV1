@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.appganaderosv1.Fragments.SalesFragment;
 import com.example.appganaderosv1.entidades.CompraDetalle;
 import com.example.appganaderosv1.entidades.Ganado;
 import com.example.appganaderosv1.entidades.Persona;
@@ -29,8 +30,6 @@ public class animal_details_sale extends AppCompatActivity {
     Raza raza = null;
 
     static int id_sale_modifie;
-
-    static int id_sales;
 
     int id_sale;
 
@@ -235,20 +234,6 @@ public class animal_details_sale extends AppCompatActivity {
             typeAnimal.setText(ganado.getTipo_ganado());
             raceAnimal.setText(raza.getTipo_raza());
 
-            /*
-            if (!ventaDetalle.getPeso_canal_venta().toString().equals("0.0")){
-                weightAnimal.setText(ventaDetalle.getPeso_canal_venta().toString());
-            } else {
-                if(!compraDetalle.getPeso_pie_compra().toString().equals("0.0")){
-                    weightAnimal.setText(compraDetalle.getPeso_pie_compra().toString());
-                } else if (!compraDetalle.getPeso_canal_compra().toString().equals("0.0")){
-                    weightAnimal.setText(compraDetalle.getPeso_canal_compra().toString());
-                } else{
-                    weightAnimal.setText("0.0");
-                }
-            }
-            */
-
             if (!ventaDetalle.getPeso_canal_venta().toString().equals("0.0")){
                 peso_canal.setVisibility(View.VISIBLE);
                 tipo_peso_compra.setText("Pie ");
@@ -314,10 +299,10 @@ public class animal_details_sale extends AppCompatActivity {
     public void deleteSale(View view) {
         SQLiteDatabase db = conn.getReadableDatabase();
         boolean continueProcess = false;
-        String[] id_sale = {String.valueOf(id_sale_modifie)};
+        String[] id_Sale = {String.valueOf(id_sale_modifie)};
 
         //In this part I delete the animal but I still have to change the number of animals
-        int deleted = db.delete(Utilidades.TABLA_VENTA_DETALLE, Utilidades.CAMPO_ID_VENTA_DETALLE + " = ?", id_sale);
+        int deleted = db.delete(Utilidades.TABLA_VENTA_DETALLE, Utilidades.CAMPO_ID_VENTA_DETALLE + " = ?", id_Sale);
 
         if (deleted == 1) {
             insert_new_sales.saleDeleted = true;
@@ -328,9 +313,45 @@ public class animal_details_sale extends AppCompatActivity {
         }
 
         if (continueProcess == true) {
-            finish();
+            boolean check = checkSale(id_sale);
+            if(check){
+                Intent intent = new Intent(view.getContext(), homeActivity.class);
+                startActivity(intent);
+            }else{
+                finish();
+            }
         }
 
         db.close();
+    }
+
+    public boolean checkSale(int idSale){
+        //In this method I´ll check if there is any animal still in the Sale if not I´ll delete the Sale
+
+        SQLiteDatabase db = conn.getReadableDatabase();
+
+        String[] id_Sale = {String.valueOf(idSale)};
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Utilidades.TABLA_VENTA_DETALLE + " WHERE " + Utilidades.CAMPO_VENTA + " = " + idSale, null);
+
+        int count = cursor.getCount();
+
+        if(count == 0){
+            int deleted = db.delete(Utilidades.TABLA_VENTAS, Utilidades.CAMPO_ID_VENTAS + " = ?", id_Sale);
+
+            db.close();
+
+            if(deleted == 1){
+                Toast.makeText(getApplicationContext(), "Se ha eliminado la venta", Toast.LENGTH_LONG).show();
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            db.close();
+            return false;
+        }
+
+
     }
 }
