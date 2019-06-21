@@ -33,7 +33,7 @@ public class select_animal extends AppCompatActivity {
     EditText precio_venta, tare_sale, peso_venta;
     TextView name_owner, cellphone_owner, address_owner, extra_data_owner;
     TextView typeAnimal, raceAnimal, weightAnimal, priceAnimal, tareAnimal, earingNumberAnimal, total_pagado, total_cobrar_CT;
-    Spinner spinner_owner, spinner_purchase_date, spinner_animal;
+    Spinner spinner_owner, spinner_purchase_date, spinner_animal_compra;
     ImageButton saveSale;
     RadioButton PesoPieRBVenta, PesoCanalRBVenta;
 
@@ -42,6 +42,8 @@ public class select_animal extends AppCompatActivity {
 
     public static boolean loadingData;
     public static boolean selected = false;
+
+    boolean person = false, date = false, animal = false;
 
     static int id_sale_modifie;
 
@@ -104,7 +106,7 @@ public class select_animal extends AppCompatActivity {
         //Spinner
         spinner_owner = findViewById(R.id.spinner_owner);
         spinner_purchase_date = findViewById(R.id.spinner_purchase_date);
-        spinner_animal = findViewById(R.id.spinner_animal);
+        spinner_animal_compra = findViewById(R.id.spinner_animal_compra);
 
         //ImageButton
         saveSale = findViewById(R.id.saveSale);
@@ -117,11 +119,11 @@ public class select_animal extends AppCompatActivity {
 
         peso_venta.setEnabled(false);
 
+        blockRadioButtons();
+
         consultListOwners();
         consultListAnimals();
         consultListDates();
-
-        blockRadioButtons();
 
         PesoPieRBVenta.setOnCheckedChangeListener((compoundButton, b) -> {
             peso_venta.setText("");
@@ -129,7 +131,7 @@ public class select_animal extends AppCompatActivity {
                 PesoCanalRBVenta.setChecked(false);
                 peso_venta.setEnabled(false);
             }else {
-                PesoPieRBVenta.setChecked(false);
+                //PesoPieRBVenta.setChecked(false);
             }
         });
 
@@ -139,7 +141,7 @@ public class select_animal extends AppCompatActivity {
                 PesoPieRBVenta.setChecked(false);
                 peso_venta.setEnabled(true);
             }else {
-                PesoCanalRBVenta.setChecked(false);
+                //PesoCanalRBVenta.setChecked(false);
                 peso_venta.setEnabled(false);
             }
         });
@@ -227,6 +229,8 @@ public class select_animal extends AppCompatActivity {
                         idSale = Integer.valueOf(actionToDo.getSerializable("idSale").toString());
                     }
 
+                    person = true;
+
                     loadData();
                     break;
             }
@@ -237,64 +241,73 @@ public class select_animal extends AppCompatActivity {
 
     public void loadData() {
 
-        if (loadingData) {
-
-            //if (owner.equals("no")) {
-
+        if(!ventaDetalle.getId_venta_detalle().toString().isEmpty()) {
             id_sale_modifie = ventaDetalle.getId_venta_detalle();
 
-            for (int i = 0; i < peopleData.size(); i++) {
-                if (peopleData.get(i).getId_persona().equals(persona.getId_persona())) {
-                    spinner_owner.setSelection(i + 1);
-                    posA = i + 1;
-                    consultListDates();
+
+            if (loadingData) {
+
+                if (person) {
+                    for (int i = 0; i < peopleData.size(); i++) {
+                        if (peopleData.get(i).getId_persona().equals(persona.getId_persona())) {
+                            spinner_owner.setSelection(i + 1);
+                            posA = i + 1;
+                            date = true;
+                            person = false;
+                        }
+                    }
+                }
+
+                if (date) {
+                    for (int i = 0; i < purchaseData.size(); i++) {
+                        if (purchaseData.get(i).getFecha_compra().equals(purchaseDate)) {
+                            spinner_purchase_date.setSelection(i + 1);
+                            posB = i + 1;
+                            animal = true;
+                            date = false;
+                        }
+                    }
+                }
+
+                if (animal) {
+                    for (int i = 0; i < animalData.size(); i++) {
+                        if (animalData.get(i).getId_compra_detalle().equals(compraDetalle.getId_compra_detalle())) {
+                            selected = true;
+                            spinner_animal_compra.setSelection(i + 1);
+                            posC = i + 1;
+                            break;
+                        }
+
+                    }
+                }
+
+                if (!person && !date && selected && spinner_animal_compra.getSelectedItemPosition() > 0) {
+                    //animal = false;loadingData = false;
+                    precio_venta.setText(ventaDetalle.getPrecio_venta().toString());
+                    tare_sale.setText(ventaDetalle.getTara_venta().toString());
                 }
             }
-
-            for (int i = 0; i < purchaseData.size(); i++) {
-                if (purchaseData.get(i).getFecha_compra().equals(purchaseDate)) {
-                    spinner_purchase_date.setSelection(i + 1);
-                    posB = i + 1;
-                    consultListAnimals();
-                }
-            }
-
-            for (int i = 0; i < animalData.size(); i++) {
-                if (animalData.get(i).getId_compra_detalle().equals(compraDetalle.getId_compra_detalle())) {
-                    spinner_animal.setSelection(i + 1);
-                    posC = i + 1;
-                }
-            }
-            //}
-
-
-            precio_venta.setText(ventaDetalle.getPrecio_venta().toString());
-            tare_sale.setText(ventaDetalle.getTara_venta().toString());
         }
+    }
 
-        if (posA != 0 && posB != 0 && posC != 0) {
-            loadingData = false;
-            selected = true;
-            System.out.println(posA + " " + posB + " " + posC);
-            spinner_owner.setSelection(posA);
-            spinner_purchase_date.setSelection(posB);
-            spinner_animal.setSelection(posC);
-        }
-
+    public void loadSaleData(){
         if(!ventaDetalle.getPeso_canal_venta().toString().equals("0.0")){
             PesoCanalRBVenta.setChecked(true);
-            weightAnimal.setText(ventaDetalle.getPeso_canal_venta().toString());
-            peso_venta.setText(weightAnimal.getText());
+            peso_venta.setText(ventaDetalle.getPeso_canal_venta().toString());
+            System.out.println("Peso en Canal Venta");
         } else {
             if(!compraDetalle.getPeso_pie_compra().toString().equals("0.0")){
-                weightAnimal.setText(compraDetalle.getPeso_pie_compra().toString());
+                //PesoPieRBVenta.setChecked(true);
+                //weightAnimal.setText(compraDetalle.getPeso_pie_compra().toString());
+                System.out.println("Peso en Pie");
                 PesoPieRBVenta.setChecked(true);
             } else if (!compraDetalle.getPeso_canal_compra().toString().equals("0.0")){
-                weightAnimal.setText(compraDetalle.getPeso_canal_compra().toString());
+                System.out.println("Peso en Canal Compra");
                 PesoCanalRBVenta.setChecked(true);
+                //weightAnimal.setText(compraDetalle.getPeso_canal_compra().toString());
                 peso_venta.setText(weightAnimal.getText());
             } else{
-                weightAnimal.setText("0.0");
+                peso_venta.setText("");
             }
         }
     }
@@ -348,11 +361,10 @@ public class select_animal extends AppCompatActivity {
                     consultListDates();
                     consultListAnimals();
 
-                    //In this part I select the date when I modifie it, it's the only way
-                    if (loadingData == true && purchaseData.size() > 0) {
+
+                    if (loadingData == true) {
                         loadData();
                     }
-
 
                 } else {
                     idOwner = 0;
@@ -427,9 +439,11 @@ public class select_animal extends AppCompatActivity {
 
                     consultListAnimals();
 
-                    if (loadingData == true && animalData.size() > 0) {
+
+                    if (loadingData == true) {
                         loadData();
                     }
+
 
                 } else {
 
@@ -477,7 +491,6 @@ public class select_animal extends AppCompatActivity {
         Cursor cursor = null;
 
         //In this part of code I compare if im goingto to modifie it, if thats the case the same animal must appear.
-        System.out.println(loadingData);
         if (action.equals("modifie")) {
             cursor = db.rawQuery(
                     "SELECT DISTINCT " +
@@ -598,12 +611,21 @@ public class select_animal extends AppCompatActivity {
 
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, animalList);
 
-        spinner_animal.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner_animal_compra.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                blockRadioButtons();
 
                 if (position != 0) {
+                    blockRadioButtons();
+
+                    if(loadingData && position == posC){
+                        loadSaleData();
+                    }else{
+                        blockRadioButtons();
+                    }
+
+
+
                     idAnimal = animalData.get(position - 1).getId_compra_detalle();
                     typeAnimal.setText(animalType.get(position - 1).getTipo_ganado());
                     raceAnimal.setText(animalRace.get(position - 1).getTipo_raza());
@@ -628,7 +650,7 @@ public class select_animal extends AppCompatActivity {
                     total_pagado.setText(animalData.get(position - 1).getTotal().toString());
 
                 } else {
-
+                    blockRadioButtons();
                     idAnimal = 0;
                     typeAnimal.setText("");
                     raceAnimal.setText("");
@@ -650,13 +672,7 @@ public class select_animal extends AppCompatActivity {
             }
         });
 
-        spinner_animal.setAdapter(adapter);
-
-        if (posA != 0 && posB != 0 && posC != 0 && spinner_owner.getSelectedItemId() == posA && spinner_purchase_date.getSelectedItemId() == posB && selected) {
-            spinner_owner.setSelection(posA);
-            spinner_purchase_date.setSelection(posB);
-            spinner_animal.setSelection(posC);
-        }
+        spinner_animal_compra.setAdapter(adapter);
 
     }
 
@@ -707,7 +723,7 @@ public class select_animal extends AppCompatActivity {
         boolean complete = false;
 
         boolean noBlankSpaces = true;
-        if (spinner_owner.getSelectedItemId() == 0 && spinner_animal.getSelectedItemId() == 0 && spinner_purchase_date.getSelectedItemId() == 0 && precio_venta.getText().toString().isEmpty() && !PesoPieRBVenta.isChecked() && !PesoPieRBVenta.isChecked()) {
+        if (spinner_owner.getSelectedItemId() == 0 && spinner_animal_compra.getSelectedItemId() == 0 && spinner_purchase_date.getSelectedItemId() == 0 && precio_venta.getText().toString().isEmpty() && !PesoPieRBVenta.isChecked() && !PesoPieRBVenta.isChecked()) {
             Toast.makeText(getApplicationContext(), "¡¡Campos Vacios!!", Toast.LENGTH_LONG).show();
             noBlankSpaces = false;
         } else {
@@ -715,7 +731,7 @@ public class select_animal extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "¡¡Selecione El Dueño!!", Toast.LENGTH_LONG).show();
                 noBlankSpaces = false;
             }
-            if (spinner_animal.getSelectedItemId() == 0) {
+            if (spinner_animal_compra.getSelectedItemId() == 0) {
                 Toast.makeText(getApplicationContext(), "¡¡Selecione El Ganado!!", Toast.LENGTH_LONG).show();
                 noBlankSpaces = false;
             }
@@ -801,7 +817,13 @@ public class select_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_TOTAL_VENTA, total);
 
         if(PesoCanalRBVenta.isChecked()){
-            values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble(peso_venta.getText().toString()));
+            if(compraDetalle.getPeso_canal_compra().toString().equals("0.0")) {
+                values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble(peso_venta.getText().toString()));
+            }else{
+                values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble("0.0"));
+            }
+        }else{
+            values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble("0.0"));
         }
 
         int updated = db.update(Utilidades.TABLA_VENTA_DETALLE, values, Utilidades.CAMPO_ID_VENTA_DETALLE + " = ?", id_sale_mod);
@@ -823,7 +845,13 @@ public class select_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_TOTAL_VENTA, total);
 
         if(PesoCanalRBVenta.isChecked()){
-            values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble(peso_venta.getText().toString()));
+            if(compraDetalle.getPeso_canal_compra().toString().equals("0.0")) {
+                values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble(peso_venta.getText().toString()));
+            }else{
+                values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble("0.0"));
+            }
+        }else{
+            values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble("0.0"));
         }
 
         long idResult = db.insert(Utilidades.TABLA_VENTA_DETALLE, Utilidades.CAMPO_ID_VENTA_DETALLE, values);
@@ -847,6 +875,14 @@ public class select_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_TARA_VENTA, tare);
         values.put(Utilidades.CAMPO_TOTAL_VENTA, total);
         values.put(Utilidades.CAMPO_VENTA, idSale);
+
+        if(PesoCanalRBVenta.isChecked()){
+            if(compraDetalle.getPeso_canal_compra().toString().equals("0.0")) {
+                values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble(peso_venta.getText().toString()));
+            }else{
+                values.put(Utilidades.CAMPO_PESO_CANAL_VENTA, Double.parseDouble("0.0"));
+            }
+        }
 
         long idResult = db.insert(Utilidades.TABLA_VENTA_DETALLE, Utilidades.CAMPO_ID_VENTA_DETALLE, values);
 

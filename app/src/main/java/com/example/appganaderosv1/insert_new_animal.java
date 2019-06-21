@@ -106,15 +106,15 @@ public class insert_new_animal extends AppCompatActivity {
         }
 
         PesoPieRB.setOnCheckedChangeListener((compoundButton, b) -> {
-            if(b){
+            if (b) {
                 PesoCanalRB.setChecked(false);
-            } else{
+            } else {
                 PesoPieRB.setChecked(false);
             }
         });
 
         PesoCanalRB.setOnCheckedChangeListener((compoundButton, b) -> {
-            if(b){
+            if (b) {
                 PesoPieRB.setChecked(false);
             } else {
                 PesoCanalRB.setChecked(false);
@@ -149,12 +149,12 @@ public class insert_new_animal extends AppCompatActivity {
                 }
             }
 
-            if((compraDetalle.getPeso_pie_compra().toString().equals("0.0"))&&(compraDetalle.getPeso_canal_compra().toString().equals("0.0"))){
+            if ((compraDetalle.getPeso_pie_compra().toString().equals("0.0")) && (compraDetalle.getPeso_canal_compra().toString().equals("0.0"))) {
                 weight_animal.setText("0.0");
-            }else if(!compraDetalle.getPeso_pie_compra().toString().equals("0.0")){
+            } else if (!compraDetalle.getPeso_pie_compra().toString().equals("0.0")) {
                 weight_animal.setText(compraDetalle.getPeso_pie_compra().toString());
                 PesoPieRB.setChecked(true);
-            }else if (!compraDetalle.getPeso_canal_compra().toString().equals("0.0")){
+            } else if (!compraDetalle.getPeso_canal_compra().toString().equals("0.0")) {
                 weight_animal.setText(compraDetalle.getPeso_canal_compra().toString());
                 PesoCanalRB.setChecked(true);
             }
@@ -170,15 +170,15 @@ public class insert_new_animal extends AppCompatActivity {
         super.onResume();
 
         PesoPieRB.setOnCheckedChangeListener((compoundButton, b) -> {
-            if(b){
+            if (b) {
                 PesoCanalRB.setChecked(false);
-            } else{
+            } else {
                 PesoPieRB.setChecked(false);
             }
         });
 
         PesoCanalRB.setOnCheckedChangeListener((compoundButton, b) -> {
-            if(b){
+            if (b) {
                 PesoPieRB.setChecked(false);
             } else {
                 PesoCanalRB.setChecked(false);
@@ -336,14 +336,34 @@ public class insert_new_animal extends AppCompatActivity {
 
     public void saveAnimal(View view) {
         boolean complete = false;
-        if (
-                spinner_types_animal.getSelectedItemId() == 0 ||
-                        spinner_race_animal.getSelectedItemId() == 0 ||
-                        weight_animal.getText().toString().isEmpty() ||
-                        price_animal.getText().toString().isEmpty()
-        ) {
+        boolean noBlankSpaces = true;
+        if (spinner_types_animal.getSelectedItemId() == 0 && spinner_race_animal.getSelectedItemId() == 0 && weight_animal.getText().toString().isEmpty() && price_animal.getText().toString().isEmpty()) {
             Toast.makeText(getApplicationContext(), "¡¡Campos Vacios!!", Toast.LENGTH_LONG).show();
-        } else {
+            noBlankSpaces = false;
+        }else{
+            if (spinner_types_animal.getSelectedItemId() == 0) {
+                Toast.makeText(getApplicationContext(), "¡¡Selecione El Tipo Animal!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            }
+            if (spinner_race_animal.getSelectedItemId() == 0) {
+                Toast.makeText(getApplicationContext(), "¡¡Selecione La Raza!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            }
+            if (weight_animal.getText().toString().isEmpty()) {
+                Toast.makeText(getApplicationContext(), "¡¡Ingrese El Peso!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            }
+            if (price_animal.getText().toString().isEmpty()) {
+                Toast.makeText(getApplicationContext(), "¡¡Ingrese El Precio!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            }
+            if(!PesoPieRB.isChecked() && !PesoCanalRB.isChecked()){
+                Toast.makeText(getApplicationContext(), "¡¡Selecione Peso!!", Toast.LENGTH_LONG).show();
+                noBlankSpaces = false;
+            }
+        }
+
+        if (noBlankSpaces) {
             int tare = 0, earring = 0;
             if (!tare_animal.getText().toString().isEmpty()) {
                 tare = Integer.valueOf(tare_animal.getText().toString());
@@ -415,10 +435,10 @@ public class insert_new_animal extends AppCompatActivity {
         values.put(Utilidades.CAMPO_COMPRA, idPurchase);
         values.put(Utilidades.CAMPO_GANADO, typeAnimal);
         values.put(Utilidades.CAMPO_RAZA, raceAnimal);
-        if(PesoPieRB.isChecked()){
+        if (PesoPieRB.isChecked()) {
             values.put(Utilidades.CAMPO_PESO_PIE_COMPRA, weightAnimal);
             values.put(Utilidades.CAMPO_PESO_CANAL_COMPRA, 0.0);
-        }else if (PesoCanalRB.isChecked()){
+        } else if (PesoCanalRB.isChecked()) {
             values.put(Utilidades.CAMPO_PESO_CANAL_COMPRA, weightAnimal);
             values.put(Utilidades.CAMPO_PESO_PIE_COMPRA, 0.0);
         }
@@ -447,10 +467,10 @@ public class insert_new_animal extends AppCompatActivity {
         ContentValues values = new ContentValues();
         values.put(Utilidades.CAMPO_GANADO, typeAnimal);
         values.put(Utilidades.CAMPO_RAZA, raceAnimal);
-        if(PesoPieRB.isChecked()){
+        if (PesoPieRB.isChecked()) {
             values.put(Utilidades.CAMPO_PESO_PIE_COMPRA, weightAnimal);
             values.put(Utilidades.CAMPO_PESO_CANAL_COMPRA, 0.0);
-        }else if (PesoCanalRB.isChecked()){
+        } else if (PesoCanalRB.isChecked()) {
             values.put(Utilidades.CAMPO_PESO_CANAL_COMPRA, weightAnimal);
             values.put(Utilidades.CAMPO_PESO_PIE_COMPRA, 0.0);
         }
@@ -481,10 +501,10 @@ public class insert_new_animal extends AppCompatActivity {
 
         values.put(Utilidades.CAMPO_GANADO, typeAnimal);
         values.put(Utilidades.CAMPO_RAZA, raceAnimal);
-        if(PesoPieRB.isChecked()){
+        if (PesoPieRB.isChecked()) {
             values.put(Utilidades.CAMPO_PESO_PIE_COMPRA, weightAnimal);
             values.put(Utilidades.CAMPO_PESO_CANAL_COMPRA, 0.0);
-        }else if (PesoCanalRB.isChecked()){
+        } else if (PesoCanalRB.isChecked()) {
             values.put(Utilidades.CAMPO_PESO_CANAL_COMPRA, weightAnimal);
             values.put(Utilidades.CAMPO_PESO_PIE_COMPRA, 0.0);
         }

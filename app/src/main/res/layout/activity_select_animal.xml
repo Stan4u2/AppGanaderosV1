@@ -179,7 +179,7 @@
             android:layout_gravity="center">
 
             <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/spinner_animal"
+                android:id="@+id/spinner_animal_compra"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
 

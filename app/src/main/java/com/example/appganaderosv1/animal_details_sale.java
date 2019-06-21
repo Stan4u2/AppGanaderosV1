@@ -235,6 +235,7 @@ public class animal_details_sale extends AppCompatActivity {
             typeAnimal.setText(ganado.getTipo_ganado());
             raceAnimal.setText(raza.getTipo_raza());
 
+            /*
             if (!ventaDetalle.getPeso_canal_venta().toString().equals("0.0")){
                 weightAnimal.setText(ventaDetalle.getPeso_canal_venta().toString());
             } else {
@@ -246,6 +247,26 @@ public class animal_details_sale extends AppCompatActivity {
                     weightAnimal.setText("0.0");
                 }
             }
+            */
+
+            if (!ventaDetalle.getPeso_canal_venta().toString().equals("0.0")){
+                tipo_peso_compra.setText("Pie ");
+                weightAnimal.setText(compraDetalle.getPeso_pie_compra().toString());
+                peso_canal.setText(ventaDetalle.getPeso_canal_venta().toString());
+            } else {
+                if(!compraDetalle.getPeso_pie_compra().toString().equals("0.0")){
+                    tipo_peso_compra.setText("Pie ");
+                    weightAnimal.setText(compraDetalle.getPeso_pie_compra().toString());
+                    peso_canal.setVisibility(View.INVISIBLE);
+                } else if (!compraDetalle.getPeso_canal_compra().toString().equals("0.0")){
+                    tipo_peso_compra.setText("Canal ");
+                    weightAnimal.setText(compraDetalle.getPeso_canal_compra().toString());
+                    peso_canal.setVisibility(View.INVISIBLE);
+                } else{
+                    weightAnimal.setText("0.0");
+                }
+            }
+
 
             priceAnimal.setText(compraDetalle.getPrecio().toString());
             tareAnimal.setText(compraDetalle.getTara().toString());
