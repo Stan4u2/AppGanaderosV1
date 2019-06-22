@@ -3,26 +3,23 @@ package com.example.appganaderosv1;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.appganaderosv1.Fragments.AppointmentFragment;
 import com.example.appganaderosv1.Fragments.HomeFragment;
 import com.example.appganaderosv1.Fragments.PeopleFragment;
+import com.example.appganaderosv1.Fragments.PersonalDataFragment;
 import com.example.appganaderosv1.Fragments.PurchasesFragment;
 import com.example.appganaderosv1.Fragments.SalesFragment;
 
-import static com.example.appganaderosv1.MainActivity.administrator;
 import static com.example.appganaderosv1.MainActivity.userName;
 
 public class homeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -65,7 +62,6 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
@@ -88,6 +84,9 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_people:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PeopleFragment()).commit();
+                break;
+            case R.id.nav_personal_data:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PersonalDataFragment()).commit();
                 break;
             case R.id.nav_logout:
                 Intent miIntent = new Intent(getApplicationContext(), MainActivity.class);

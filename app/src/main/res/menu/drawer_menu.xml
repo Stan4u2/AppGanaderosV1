@@ -23,6 +23,10 @@
             android:id="@+id/nav_people"
             android:icon="@drawable/ic_persona_foreground"
             android:title="Personas" />
+        <item
+            android:id="@+id/nav_personal_data"
+            android:icon="@drawable/ic_personal_data"
+            android:title="Datos Personales" />
     </group>
 
     <item android:title="Acciones">
