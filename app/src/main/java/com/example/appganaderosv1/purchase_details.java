@@ -220,7 +220,7 @@ public class purchase_details extends AppCompatActivity {
             compraDetalle.setPrecio(cursor.getDouble(5));
             compraDetalle.setTara(cursor.getInt(6));
             compraDetalle.setTotal(cursor.getDouble(7));
-            compraDetalle.setNumero_arete(cursor.getInt(8));
+            compraDetalle.setNumero_arete(cursor.getString(8));
             compraDetalle.setCompra(cursor.getInt(9));
 
             ganado = new Ganado();

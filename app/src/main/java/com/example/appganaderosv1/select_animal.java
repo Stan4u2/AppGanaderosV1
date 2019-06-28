@@ -593,7 +593,7 @@ public class select_animal extends AppCompatActivity {
             compraDetalle.setPrecio(cursor.getDouble(5));
             compraDetalle.setTara(cursor.getInt(6));
             compraDetalle.setTotal(cursor.getDouble(7));
-            compraDetalle.setNumero_arete(cursor.getInt(8));
+            compraDetalle.setNumero_arete(cursor.getString(8));
             compraDetalle.setCompra(cursor.getInt(9));
 
             pesoPie = compraDetalle.getPeso_pie_compra();

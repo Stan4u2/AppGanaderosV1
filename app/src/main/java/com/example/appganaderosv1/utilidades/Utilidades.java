@@ -150,7 +150,7 @@ public class Utilidades {
                     + CAMPO_PRECIO + " REAL, "
                     + CAMPO_TARA + " REAL, "
                     + CAMPO_TOTAL_PAGAR + " REAL, "
-                    + CAMPO_NUMERO_ARETE + " INTEGER, "
+                    + CAMPO_NUMERO_ARETE + " TEXT, "
                     + CAMPO_COMPRA + " INTEGER REFERENCES " + TABLA_COMPRAS + "(" + CAMPO_ID_COMPRA + ") ON DELETE CASCADE)";
 
 

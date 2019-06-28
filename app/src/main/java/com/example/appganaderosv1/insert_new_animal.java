@@ -161,7 +161,7 @@ public class insert_new_animal extends AppCompatActivity {
 
             price_animal.setText(compraDetalle.getPrecio().toString());
             tare_animal.setText(compraDetalle.getTara().toString());
-            number_earring_animal.setText(compraDetalle.getNumero_arete().toString());
+            number_earring_animal.setText(compraDetalle.getNumero_arete());
 
         }
     }
@@ -364,12 +364,13 @@ public class insert_new_animal extends AppCompatActivity {
         }
 
         if (noBlankSpaces) {
-            int tare = 0, earring = 0;
+            int tare = 0;
+            String earring = "0";
             if (!tare_animal.getText().toString().isEmpty()) {
                 tare = Integer.valueOf(tare_animal.getText().toString());
             }
             if (!number_earring_animal.getText().toString().isEmpty()) {
-                earring = Integer.valueOf(number_earring_animal.getText().toString());
+                earring = number_earring_animal.getText().toString();
             }
             if (action.equals("insert")) {
                 boolean inserted = false;
@@ -425,7 +426,7 @@ public class insert_new_animal extends AppCompatActivity {
         }
     }
 
-    private boolean insertNewAnimalCurrentPurchase(int idPurchase, int typeAnimal, int raceAnimal, double weightAnimal, double priceAnimal, int tareAnimal, int earringNumber) {
+    private boolean insertNewAnimalCurrentPurchase(int idPurchase, int typeAnimal, int raceAnimal, double weightAnimal, double priceAnimal, int tareAnimal, String earringNumber) {
         SQLiteDatabase db = conn.getWritableDatabase();
 
 
@@ -458,7 +459,7 @@ public class insert_new_animal extends AppCompatActivity {
         }
     }
 
-    private boolean insertNewAnimal(int typeAnimal, int raceAnimal, double weightAnimal, double priceAnimal, int tareAnimal, int earringNumber) {
+    private boolean insertNewAnimal(int typeAnimal, int raceAnimal, double weightAnimal, double priceAnimal, int tareAnimal, String earringNumber) {
         SQLiteDatabase db = conn.getWritableDatabase();
 
 
@@ -490,7 +491,7 @@ public class insert_new_animal extends AppCompatActivity {
         }
     }
 
-    private int modifieAnimal(int typeAnimal, int raceAnimal, double weightAnimal, double priceAnimal, int tareAnimal, int earringNumber) {
+    private int modifieAnimal(int typeAnimal, int raceAnimal, double weightAnimal, double priceAnimal, int tareAnimal, String earringNumber) {
         SQLiteDatabase db = conn.getWritableDatabase();
 
         double total = (weightAnimal * priceAnimal);

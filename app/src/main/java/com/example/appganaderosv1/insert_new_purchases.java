@@ -396,7 +396,7 @@ public class insert_new_purchases extends AppCompatActivity {
             compraDetalle.setPrecio(cursor.getDouble(5));
             compraDetalle.setTara(cursor.getInt(6));
             compraDetalle.setTotal(cursor.getDouble(7));
-            compraDetalle.setNumero_arete(cursor.getInt(8));
+            compraDetalle.setNumero_arete(cursor.getString(8));
 
             ganado = new Ganado();
             ganado.setId_ganado(cursor.getInt(9));
@@ -466,7 +466,7 @@ public class insert_new_purchases extends AppCompatActivity {
             compraDetalle.setPrecio(cursor.getDouble(5));
             compraDetalle.setTara(cursor.getInt(6));
             compraDetalle.setTotal(cursor.getDouble(7));
-            compraDetalle.setNumero_arete(cursor.getInt(8));
+            compraDetalle.setNumero_arete(cursor.getString(8));
 
             ganado = new Ganado();
             ganado.setId_ganado(cursor.getInt(9));

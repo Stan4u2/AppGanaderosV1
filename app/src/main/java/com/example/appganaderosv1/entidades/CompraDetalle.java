@@ -11,14 +11,14 @@ public class CompraDetalle implements Serializable {
     private Double precio;
     private Integer tara;
     private Double total;
-    private Integer numero_arete;
+    private String numero_arete;
     private Integer compra;
 
     public CompraDetalle(){
 
     }
 
-    public CompraDetalle(Integer id_compra_detalle, Integer ganado, Integer raza, Double peso_pie_compra, Double peso_canal_compra, Double precio, Integer tara, Double total, Integer numero_arete, Integer compra) {
+    public CompraDetalle(Integer id_compra_detalle, Integer ganado, Integer raza, Double peso_pie_compra, Double peso_canal_compra, Double precio, Integer tara, Double total, String numero_arete, Integer compra) {
         this.id_compra_detalle = id_compra_detalle;
         this.ganado = ganado;
         this.raza = raza;
@@ -95,11 +95,11 @@ public class CompraDetalle implements Serializable {
         this.total = total;
     }
 
-    public Integer getNumero_arete() {
+    public String getNumero_arete() {
         return numero_arete;
     }
 
-    public void setNumero_arete(Integer numero_arete) {
+    public void setNumero_arete(String numero_arete) {
         this.numero_arete = numero_arete;
     }
 

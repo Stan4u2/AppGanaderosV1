@@ -71,7 +71,7 @@ public class animal_details_purchase extends AppCompatActivity {
 
             priceAnimal.setText(compraDetalle.getPrecio().toString());
             tareAnimal.setText(compraDetalle.getTara().toString());
-            earingNumberAnimal.setText(compraDetalle.getNumero_arete().toString());
+            earingNumberAnimal.setText(compraDetalle.getNumero_arete());
             total.setText(compraDetalle.getTotal().toString());
 
         }
@@ -126,7 +126,7 @@ public class animal_details_purchase extends AppCompatActivity {
             compraDetalle.setPrecio(cursor.getDouble(5));
             compraDetalle.setTara(cursor.getInt(6));
             compraDetalle.setTotal(cursor.getDouble(7));
-            compraDetalle.setNumero_arete(cursor.getInt(8));
+            compraDetalle.setNumero_arete(cursor.getString(8));
 
             ganado = new Ganado();
             ganado.setId_ganado(cursor.getInt(9));
@@ -151,7 +151,7 @@ public class animal_details_purchase extends AppCompatActivity {
 
             priceAnimal.setText(compraDetalle.getPrecio().toString());
             tareAnimal.setText(compraDetalle.getTara().toString());
-            earingNumberAnimal.setText(compraDetalle.getNumero_arete().toString());
+            earingNumberAnimal.setText(compraDetalle.getNumero_arete());
             total.setText(compraDetalle.getTotal().toString());
 
             cursor.close();
