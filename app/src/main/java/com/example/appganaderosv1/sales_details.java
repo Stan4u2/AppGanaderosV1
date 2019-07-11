@@ -364,9 +364,9 @@ public class sales_details extends AppCompatActivity {
             ventaDetalle.setId_venta_detalle(cursor.getInt(5));
             ventaDetalle.setId_ganado(cursor.getInt(6));
             ventaDetalle.setPeso_canal_venta(cursor.getDouble(7));
-            ventaDetalle.setPrecio_venta(cursor.getInt(8));
+            ventaDetalle.setPrecio_venta(cursor.getDouble(8));
             ventaDetalle.setTara_venta(cursor.getInt(9));
-            ventaDetalle.setTotal_venta(cursor.getInt(10));
+            ventaDetalle.setTotal_venta(cursor.getDouble(10));
             ventaDetalle.setId_venta(cursor.getInt(11));
 
             compraDetalle = new CompraDetalle();

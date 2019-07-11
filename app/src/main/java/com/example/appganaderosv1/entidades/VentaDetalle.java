@@ -7,9 +7,9 @@ public class VentaDetalle implements Serializable {
     private Integer id_venta_detalle;
     private Integer id_ganado;
     private Double peso_canal_venta;
-    private Integer precio_venta;
+    private Double precio_venta;
     private Integer tara_venta;
-    private Integer total_venta;
+    private Double total_venta;
     private Integer id_venta;
 
 
@@ -17,7 +17,7 @@ public class VentaDetalle implements Serializable {
 
     }
 
-    public VentaDetalle(Integer id_venta_detalle, Integer id_ganado, Double peso_canal_venta, Integer precio_venta, Integer tara_venta, Integer total_venta, Integer id_venta) {
+    public VentaDetalle(Integer id_venta_detalle, Integer id_ganado, Double peso_canal_venta, Double precio_venta, Integer tara_venta, Double total_venta, Integer id_venta) {
         this.id_venta_detalle = id_venta_detalle;
         this.id_ganado = id_ganado;
         this.peso_canal_venta = peso_canal_venta;
@@ -51,11 +51,11 @@ public class VentaDetalle implements Serializable {
         this.peso_canal_venta = peso_canal_venta;
     }
 
-    public Integer getPrecio_venta() {
+    public Double getPrecio_venta() {
         return precio_venta;
     }
 
-    public void setPrecio_venta(Integer precio_venta) {
+    public void setPrecio_venta(Double precio_venta) {
         this.precio_venta = precio_venta;
     }
 
@@ -67,11 +67,11 @@ public class VentaDetalle implements Serializable {
         this.tara_venta = tara_venta;
     }
 
-    public Integer getTotal_venta() {
+    public Double getTotal_venta() {
         return total_venta;
     }
 
-    public void setTotal_venta(Integer total_venta) {
+    public void setTotal_venta(Double total_venta) {
         this.total_venta = total_venta;
     }
 

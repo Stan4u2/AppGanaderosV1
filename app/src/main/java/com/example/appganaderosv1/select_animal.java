@@ -288,6 +288,7 @@ public class select_animal extends AppCompatActivity {
 
                 if (!person && !date && selected && spinner_animal_compra.getSelectedItemPosition() > 0) {
                     //animal = false;loadingData = false;
+                    System.out.println(ventaDetalle.getPrecio_venta().toString());
                     precio_venta.setText(ventaDetalle.getPrecio_venta().toString());
                     tare_sale.setText(ventaDetalle.getTara_venta().toString());
                 }
@@ -699,29 +700,36 @@ public class select_animal extends AppCompatActivity {
     }
 
     public void calculateTotal() {
-        int tare = 0;
-        double weight = 0, price_sale = 0, total = 0, sum;
-        if (!precio_venta.getText().toString().isEmpty()) {
-            price_sale = Integer.valueOf(precio_venta.getText().toString());
-        }
-        if (!tare_sale.getText().toString().isEmpty()) {
-            tare = Integer.valueOf(tare_sale.getText().toString());
-        }
-        if (PesoPieRBVenta.isChecked()) {
-            if (!weightAnimal.getText().toString().isEmpty()) {
-                weight = Double.parseDouble(weightAnimal.getText().toString());
+        try {
+            int tare = 0;
+
+            double weight = 0, price_sale = 0, total = 0, sum;
+            if (!precio_venta.getText().toString().isEmpty()) {
+                price_sale = Double.valueOf(precio_venta.getText().toString());
             }
-        } else if (PesoCanalRBVenta.isChecked()) {
-            if (!peso_venta.getText().toString().isEmpty()) {
-                weight = Double.parseDouble(peso_venta.getText().toString());
+
+            if (!tare_sale.getText().toString().isEmpty()) {
+                tare = Integer.valueOf(tare_sale.getText().toString());
             }
+
+            if (PesoPieRBVenta.isChecked()) {
+                if (!weightAnimal.getText().toString().isEmpty()) {
+                    weight = Double.parseDouble(weightAnimal.getText().toString());
+                }
+            } else if (PesoCanalRBVenta.isChecked()) {
+                if (!peso_venta.getText().toString().isEmpty()) {
+                    weight = Double.parseDouble(peso_venta.getText().toString());
+                }
+            }
+
+            total = (price_sale * weight);
+
+            sum = (total - ((total * tare) / 100));
+
+            total_cobrar_CT.setText(String.valueOf(sum));
+        } catch (Exception e) {
+
         }
-
-        total = (price_sale * weight);
-
-        sum = (total - ((total * tare) / 100));
-
-        total_cobrar_CT.setText(String.valueOf(sum));
     }
 
     public void saveSale(View view) {
