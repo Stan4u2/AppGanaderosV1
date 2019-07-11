@@ -48,6 +48,7 @@ public class SalesFragment extends Fragment {
             Utilidades.CAMPO_CANTIDAD_ANIMALES_VENTAS + ", " +
             Utilidades.CAMPO_CANTIDAD_COBRAR + ", " +
             Utilidades.CAMPO_GANANCIAS + ", " +
+            Utilidades.CAMPO_VENTA_PAGADA + ", " +
             Utilidades.CAMPO_RESPALDO_VENTAS + ", " +
 
             Utilidades.CAMPO_ID_PERSONA + ", " +
@@ -137,14 +138,21 @@ public class SalesFragment extends Fragment {
             ventas.setCantidad_animales(cursor.getInt(2));
             ventas.setCantidad_cobrar(cursor.getInt(3));
             ventas.setGanancias(cursor.getInt(4));
-            ventas.setRespaldo(cursor.getInt(5));
+
+            if(cursor.getInt(5) == 1){
+                ventas.setVenta_pagada(true);
+            } else if (cursor.getInt(5) == 0){
+                ventas.setVenta_pagada(false);
+            }
+
+            ventas.setRespaldo(cursor.getInt(6));
 
             persona = new Persona();
-            persona.setId_persona(cursor.getInt(6));
-            persona.setNombre(cursor.getString(7));
-            persona.setTelefono(cursor.getString(8));
-            persona.setDomicilio(cursor.getString(9));
-            persona.setDatos_extras(cursor.getString(10));
+            persona.setId_persona(cursor.getInt(7));
+            persona.setNombre(cursor.getString(8));
+            persona.setTelefono(cursor.getString(9));
+            persona.setDomicilio(cursor.getString(10));
+            persona.setDatos_extras(cursor.getString(11));
 
             listaVentas.add(ventas);
             listaPersonas.add(persona);

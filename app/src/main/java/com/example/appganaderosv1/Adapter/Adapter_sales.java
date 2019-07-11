@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.appganaderosv1.R;
@@ -40,6 +41,12 @@ public class Adapter_sales extends RecyclerView.Adapter<Adapter_sales.ViewHolder
         holder.nombre_persona_venta.setText(listaPersonas.get(i).getNombre());
         holder.cantidad_ganado_venta.setText(listaVentas.get(i).getCantidad_animales().toString());
         holder.fecha_venta.setText(listaVentas.get(i).getFecha());
+
+        if (listaVentas.get(i).getVenta_pagada()){
+            holder.salePaidList.setImageResource(R.drawable.ic_pagado);
+        } else {
+            holder.salePaidList.setImageResource(R.drawable.ic_no_pagado);
+        }
     }
 
     @Override
@@ -61,6 +68,7 @@ public class Adapter_sales extends RecyclerView.Adapter<Adapter_sales.ViewHolder
     public class ViewHolderSales extends RecyclerView.ViewHolder {
 
         TextView nombre_persona_venta, cantidad_ganado_venta, fecha_venta;
+        ImageView salePaidList;
 
         public ViewHolderSales(View itemView) {
             super(itemView);
@@ -68,6 +76,7 @@ public class Adapter_sales extends RecyclerView.Adapter<Adapter_sales.ViewHolder
             nombre_persona_venta = itemView.findViewById(R.id.nombre_persona_venta);
             cantidad_ganado_venta = itemView.findViewById(R.id.cantidad_ganado_venta);
             fecha_venta = itemView.findViewById(R.id.fecha_venta);
+            salePaidList = itemView.findViewById(R.id.salePaidList);
         }
     }
 }

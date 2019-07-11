@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ public class insert_new_sales extends AppCompatActivity {
     Button add_animal;
     Spinner spinner_person_sale;
     RecyclerView recycler_view;
+    CheckBox salePaid;
 
     int idPersonSale;
     int idSale;
@@ -104,6 +106,9 @@ public class insert_new_sales extends AppCompatActivity {
         recycler_view = findViewById(R.id.recycler_view);
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
 
+        //CheckBox
+        salePaid = findViewById(R.id.salePaid);
+
         listViewAnimalsBought = new ArrayList<>();
         listViewTypeAnimal = new ArrayList<>();
         listViewRaceAnimal = new ArrayList<>();
@@ -156,6 +161,12 @@ public class insert_new_sales extends AppCompatActivity {
             amount_to_charge.setText(ventas.getCantidad_cobrar().toString());
 
             earnings_sale.setText(ventas.getGanancias().toString());
+
+            if (ventas.getVenta_pagada()) {
+                salePaid.setChecked(true);
+            } else {
+                salePaid.setChecked(false);
+            }
         }
     }
 
@@ -749,7 +760,8 @@ public class insert_new_sales extends AppCompatActivity {
                         DateSale,
                         Integer.valueOf(number_animals_sale.getText().toString()),
                         Double.valueOf(amount_to_charge.getText().toString()),
-                        earnings
+                        earnings,
+                        salePaid.isChecked()
                 );
 
                 if (inserted) {
@@ -766,7 +778,9 @@ public class insert_new_sales extends AppCompatActivity {
                         DateSale,
                         Integer.valueOf(number_animals_sale.getText().toString()),
                         Double.valueOf(amount_to_charge.getText().toString()),
-                        earnings);
+                        earnings,
+                        salePaid.isChecked()
+                );
 
                 if (modified == 1) {
                     Toast.makeText(getApplicationContext(), "Se han actualizado los datos", Toast.LENGTH_LONG).show();
@@ -780,7 +794,7 @@ public class insert_new_sales extends AppCompatActivity {
         }
     }
 
-    private int modifieSale(int idSale, int idOwner, String date, int amountAnimals, double amountCharge, double earnings) {
+    private int modifieSale(int idSale, int idOwner, String date, int amountAnimals, double amountCharge, double earnings, boolean salePaid) {
         SQLiteDatabase db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -792,6 +806,7 @@ public class insert_new_sales extends AppCompatActivity {
         values.put(Utilidades.CAMPO_CANTIDAD_ANIMALES_VENTAS, amountAnimals);
         values.put(Utilidades.CAMPO_CANTIDAD_COBRAR, amountCharge);
         values.put(Utilidades.CAMPO_GANANCIAS, earnings);
+        values.put(Utilidades.CAMPO_VENTA_PAGADA, salePaid);
         values.put(Utilidades.CAMPO_RESPALDO_VENTAS, 0);
 
         int updated = db.update(Utilidades.TABLA_VENTAS, values, Utilidades.CAMPO_ID_VENTAS + " = ?", id_sale);
@@ -801,7 +816,7 @@ public class insert_new_sales extends AppCompatActivity {
         return updated;
     }
 
-    private boolean insertSale(int idOwner, String date, int amountAnimals, double amountCharge, double earnings) {
+    private boolean insertSale(int idOwner, String date, int amountAnimals, double amountCharge, double earnings, boolean salePaid) {
         SQLiteDatabase db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -811,6 +826,7 @@ public class insert_new_sales extends AppCompatActivity {
         values.put(Utilidades.CAMPO_CANTIDAD_ANIMALES_VENTAS, amountAnimals);
         values.put(Utilidades.CAMPO_CANTIDAD_COBRAR, amountCharge);
         values.put(Utilidades.CAMPO_GANANCIAS, earnings);
+        values.put(Utilidades.CAMPO_VENTA_PAGADA, salePaid);
         values.put(Utilidades.CAMPO_RESPALDO_VENTAS, 0);
 
         Long idResult = db.insert(Utilidades.TABLA_VENTAS, Utilidades.CAMPO_ID_VENTAS, values);

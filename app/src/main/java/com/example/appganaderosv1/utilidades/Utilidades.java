@@ -72,6 +72,7 @@ public class Utilidades {
     public static final String CAMPO_FECHA_COMPRAS = "fecha";
     public static final String CAMPO_CANTIDAD_ANIMALES_COMPRAS = "cantidad_animales";
     public static final String CAMPO_CANTIDAD_PAGAR = "cantidad_pagar";
+    public static final String CAMPO_COMPRA_PAGADA = "pagado";
     public static final String CAMPO_RESPALDO_COMPRAS = "respaldo";
 
     public static final String CREAR_TABLA_COMPRAS =
@@ -81,6 +82,7 @@ public class Utilidades {
                     + CAMPO_FECHA_COMPRAS + " TEXT, "
                     + CAMPO_CANTIDAD_ANIMALES_COMPRAS + " INTEGER, "
                     + CAMPO_CANTIDAD_PAGAR + " REAL, "
+                    + CAMPO_COMPRA_PAGADA + " BOOLEAN, "
                     + CAMPO_RESPALDO_COMPRAS + " INTEGER)";
 
 
@@ -163,6 +165,7 @@ public class Utilidades {
     public static final String CAMPO_CANTIDAD_ANIMALES_VENTAS = "cantidad_animales";
     public static final String CAMPO_CANTIDAD_COBRAR = "cantidad_cobrar";
     public static final String CAMPO_GANANCIAS = "ganancias";
+    public static final String CAMPO_VENTA_PAGADA = "pagado";
     public static final String CAMPO_RESPALDO_VENTAS = "respaldo";
 
     public static final String CREAR_TABLA_VENTAS =
@@ -173,6 +176,7 @@ public class Utilidades {
                     + CAMPO_CANTIDAD_ANIMALES_VENTAS + " INTEGER, "
                     + CAMPO_CANTIDAD_COBRAR + " REAL, "
                     + CAMPO_GANANCIAS + " REAL, "
+                    + CAMPO_VENTA_PAGADA + " BOOLEAN, "
                     + CAMPO_RESPALDO_VENTAS + " INTEGER)";
 
 
@@ -258,6 +262,7 @@ public class Utilidades {
                     Utilidades.CAMPO_FECHA_COMPRAS + ", " +
                     Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + ", " +
                     Utilidades.CAMPO_CANTIDAD_PAGAR + ", " +
+                    Utilidades.CAMPO_COMPRA_PAGADA + ", " +
                     Utilidades.CAMPO_RESPALDO_COMPRAS + ", " +
 
                     Utilidades.CAMPO_ID_PERSONA + ", " +
@@ -287,6 +292,7 @@ public class Utilidades {
                     Utilidades.CAMPO_CANTIDAD_ANIMALES_VENTAS + ", " +
                     Utilidades.CAMPO_CANTIDAD_COBRAR + ", " +
                     Utilidades.CAMPO_GANANCIAS + ", " +
+                    Utilidades.CAMPO_VENTA_PAGADA + ", " +
                     Utilidades.CAMPO_RESPALDO_VENTAS + ", " +
 
                     Utilidades.CAMPO_ID_PERSONA + ", " +

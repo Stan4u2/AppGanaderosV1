@@ -36,7 +36,7 @@ public class purchase_details extends AppCompatActivity {
     static int idPurchase;
 
     TextView name_person_purchase, cellphone_person_purchase, address_person_purchase, extra_data_person_purchase;
-    TextView date_purchase, amount_animals_purchase, amount_to_pay;
+    TextView date_purchase, amount_animals_purchase, amount_to_pay, purchase_paid;
     RecyclerView recycler_view_purchase;
     ImageButton modifie_purchase, delete_purchase, restore_purchase;
 
@@ -62,6 +62,7 @@ public class purchase_details extends AppCompatActivity {
         date_purchase = findViewById(R.id.date_purchase);
         amount_animals_purchase = findViewById(R.id.amount_animals_purchase);
         amount_to_pay = findViewById(R.id.amount_to_pay);
+        purchase_paid = findViewById(R.id.purchase_paid);
 
         //Recycler View
         recycler_view_purchase = findViewById(R.id.recycler_view_purchase);
@@ -91,6 +92,12 @@ public class purchase_details extends AppCompatActivity {
             date_purchase.setText(compras.getFecha_compra());
             amount_animals_purchase.setText(compras.getCantidad_animales_compra().toString());
             amount_to_pay.setText(compras.getCantidad_pagar().toString());
+
+            if(compras.getCompra_pagada()){
+                purchase_paid.setText("Si");
+            }else{
+                purchase_paid.setText("No");
+            }
 
             if (compras.getRespaldo() == 0) {
                 delete_purchase.setVisibility(View.VISIBLE);
@@ -124,6 +131,7 @@ public class purchase_details extends AppCompatActivity {
                         Utilidades.CAMPO_FECHA_COMPRAS + ", " +
                         Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + ", " +
                         Utilidades.CAMPO_CANTIDAD_PAGAR + ", " +
+                        Utilidades.CAMPO_COMPRA_PAGADA + ", " +
 
                         Utilidades.CAMPO_ID_PERSONA + ", " +
                         Utilidades.CAMPO_NOMBRE + ", " +
@@ -149,19 +157,31 @@ public class purchase_details extends AppCompatActivity {
         compras.setCantidad_animales_compra(cursor.getInt(2));
         compras.setCantidad_pagar(cursor.getInt(3));
 
+        if(cursor.getInt(4) == 1){
+            compras.setCompra_pagada(true);
+        }else if (cursor.getInt(4) == 0){
+            compras.setCompra_pagada(false);
+        }
+
         person = new Persona();
-        person.setId_persona(cursor.getInt(4));
-        person.setNombre(cursor.getString(5));
-        person.setTelefono(cursor.getString(6));
-        person.setDomicilio(cursor.getString(7));
-        person.setDatos_extras(cursor.getString(8));
+        person.setId_persona(cursor.getInt(5));
+        person.setNombre(cursor.getString(6));
+        person.setTelefono(cursor.getString(7));
+        person.setDomicilio(cursor.getString(8));
+        person.setDatos_extras(cursor.getString(9));
 
         date_purchase.setText(cursor.getString(1));
 
-        name_person_purchase.setText(cursor.getString(5));
-        cellphone_person_purchase.setText(cursor.getString(6));
-        address_person_purchase.setText(cursor.getString(7));
-        extra_data_person_purchase.setText(cursor.getString(8));
+        name_person_purchase.setText(cursor.getString(6));
+        cellphone_person_purchase.setText(cursor.getString(7));
+        address_person_purchase.setText(cursor.getString(8));
+        extra_data_person_purchase.setText(cursor.getString(9));
+
+        if(compras.getCompra_pagada()){
+            purchase_paid.setText("Si");
+        }else{
+            purchase_paid.setText("No");
+        }
 
         cursor.close();
         db.close();

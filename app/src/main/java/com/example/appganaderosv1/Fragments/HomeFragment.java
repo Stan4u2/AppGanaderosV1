@@ -321,6 +321,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 Utilidades.CAMPO_FECHA_COMPRAS + ", " +
                 Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + ", " +
                 Utilidades.CAMPO_CANTIDAD_PAGAR + ", " +
+                Utilidades.CAMPO_COMPRA_PAGADA + ", " +
                 Utilidades.CAMPO_RESPALDO_COMPRAS + ", " +
 
                 Utilidades.CAMPO_ID_PERSONA + ", " +
@@ -345,14 +346,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             compras.setFecha_compra(cursor.getString(1));
             compras.setCantidad_animales_compra(cursor.getInt(2));
             compras.setCantidad_pagar(cursor.getInt(3));
-            compras.setRespaldo(cursor.getInt(4));
+
+            if (cursor.getInt(4) == 1) {
+                compras.setCompra_pagada(true);
+            } else if (cursor.getInt(4) == 0) {
+                compras.setCompra_pagada(false);
+            }
+
+            compras.setRespaldo(cursor.getInt(5));
 
             persona = new Persona();
-            persona.setId_persona(cursor.getInt(5));
-            persona.setNombre(cursor.getString(6));
-            persona.setTelefono(cursor.getString(7));
-            persona.setDomicilio(cursor.getString(8));
-            persona.setDatos_extras(cursor.getString(9));
+            persona.setId_persona(cursor.getInt(6));
+            persona.setNombre(cursor.getString(7));
+            persona.setTelefono(cursor.getString(8));
+            persona.setDomicilio(cursor.getString(9));
+            persona.setDatos_extras(cursor.getString(10));
 
             listaCompras.add(compras);
             listaPersonaCompra.add(persona);
@@ -400,6 +408,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         Utilidades.CAMPO_CANTIDAD_ANIMALES_VENTAS + ", " +
                         Utilidades.CAMPO_CANTIDAD_COBRAR + ", " +
                         Utilidades.CAMPO_GANANCIAS + ", " +
+                        Utilidades.CAMPO_VENTA_PAGADA + ", " +
                         Utilidades.CAMPO_RESPALDO_VENTAS + ", " +
 
                         Utilidades.CAMPO_ID_PERSONA + ", " +
@@ -426,14 +435,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             ventas.setCantidad_animales(cursor.getInt(2));
             ventas.setCantidad_cobrar(cursor.getInt(3));
             ventas.setGanancias(cursor.getInt(4));
-            ventas.setRespaldo(cursor.getInt(5));
+
+            if(cursor.getInt(5) == 1){
+                ventas.setVenta_pagada(true);
+            } else if (cursor.getInt(5) == 0){
+                ventas.setVenta_pagada(false);
+            }
+
+            ventas.setRespaldo(cursor.getInt(6));
 
             persona = new Persona();
-            persona.setId_persona(cursor.getInt(6));
-            persona.setNombre(cursor.getString(7));
-            persona.setTelefono(cursor.getString(8));
-            persona.setDomicilio(cursor.getString(9));
-            persona.setDatos_extras(cursor.getString(10));
+            persona.setId_persona(cursor.getInt(7));
+            persona.setNombre(cursor.getString(8));
+            persona.setTelefono(cursor.getString(9));
+            persona.setDomicilio(cursor.getString(10));
+            persona.setDatos_extras(cursor.getString(11));
 
             listaVentas.add(ventas);
             listaPersonaVenta.add(persona);

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -38,6 +39,7 @@ public class insert_new_purchases extends AppCompatActivity {
     Button add_animal;
     Spinner spinner_person_purchase;
     RecyclerView recycler_view;
+    CheckBox purchasePaid;
 
     int idPersonPurchase;
     static int idPurchase;
@@ -95,6 +97,9 @@ public class insert_new_purchases extends AppCompatActivity {
         recycler_view = findViewById(R.id.recycler_view);
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
 
+        //Check Box
+        purchasePaid = findViewById(R.id.purchasePaid);
+
         listViewAnimalsBought = new ArrayList<>();
         listViewTypeAnimal = new ArrayList<>();
         listViewRaceAnimal = new ArrayList<>();
@@ -145,6 +150,12 @@ public class insert_new_purchases extends AppCompatActivity {
             date_purchase.setText(compras.getFecha_compra());
             number_animals_purchase.setText(compras.getCantidad_animales_compra().toString());
             amount_to_pay.setText(compras.getCantidad_pagar().toString());
+
+            if(compras.getCompra_pagada()){
+                purchasePaid.setChecked(true);
+            }else{
+                purchasePaid.setChecked(false);
+            }
 
         }
 
@@ -618,7 +629,8 @@ public class insert_new_purchases extends AppCompatActivity {
                         idPersonPurchase,
                         date_purchase.getText().toString(),
                         Integer.valueOf(number_animals_purchase.getText().toString()),
-                        Double.valueOf(amount_to_pay.getText().toString())
+                        Double.valueOf(amount_to_pay.getText().toString()),
+                        purchasePaid.isChecked()
                 );
 
                 if (inserted) {
@@ -632,7 +644,8 @@ public class insert_new_purchases extends AppCompatActivity {
                         idPersonPurchase,
                         date_purchase.getText().toString(),
                         Integer.valueOf(number_animals_purchase.getText().toString()),
-                        Double.valueOf(amount_to_pay.getText().toString())
+                        Double.valueOf(amount_to_pay.getText().toString()),
+                        purchasePaid.isChecked()
                 );
 
                 if (modified == 1) {
@@ -647,11 +660,13 @@ public class insert_new_purchases extends AppCompatActivity {
         }
     }
 
-    private int modifiePurchase(int idOwner, String date, int amountAnimals, double amount_pay) {
+    private int modifiePurchase(int idOwner, String date, int amountAnimals, double amount_pay, boolean purchasePaid) {
 
         SQLiteDatabase db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+
+        System.out.println(purchasePaid);
 
         String[] id_purchase = {String.valueOf(idPurchase)};
 
@@ -660,6 +675,7 @@ public class insert_new_purchases extends AppCompatActivity {
         values.put(Utilidades.CAMPO_FECHA_COMPRAS, date);
         values.put(Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS, amountAnimals);
         values.put(Utilidades.CAMPO_CANTIDAD_PAGAR, amount_pay);
+        values.put(Utilidades.CAMPO_COMPRA_PAGADA, purchasePaid);
         values.put(Utilidades.CAMPO_RESPALDO_COMPRAS, 0);
 
         int updated = db.update(Utilidades.TABLA_COMPRAS, values, Utilidades.CAMPO_ID_COMPRA + " = ?", id_purchase);
@@ -669,7 +685,7 @@ public class insert_new_purchases extends AppCompatActivity {
         return updated;
     }
 
-    public boolean insertPurchase(int idOwner, String date, int amountAnimals, double amount_pay) {
+    public boolean insertPurchase(int idOwner, String date, int amountAnimals, double amount_pay, boolean purchasePaid) {
         SQLiteDatabase db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -678,6 +694,7 @@ public class insert_new_purchases extends AppCompatActivity {
         values.put(Utilidades.CAMPO_FECHA_COMPRAS, date);
         values.put(Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS, amountAnimals);
         values.put(Utilidades.CAMPO_CANTIDAD_PAGAR, amount_pay);
+        values.put(Utilidades.CAMPO_COMPRA_PAGADA, purchasePaid);
         values.put(Utilidades.CAMPO_RESPALDO_COMPRAS, 0);
 
         Long idResult = db.insert(Utilidades.TABLA_COMPRAS, Utilidades.CAMPO_ID_COMPRA, values);

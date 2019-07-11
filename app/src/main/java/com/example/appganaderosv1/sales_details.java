@@ -30,7 +30,7 @@ import java.util.ArrayList;
 public class sales_details extends AppCompatActivity {
 
     TextView name_person_sale, cellphone_person_sale, address_person_sale, extra_data_person_sale, date_sale;
-    TextView number_animals_sale, amount_to_charge, earnings;
+    TextView number_animals_sale, amount_to_charge, earnings, sale_paid;
 
     RecyclerView recycler_view_sale;
 
@@ -69,6 +69,7 @@ public class sales_details extends AppCompatActivity {
         number_animals_sale = findViewById(R.id.number_animals_sale);
         amount_to_charge = findViewById(R.id.amount_to_charge);
         earnings = findViewById(R.id.earnings);
+        sale_paid = findViewById(R.id.sale_paid);
 
         //RecyclerView
         recycler_view_sale = findViewById(R.id.recycler_view_sale);
@@ -100,6 +101,12 @@ public class sales_details extends AppCompatActivity {
             number_animals_sale.setText(ventas.getCantidad_animales().toString());
             amount_to_charge.setText(ventas.getCantidad_cobrar().toString());
             earnings.setText(ventas.getGanancias().toString());
+
+            if(ventas.getVenta_pagada()){
+                sale_paid.setText("Si");
+            }else{
+                sale_paid.setText("No");
+            }
 
             if (ventas.getRespaldo() == 0) {
                 delete_sale.setVisibility(View.VISIBLE);
@@ -216,6 +223,7 @@ public class sales_details extends AppCompatActivity {
                         Utilidades.CAMPO_CANTIDAD_ANIMALES_VENTAS + ", " +
                         Utilidades.CAMPO_CANTIDAD_COBRAR + ", " +
                         Utilidades.CAMPO_GANANCIAS + ", " +
+                        Utilidades.CAMPO_VENTA_PAGADA + ", " +
 
                         Utilidades.CAMPO_ID_PERSONA + ", " +
                         Utilidades.CAMPO_NOMBRE + ", " +
@@ -242,6 +250,12 @@ public class sales_details extends AppCompatActivity {
         ventas.setCantidad_cobrar(cursor.getInt(3));
         ventas.setGanancias(cursor.getInt(4));
 
+        if(cursor.getInt(5) == 1){
+            ventas.setVenta_pagada(true);
+        } else if (cursor.getInt(5) == 0){
+            ventas.setVenta_pagada(false);
+        }
+
         persona = new Persona();
         persona.setId_persona(cursor.getInt(5));
         persona.setNombre(cursor.getString(6));
@@ -259,6 +273,11 @@ public class sales_details extends AppCompatActivity {
         amount_to_charge.setText(ventas.getCantidad_cobrar().toString());
         earnings.setText(ventas.getGanancias().toString());
 
+        if(ventas.getVenta_pagada()){
+            sale_paid.setText("Si");
+        }else{
+            sale_paid.setText("No");
+        }
 
         cursor.close();
         db.close();

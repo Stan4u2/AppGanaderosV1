@@ -8,18 +8,20 @@ public class Compras implements Serializable {
     private String fecha_compra;
     private Integer cantidad_animales_compra;
     private Integer cantidad_pagar;
+    private Boolean compra_pagada;
     private Integer respaldo;
 
     public Compras() {
 
     }
 
-    public Compras(Integer id_compras, Integer persona_compro, String fecha_compra, Integer cantidad_animales_compra, Integer cantidad_pagar, Integer respaldo) {
+    public Compras(Integer id_compras, Integer persona_compro, String fecha_compra, Integer cantidad_animales_compra, Integer cantidad_pagar, Boolean compra_pagada, Integer respaldo) {
         this.id_compras = id_compras;
         this.persona_compro = persona_compro;
         this.fecha_compra = fecha_compra;
         this.cantidad_animales_compra = cantidad_animales_compra;
         this.cantidad_pagar = cantidad_pagar;
+        this.compra_pagada = compra_pagada;
         this.respaldo = respaldo;
     }
 
@@ -61,6 +63,14 @@ public class Compras implements Serializable {
 
     public void setCantidad_pagar(Integer cantidad_pagar) {
         this.cantidad_pagar = cantidad_pagar;
+    }
+
+    public Boolean getCompra_pagada() {
+        return compra_pagada;
+    }
+
+    public void setCompra_pagada(Boolean compra_pagada) {
+        this.compra_pagada = compra_pagada;
     }
 
     public Integer getRespaldo() {
