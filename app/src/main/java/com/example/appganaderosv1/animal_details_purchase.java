@@ -16,6 +16,8 @@ import com.example.appganaderosv1.entidades.Ganado;
 import com.example.appganaderosv1.entidades.Raza;
 import com.example.appganaderosv1.utilidades.Utilidades;
 
+import java.text.DecimalFormat;
+
 public class animal_details_purchase extends AppCompatActivity {
 
     TextView typeAnimal, raceAnimal, weightAnimal, priceAnimal, tareAnimal, earingNumberAnimal, total, typeWeightAnimal;
@@ -31,6 +33,7 @@ public class animal_details_purchase extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animal_details_purchase);
 

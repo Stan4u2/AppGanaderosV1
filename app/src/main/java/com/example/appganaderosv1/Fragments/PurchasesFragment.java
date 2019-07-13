@@ -61,7 +61,9 @@ public class PurchasesFragment extends Fragment {
             " WHERE " +
             Utilidades.CAMPO_PERSONA_COMPRO + " = " + Utilidades.CAMPO_ID_PERSONA +
             " AND " +
-            Utilidades.CAMPO_RESPALDO_COMPRAS + " = " + 1;
+            Utilidades.CAMPO_RESPALDO_COMPRAS + " = " + 1 +
+            " ORDER BY " +
+            "DATE(" + Utilidades.CAMPO_FECHA_COMPRAS + ")";
 
     @Nullable
     @Override

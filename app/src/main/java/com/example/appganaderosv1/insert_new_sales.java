@@ -28,6 +28,7 @@ import com.example.appganaderosv1.entidades.Ventas;
 import com.example.appganaderosv1.utilidades.Utilidades;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class insert_new_sales extends AppCompatActivity {
@@ -43,7 +44,7 @@ public class insert_new_sales extends AppCompatActivity {
     int idPersonSale;
     int idSale;
 
-    double earnings;
+    int earnings;
 
     public static int id_new_person;
     public static boolean process;
@@ -68,7 +69,6 @@ public class insert_new_sales extends AppCompatActivity {
     ArrayList<VentaDetalle> listSales;
 
     public String purchaseDate;
-
 
     ConexionSQLiteHelper conn;
 
@@ -154,6 +154,8 @@ public class insert_new_sales extends AppCompatActivity {
                     spinner_person_sale.setSelection(i + 1);
                 }
             }
+
+            DateSale = ventas.getFecha();
 
             idSale = ventas.getId_ventas();
             date_sale.setText(ventas.getFecha());
@@ -647,7 +649,7 @@ public class insert_new_sales extends AppCompatActivity {
                 , null);
 
         if (cursor.moveToFirst()) {
-            double total = cursor.getDouble(0);
+            int total = Integer.valueOf(String.valueOf(Math.round(cursor.getDouble(0))));
 
             amount_to_charge.setText(String.valueOf(total));
         }
@@ -669,7 +671,7 @@ public class insert_new_sales extends AppCompatActivity {
                 , null);
 
         if (cursor.moveToFirst()) {
-            double total = cursor.getDouble(0);
+            int total = Integer.valueOf(String.valueOf(Math.round(cursor.getDouble(0))));
 
             amount_to_charge.setText(String.valueOf(total));
         }
@@ -694,9 +696,9 @@ public class insert_new_sales extends AppCompatActivity {
         );
 
         if (cursor.moveToFirst()) {
-            double amountPayed = cursor.getDouble(0);
+            int amountPayed = Integer.valueOf(String.valueOf(Math.round(cursor.getDouble(0))));
 
-            earnings = (Double.valueOf(amount_to_charge.getText().toString()) - amountPayed);
+            earnings = Integer.valueOf(String.valueOf(Math.round(Double.valueOf(amount_to_charge.getText().toString()) - amountPayed)));
             earnings_sale.setText(String.valueOf(earnings));
         }
 
@@ -720,9 +722,9 @@ public class insert_new_sales extends AppCompatActivity {
         );
 
         if (cursor.moveToFirst()) {
-            double amountPayed = cursor.getDouble(0);
+            int amountPayed = Integer.valueOf(String.valueOf(Math.round(cursor.getDouble(0))));
 
-            earnings = (Double.valueOf(amount_to_charge.getText().toString()) - amountPayed);
+            earnings = (Integer.valueOf(String.valueOf(Math.round(Double.valueOf(amount_to_charge.getText().toString()) - amountPayed))));
 
             earnings_sale.setText(String.valueOf(earnings));
         }
@@ -759,7 +761,7 @@ public class insert_new_sales extends AppCompatActivity {
                         idPersonSale,
                         DateSale,
                         Integer.valueOf(number_animals_sale.getText().toString()),
-                        Double.valueOf(amount_to_charge.getText().toString()),
+                        Integer.valueOf(amount_to_charge.getText().toString()),
                         earnings,
                         salePaid.isChecked()
                 );
@@ -777,7 +779,7 @@ public class insert_new_sales extends AppCompatActivity {
                         idPersonSale,
                         DateSale,
                         Integer.valueOf(number_animals_sale.getText().toString()),
-                        Double.valueOf(amount_to_charge.getText().toString()),
+                        Integer.valueOf(amount_to_charge.getText().toString()),
                         earnings,
                         salePaid.isChecked()
                 );
@@ -794,7 +796,7 @@ public class insert_new_sales extends AppCompatActivity {
         }
     }
 
-    private int modifieSale(int idSale, int idOwner, String date, int amountAnimals, double amountCharge, double earnings, boolean salePaid) {
+    private int modifieSale(int idSale, int idOwner, String date, int amountAnimals, int amountCharge, int earnings, boolean salePaid) {
         SQLiteDatabase db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -816,7 +818,7 @@ public class insert_new_sales extends AppCompatActivity {
         return updated;
     }
 
-    private boolean insertSale(int idOwner, String date, int amountAnimals, double amountCharge, double earnings, boolean salePaid) {
+    private boolean insertSale(int idOwner, String date, int amountAnimals, int amountCharge, int earnings, boolean salePaid) {
         SQLiteDatabase db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();

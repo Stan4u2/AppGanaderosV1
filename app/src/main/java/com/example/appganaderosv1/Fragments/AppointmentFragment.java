@@ -60,7 +60,9 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
             " WHERE " +
             Utilidades.CAMPO_PERSONA_CITA + " = " + Utilidades.CAMPO_ID_PERSONA +
             " AND " +
-            Utilidades.CAMPO_RESPALDO_CITAS + " = " + 1;
+            Utilidades.CAMPO_RESPALDO_CITAS + " = " + 1 +
+            " ORDER BY " +
+            "DATE(" + Utilidades.CAMPO_FECHA_CITAS + ")";
 
     @Nullable
     @Override

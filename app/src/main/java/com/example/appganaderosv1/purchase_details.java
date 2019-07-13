@@ -319,7 +319,7 @@ public class purchase_details extends AppCompatActivity {
                 , null);
 
         if (cursor.moveToFirst()) {
-            double total = cursor.getDouble(0);
+            int total = Integer.valueOf(String.valueOf(Math.round(cursor.getDouble(0))));
 
             amount_to_pay.setText(String.valueOf(total));
 

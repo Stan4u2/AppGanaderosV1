@@ -21,6 +21,7 @@ import com.example.appganaderosv1.entidades.Ganado;
 import com.example.appganaderosv1.entidades.Raza;
 import com.example.appganaderosv1.utilidades.Utilidades;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class insert_new_animal extends AppCompatActivity {
@@ -52,6 +53,7 @@ public class insert_new_animal extends AppCompatActivity {
     static String WhereCameFrom;
     static int idPurchase;
 
+    DecimalFormat df = new DecimalFormat();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -429,7 +431,6 @@ public class insert_new_animal extends AppCompatActivity {
     private boolean insertNewAnimalCurrentPurchase(int idPurchase, int typeAnimal, int raceAnimal, double weightAnimal, double priceAnimal, int tareAnimal, String earringNumber) {
         SQLiteDatabase db = conn.getWritableDatabase();
 
-
         double total = (weightAnimal * priceAnimal);
 
         ContentValues values = new ContentValues();
@@ -445,7 +446,7 @@ public class insert_new_animal extends AppCompatActivity {
         }
         values.put(Utilidades.CAMPO_PRECIO, priceAnimal);
         values.put(Utilidades.CAMPO_TARA, tareAnimal);
-        values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total * tareAnimal) / 100)));
+        values.put(Utilidades.CAMPO_TOTAL_PAGAR, Math.round(total - ((total * tareAnimal) / 100)));
         values.put(Utilidades.CAMPO_NUMERO_ARETE, earringNumber);
 
         long idResult = db.insert(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_ID_COMPRA_DETALLE, values);
@@ -462,7 +463,6 @@ public class insert_new_animal extends AppCompatActivity {
     private boolean insertNewAnimal(int typeAnimal, int raceAnimal, double weightAnimal, double priceAnimal, int tareAnimal, String earringNumber) {
         SQLiteDatabase db = conn.getWritableDatabase();
 
-
         double total = (weightAnimal * priceAnimal);
 
         ContentValues values = new ContentValues();
@@ -477,7 +477,7 @@ public class insert_new_animal extends AppCompatActivity {
         }
         values.put(Utilidades.CAMPO_PRECIO, priceAnimal);
         values.put(Utilidades.CAMPO_TARA, tareAnimal);
-        values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total * tareAnimal) / 100)));
+        values.put(Utilidades.CAMPO_TOTAL_PAGAR, Math.round((total - ((total * tareAnimal) / 100))));
         values.put(Utilidades.CAMPO_NUMERO_ARETE, earringNumber);
 
         long idResult = db.insert(Utilidades.TABLA_COMPRA_DETALLE, Utilidades.CAMPO_ID_COMPRA_DETALLE, values);
@@ -511,7 +511,7 @@ public class insert_new_animal extends AppCompatActivity {
         }
         values.put(Utilidades.CAMPO_PRECIO, priceAnimal);
         values.put(Utilidades.CAMPO_TARA, tareAnimal);
-        values.put(Utilidades.CAMPO_TOTAL_PAGAR, (total - ((total * tareAnimal) / 100)));
+        values.put(Utilidades.CAMPO_TOTAL_PAGAR, Math.round((total - ((total * tareAnimal) / 100))));
         values.put(Utilidades.CAMPO_NUMERO_ARETE, earringNumber);
 
         int updated = db.update(Utilidades.TABLA_COMPRA_DETALLE, values, Utilidades.CAMPO_ID_COMPRA_DETALLE + " = ?", id_animal);

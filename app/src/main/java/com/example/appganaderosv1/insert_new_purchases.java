@@ -26,6 +26,7 @@ import com.example.appganaderosv1.entidades.Persona;
 import com.example.appganaderosv1.entidades.Raza;
 import com.example.appganaderosv1.utilidades.Utilidades;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class insert_new_purchases extends AppCompatActivity {
@@ -63,6 +64,8 @@ public class insert_new_purchases extends AppCompatActivity {
     ArrayList<CompraDetalle> listViewAnimalsBought;
     ArrayList<Ganado> listViewTypeAnimal;
     ArrayList<Raza> listViewRaceAnimal;
+
+    DecimalFormat df = new DecimalFormat();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +166,7 @@ public class insert_new_purchases extends AppCompatActivity {
 
     public void onRestart() {
         super.onRestart();
+
         if (id_new_person != -1 && process) {
 
             consultListPeople_purchase();
@@ -548,7 +552,7 @@ public class insert_new_purchases extends AppCompatActivity {
                 , null);
 
         if (cursor.moveToFirst()) {
-            double total = cursor.getDouble(0);
+            int total = Integer.valueOf(String.valueOf(Math.round(cursor.getDouble(0))));
 
             amount_to_pay.setText(String.valueOf(total));
         }
@@ -573,6 +577,12 @@ public class insert_new_purchases extends AppCompatActivity {
         if (cursor.moveToFirst()) {
             int quantity = cursor.getInt(0);
             number_animals_purchase.setText(String.valueOf(quantity));
+
+            ContentValues values = new ContentValues();
+
+            values.put(Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS, quantity);
+
+            db.update(Utilidades.TABLA_COMPRAS, values, Utilidades.CAMPO_ID_COMPRA + " = " + idPurchase, null);
         }
 
         db.close();
@@ -581,7 +591,7 @@ public class insert_new_purchases extends AppCompatActivity {
     }
 
     private void calculateSumPayAnimals() {
-        SQLiteDatabase db = conn.getReadableDatabase();
+        SQLiteDatabase db = conn.getWritableDatabase();
 
         Cursor cursor = db.rawQuery(
                 "SELECT " +
@@ -593,9 +603,15 @@ public class insert_new_purchases extends AppCompatActivity {
                 , null);
 
         if (cursor.moveToFirst()) {
-            double total = cursor.getDouble(0);
+            int total = Integer.valueOf(String.valueOf(Math.round(cursor.getDouble(0))));
 
             amount_to_pay.setText(String.valueOf(total));
+
+            ContentValues values = new ContentValues();
+
+            values.put(Utilidades.CAMPO_CANTIDAD_PAGAR, total);
+
+            db.update(Utilidades.TABLA_COMPRAS, values, Utilidades.CAMPO_ID_COMPRA + " = " + idPurchase, null);
         }
 
         db.close();
@@ -629,7 +645,7 @@ public class insert_new_purchases extends AppCompatActivity {
                         idPersonPurchase,
                         date_purchase.getText().toString(),
                         Integer.valueOf(number_animals_purchase.getText().toString()),
-                        Double.valueOf(amount_to_pay.getText().toString()),
+                        Integer.valueOf(amount_to_pay.getText().toString()),
                         purchasePaid.isChecked()
                 );
 
@@ -640,11 +656,14 @@ public class insert_new_purchases extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "¡¡Datos No Insertados!!", Toast.LENGTH_LONG).show();
                 }
             } else if (action.equals("modifie")) {
+
+                System.out.println(amount_to_pay.getText().toString());
+
                 int modified = modifiePurchase(
                         idPersonPurchase,
                         date_purchase.getText().toString(),
                         Integer.valueOf(number_animals_purchase.getText().toString()),
-                        Double.valueOf(amount_to_pay.getText().toString()),
+                        Integer.valueOf(amount_to_pay.getText().toString()),
                         purchasePaid.isChecked()
                 );
 
@@ -660,7 +679,7 @@ public class insert_new_purchases extends AppCompatActivity {
         }
     }
 
-    private int modifiePurchase(int idOwner, String date, int amountAnimals, double amount_pay, boolean purchasePaid) {
+    private int modifiePurchase(int idOwner, String date, int amountAnimals, int amount_pay, boolean purchasePaid) {
 
         SQLiteDatabase db = conn.getWritableDatabase();
 
@@ -685,7 +704,7 @@ public class insert_new_purchases extends AppCompatActivity {
         return updated;
     }
 
-    public boolean insertPurchase(int idOwner, String date, int amountAnimals, double amount_pay, boolean purchasePaid) {
+    public boolean insertPurchase(int idOwner, String date, int amountAnimals, int amount_pay, boolean purchasePaid) {
         SQLiteDatabase db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();

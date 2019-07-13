@@ -62,7 +62,9 @@ public class SalesFragment extends Fragment {
             " WHERE " +
             Utilidades.CAMPO_PERSONA_VENTA + " = " + Utilidades.CAMPO_ID_PERSONA +
             " AND " +
-            Utilidades.CAMPO_RESPALDO_VENTAS + " = " + 1;
+            Utilidades.CAMPO_RESPALDO_VENTAS + " = " + 1 +
+            " ORDER BY " +
+            "DATE(" + Utilidades.CAMPO_FECHA_VENTAS + ")";
 
     @Nullable
     @Override

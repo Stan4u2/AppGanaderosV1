@@ -124,9 +124,9 @@ public class sales_details extends AppCompatActivity {
         super.onRestart();
 
         calculateQuantityAnimals();
+        getPurchaseData();
         calculateSumChargeAnimals();
         calculateSumEarningsAnimals();
-        getPurchaseData();
         fillAnimalList();
     }
 
@@ -147,7 +147,7 @@ public class sales_details extends AppCompatActivity {
                 , null);
 
         if (cursor.moveToFirst()) {
-            double total = cursor.getDouble(0);
+            int total = Integer.valueOf(String.valueOf(Math.round(cursor.getDouble(0))));
 
             earnings.setText(String.valueOf(total));
 
@@ -177,7 +177,7 @@ public class sales_details extends AppCompatActivity {
                 , null);
 
         if (cursor.moveToFirst()) {
-            double total = cursor.getDouble(0);
+            int total = Integer.valueOf(String.valueOf(Math.round(cursor.getDouble(0))));
 
             amount_to_charge.setText(String.valueOf(total));
 
@@ -257,11 +257,11 @@ public class sales_details extends AppCompatActivity {
         }
 
         persona = new Persona();
-        persona.setId_persona(cursor.getInt(5));
-        persona.setNombre(cursor.getString(6));
-        persona.setTelefono(cursor.getString(7));
-        persona.setDomicilio(cursor.getString(8));
-        persona.setDatos_extras(cursor.getString(9));
+        persona.setId_persona(cursor.getInt(6));
+        persona.setNombre(cursor.getString(7));
+        persona.setTelefono(cursor.getString(8));
+        persona.setDomicilio(cursor.getString(9));
+        persona.setDatos_extras(cursor.getString(10));
 
         name_person_sale.setText(persona.getNombre());
         cellphone_person_sale.setText(persona.getTelefono());

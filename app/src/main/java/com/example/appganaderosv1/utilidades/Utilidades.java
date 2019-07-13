@@ -247,7 +247,9 @@ public class Utilidades {
                     " WHERE " +
                     Utilidades.CAMPO_PERSONA_CITA + " = " + Utilidades.CAMPO_ID_PERSONA +
                     " AND " +
-                    Utilidades.CAMPO_RESPALDO_CITAS + " = " + 0;
+                    Utilidades.CAMPO_RESPALDO_CITAS + " = " + 0 +
+                    " ORDER BY " +
+                    "DATE(" + Utilidades.CAMPO_FECHA_CITAS + ")";
 
     public static final String CREAR_VISTA_CITAS = "CREATE VIEW " + VIEW_CITA + " AS " + SELECT_CITA;
 
@@ -276,7 +278,9 @@ public class Utilidades {
                     " WHERE " +
                     Utilidades.CAMPO_PERSONA_COMPRO + " = " + Utilidades.CAMPO_ID_PERSONA +
                     " AND " +
-                    Utilidades.CAMPO_RESPALDO_COMPRAS + " = " + 0;
+                    Utilidades.CAMPO_RESPALDO_COMPRAS + " = " + 0 +
+                    " ORDER BY " +
+                    "DATE(" + Utilidades.CAMPO_FECHA_COMPRAS + ")";
 
     public static final String CREAR_VISTA_COMPRAS = "CREATE VIEW " + VIEW_COMPRAS + " AS " + SELECT_COMPRA;
 
@@ -306,7 +310,9 @@ public class Utilidades {
                     " WHERE " +
                     Utilidades.CAMPO_PERSONA_VENTA + " = " + Utilidades.CAMPO_ID_PERSONA +
                     " AND " +
-                    Utilidades.CAMPO_RESPALDO_VENTAS + " = " + 0;
+                    Utilidades.CAMPO_RESPALDO_VENTAS + " = " + 0 +
+                    " ORDER BY " +
+                    "DATE(" + Utilidades.CAMPO_FECHA_VENTAS + ")";
 
     public static final String CREAR_VISTA_VENTAS = "CREATE VIEW " + VIEW_VENTAS + " AS " + SELECT_VENTA;
 

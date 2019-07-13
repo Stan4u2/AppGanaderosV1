@@ -68,7 +68,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     List<EventDay> events = new ArrayList<>();
 
-
     ArrayList<String> dates = new ArrayList<String>();
 
     @Nullable
