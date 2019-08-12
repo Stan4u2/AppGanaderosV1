@@ -101,18 +101,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         fillListDates();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
         Calendar cal = Calendar.getInstance();
 
         String[] dateCal = sdf.format(cal.getTime()).split("/");
-        int[] dateNoCeros = new int[3];
 
-        dateNoCeros[0] = Integer.valueOf(dateCal[0]);
-        dateNoCeros[1] = Integer.valueOf(dateCal[1]);
-        dateNoCeros[2] = Integer.valueOf(dateCal[2]);
+        String[] dateCeros = new String[3];
 
-        date = (dateNoCeros[0] + "/" + dateNoCeros[1] + "/" + dateNoCeros[2]);
+        dateCeros[0] = dateCal[0];
+        dateCeros[1] = dateCal[1];
+        dateCeros[2] = dateCal[2];
+
+        date = (dateCeros[0] + "-" + dateCeros[1] + "-" + dateCeros[2]);
+
+        System.out.println(date);
 
         calendarView.setOnDayClickListener(new OnDayClickListener() {
             @Override
@@ -122,15 +125,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 date = sdf.format(clickedDayCalendar.getTime());
                 String[] dateCa = sdf.format(clickedDayCalendar.getTime()).split("/");
 
-                dateNoCeros[0] = Integer.valueOf(dateCa[0]);
-                dateNoCeros[1] = Integer.valueOf(dateCa[1]);
-                dateNoCeros[2] = Integer.valueOf(dateCa[2]);
+                dateCeros[0] = dateCa[0];
+                dateCeros[1] = dateCa[1];
+                dateCeros[2] = dateCa[2];
 
-                date = (dateNoCeros[0] + "/" + dateNoCeros[1] + "/" + dateNoCeros[2]);
+                date = (dateCeros[0] + "-" + dateCeros[1] + "-" + dateCeros[2]);
 
                 setAllFalse();
 
                 recycler_view_home.setVisibility(View.GONE);
+
+                System.out.println(date);
             }
         });
 
@@ -217,9 +222,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         for (String object : dates) {
             Calendar calendar = Calendar.getInstance();
-            String[] dateCal = object.split("/");
+            String[] dateCal = object.split("-");
 
-            calendar.set(Integer.valueOf(dateCal[2]), Integer.valueOf(dateCal[1]) - 1, Integer.valueOf(dateCal[0]));
+            //calendar.set(Integer.valueOf(dateCal[2]), Integer.valueOf(dateCal[1]) - 1, Integer.valueOf(dateCal[0]));
+
+            calendar.set(Integer.valueOf(dateCal[0]), Integer.valueOf(dateCal[1]) - 1, Integer.valueOf(dateCal[2]));
+
             events.add(new EventDay(calendar, R.drawable.toro));
 
         }

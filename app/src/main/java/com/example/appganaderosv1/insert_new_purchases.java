@@ -675,7 +675,9 @@ public class insert_new_purchases extends AppCompatActivity {
                 }
             }
 
-            if (complete) finish();
+            if (complete){
+                finish();
+            }
         }
     }
 

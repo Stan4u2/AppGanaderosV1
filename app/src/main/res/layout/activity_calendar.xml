@@ -35,7 +35,7 @@
                 android:id="@+id/calendar_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="dd/mm/aaaa"
+                android:hint="aaaa-mm-dd"
                 android:textSize="20dp" />
 
         </LinearLayout>

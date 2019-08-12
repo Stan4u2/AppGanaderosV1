@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class calendar extends AppCompatActivity {
 
@@ -31,21 +32,36 @@ public class calendar extends AppCompatActivity {
 
         class_that_came_from();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         String[] dateCal = sdf.format(new Date(calendar.getDate())).split("/");
 
-        int[] dateNoCeros = new int[3];
+        String[] dateCeros = new String[3];
 
-        dateNoCeros[0] = Integer.valueOf(dateCal[0]);
-        dateNoCeros[1] = Integer.valueOf(dateCal[1]);
-        dateNoCeros[2] = Integer.valueOf(dateCal[2]);
+        dateCeros[0] = dateCal[0];
+        dateCeros[1] = dateCal[1];
+        dateCeros[2] = dateCal[2];
 
-        calendarDate.setText((dateNoCeros[0] + "/" + dateNoCeros[1] + "/" + dateNoCeros[2]));
+        calendarDate.setText((dateCeros[0] + "-" + dateCeros[1] + "-" + dateCeros[2]));
 
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                String date = (String.valueOf(dayOfMonth) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(year));
+            public void onSelectedDayChange(CalendarView view, int year, int monthOfYear, int dayOfMonth) {
+
+                int month = monthOfYear + 1;
+
+                dateCeros[0] = String.valueOf(year);
+                dateCeros[1] = String.valueOf(month);
+                dateCeros[2] = String.valueOf(dayOfMonth);
+
+                if(month < 10){
+                    dateCeros[1] = "0"+month;
+                }
+                if (dayOfMonth < 10){
+                    dateCeros[2] = "0"+dayOfMonth;
+                }
+
+                String date = (dateCeros[0] + "-" + dateCeros[1] + "-" + dateCeros[2]);
+
                 calendarDate.setText(date);
             }
         });
@@ -57,7 +73,7 @@ public class calendar extends AppCompatActivity {
     }
 
     public void saveDate(View view) {
-        if (calendarDate.getText().toString().equals("DD/MM/AAAA")) {
+        if (calendarDate.getText().toString().equals("aaaa-mm-dd")) {
             Toast.makeText(getApplicationContext(), "Selecione una fecha", Toast.LENGTH_LONG).show();
         } else {
             switch (button_class) {
