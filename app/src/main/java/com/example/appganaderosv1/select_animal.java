@@ -326,6 +326,13 @@ public class select_animal extends AppCompatActivity {
                         Utilidades.TABLA_COMPRAS + " c " +
                         " WHERE " +
                         Utilidades.CAMPO_PERSONA_COMPRO + " = " + Utilidades.CAMPO_ID_PERSONA +
+                        " AND EXISTS (" +
+                                "SELECT * FROM compra_detalle WHERE " +
+                                        "c.id_compras = compra " +
+                                        "AND NOT EXISTS (" +
+                                        "   SELECT * FROM venta_detalle WHERE id_compra_detalle = compra_animal" +
+                                        "   )" +
+                                        ")" +
                         " ORDER BY " +
                         Utilidades.CAMPO_NOMBRE, null
         );
@@ -406,14 +413,6 @@ public class select_animal extends AppCompatActivity {
         purchaseData = new ArrayList<Compras>();
 
         Cursor cursor = db.rawQuery(
-                /*"SELECT DISTINCT " +
-                        Utilidades.CAMPO_FECHA_COMPRAS +
-                        " FROM " +
-                        Utilidades.TABLA_COMPRAS +
-                        " WHERE " +
-                        Utilidades.CAMPO_PERSONA_COMPRO + " = ?" +
-                        " ORDER BY " +
-                        "DATE(" + Utilidades.CAMPO_FECHA_COMPRAS + ")", parameters*/
                 "SELECT DISTINCT " +
                         Utilidades.CAMPO_FECHA_COMPRAS +
                         " FROM " +
