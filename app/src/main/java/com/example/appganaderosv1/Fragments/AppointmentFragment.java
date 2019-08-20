@@ -10,9 +10,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.example.appganaderosv1.Adapter.Adapter_appointment;
@@ -36,33 +39,15 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
     RecyclerView recycler_view;
     ImageButton agregar, borrar;
 
+    EditText SearchTextAppointment;
+
     boolean deleteButton = false;
 
     ConexionSQLiteHelper conn;
 
-    String normalUser = "SELECT * FROM appointment_view";
+    String normalUser;
 
-    String admin = "SELECT " +
-            Utilidades.CAMPO_ID_CITAS + ", " +
-            Utilidades.CAMPO_CANTIDAD_GANADO + ", " +
-            Utilidades.CAMPO_DATOS + ", " +
-            Utilidades.CAMPO_FECHA_CITAS + ", " +
-            Utilidades.CAMPO_RESPALDO_CITAS + ", " +
-
-            Utilidades.CAMPO_ID_PERSONA + ", " +
-            Utilidades.CAMPO_NOMBRE + ", " +
-            Utilidades.CAMPO_TELEFONO + ", " +
-            Utilidades.CAMPO_DOMICILIO + ", " +
-            Utilidades.CAMPO_DATOS_EXTRAS +
-            " FROM " +
-            Utilidades.TABLA_PERSONA + ", " +
-            Utilidades.TABLA_CITAS +
-            " WHERE " +
-            Utilidades.CAMPO_PERSONA_CITA + " = " + Utilidades.CAMPO_ID_PERSONA +
-            " AND " +
-            Utilidades.CAMPO_RESPALDO_CITAS + " = " + 1 +
-            " ORDER BY " +
-            "DATE(" + Utilidades.CAMPO_FECHA_CITAS + ")";
+    String admin;
 
     @Nullable
     @Override
@@ -78,6 +63,8 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
         agregar = vista.findViewById(R.id.agregar);
 
         borrar = vista.findViewById(R.id.borrar);
+
+        SearchTextAppointment = vista.findViewById(R.id.SearchTextAppointment);
 
         listaPersona = new ArrayList<>();
         listaCitas = new ArrayList<>();
@@ -103,6 +90,23 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
 
         fillList();
 
+        SearchTextAppointment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                fillList();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         return vista;
 
     }
@@ -124,6 +128,32 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
         listaCitas = new ArrayList<Citas>();
 
         String SELECT;
+
+        normalUser = "SELECT * FROM appointment_view "  + " WHERE nombre LIKE '%" + SearchTextAppointment.getText().toString() + "%' ";;
+
+        admin = "SELECT " +
+                Utilidades.CAMPO_ID_CITAS + ", " +
+                Utilidades.CAMPO_CANTIDAD_GANADO + ", " +
+                Utilidades.CAMPO_DATOS + ", " +
+                Utilidades.CAMPO_FECHA_CITAS + ", " +
+                Utilidades.CAMPO_RESPALDO_CITAS + ", " +
+
+                Utilidades.CAMPO_ID_PERSONA + ", " +
+                Utilidades.CAMPO_NOMBRE + ", " +
+                Utilidades.CAMPO_TELEFONO + ", " +
+                Utilidades.CAMPO_DOMICILIO + ", " +
+                Utilidades.CAMPO_DATOS_EXTRAS +
+                " FROM " +
+                Utilidades.TABLA_PERSONA + ", " +
+                Utilidades.TABLA_CITAS +
+                " WHERE " +
+                " nombre LIKE '%" + SearchTextAppointment.getText().toString() + "%' " +
+                " AND " +
+                Utilidades.CAMPO_PERSONA_CITA + " = " + Utilidades.CAMPO_ID_PERSONA +
+                " AND " +
+                Utilidades.CAMPO_RESPALDO_CITAS + " = " + 1 +
+                " ORDER BY " +
+                "DATE(" + Utilidades.CAMPO_FECHA_CITAS + ")";
 
         if (deleteButton) {
             SELECT = admin;
