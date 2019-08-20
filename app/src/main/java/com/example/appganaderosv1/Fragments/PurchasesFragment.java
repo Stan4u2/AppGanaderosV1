@@ -10,9 +10,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.example.appganaderosv1.Adapter.Adapter_purchases;
@@ -35,35 +38,17 @@ public class PurchasesFragment extends Fragment {
 
     RecyclerView recycler_view;
 
+    EditText SearchTextPurchase;
+
     ImageButton agregar, borrar;
 
     boolean deleteButton = false;
 
     ConexionSQLiteHelper conn;
 
-    String normalUser = "SELECT * FROM " + Utilidades.VIEW_COMPRAS;
-    String admin = "SELECT " +
-            Utilidades.CAMPO_ID_COMPRA + ", " +
-            Utilidades.CAMPO_FECHA_COMPRAS + ", " +
-            Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + ", " +
-            Utilidades.CAMPO_CANTIDAD_PAGAR + ", " +
-            Utilidades.CAMPO_COMPRA_PAGADA + ", " +
-            Utilidades.CAMPO_RESPALDO_COMPRAS + ", " +
+    String normalUser;
 
-            Utilidades.CAMPO_ID_PERSONA + ", " +
-            Utilidades.CAMPO_NOMBRE + ", " +
-            Utilidades.CAMPO_TELEFONO + ", " +
-            Utilidades.CAMPO_DOMICILIO + ", " +
-            Utilidades.CAMPO_DATOS_EXTRAS +
-            " FROM " +
-            Utilidades.TABLA_PERSONA + ", " +
-            Utilidades.TABLA_COMPRAS +
-            " WHERE " +
-            Utilidades.CAMPO_PERSONA_COMPRO + " = " + Utilidades.CAMPO_ID_PERSONA +
-            " AND " +
-            Utilidades.CAMPO_RESPALDO_COMPRAS + " = " + 1 +
-            " ORDER BY " +
-            "DATE(" + Utilidades.CAMPO_FECHA_COMPRAS + ")";
+    String admin;
 
     @Nullable
     @Override
@@ -76,6 +61,8 @@ public class PurchasesFragment extends Fragment {
         recycler_view.setLayoutManager(new LinearLayoutManager(getContext()));
 
         agregar = view.findViewById(R.id.agregar);
+
+        SearchTextPurchase = view.findViewById(R.id.SearchTextPurchase);
 
         borrar = view.findViewById(R.id.borrar);
 
@@ -103,6 +90,23 @@ public class PurchasesFragment extends Fragment {
 
         fillList();
 
+        SearchTextPurchase.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                fillList();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         return view;
 
     }
@@ -122,6 +126,38 @@ public class PurchasesFragment extends Fragment {
         listaCompras = new ArrayList<Compras>();
 
         String SELECT;
+
+        normalUser = "SELECT " +
+                "* " +
+                " FROM " +
+                Utilidades.VIEW_COMPRAS +
+                " WHERE " +
+                " nombre LIKE '%" + SearchTextPurchase.getText().toString() + "%' ";
+
+        admin = "SELECT " +
+                Utilidades.CAMPO_ID_COMPRA + ", " +
+                Utilidades.CAMPO_FECHA_COMPRAS + ", " +
+                Utilidades.CAMPO_CANTIDAD_ANIMALES_COMPRAS + ", " +
+                Utilidades.CAMPO_CANTIDAD_PAGAR + ", " +
+                Utilidades.CAMPO_COMPRA_PAGADA + ", " +
+                Utilidades.CAMPO_RESPALDO_COMPRAS + ", " +
+
+                Utilidades.CAMPO_ID_PERSONA + ", " +
+                Utilidades.CAMPO_NOMBRE + ", " +
+                Utilidades.CAMPO_TELEFONO + ", " +
+                Utilidades.CAMPO_DOMICILIO + ", " +
+                Utilidades.CAMPO_DATOS_EXTRAS +
+                " FROM " +
+                Utilidades.TABLA_PERSONA + ", " +
+                Utilidades.TABLA_COMPRAS +
+                " WHERE " +
+                " nombre LIKE '%" + SearchTextPurchase.getText().toString() + "%' " +
+                " AND " +
+                Utilidades.CAMPO_PERSONA_COMPRO + " = " + Utilidades.CAMPO_ID_PERSONA +
+                " AND " +
+                Utilidades.CAMPO_RESPALDO_COMPRAS + " = " + 1 +
+                " ORDER BY " +
+                "DATE(" + Utilidades.CAMPO_FECHA_COMPRAS + ")";
 
         if (deleteButton) {
             SELECT = admin;

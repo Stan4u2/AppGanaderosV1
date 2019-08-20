@@ -93,7 +93,9 @@ public class PeopleFragment extends Fragment {
                         " OR " +
                         "telefono like '%" + SearchText.getText().toString() + "%'" +
                         " OR " +
-                        "domicilio like '%" + SearchText.getText().toString() + "%'", null);
+                        "domicilio like '%" + SearchText.getText().toString() + "%'" +
+                        " OR " +
+                        "extras like '%" + SearchText.getText().toString() + "%'", null);
 
         while (cursor.moveToNext()) {
 
