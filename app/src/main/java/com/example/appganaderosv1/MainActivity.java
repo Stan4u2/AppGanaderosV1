@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.appganaderosv1.utilidades.Utilidades;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.channels.FileChannel;
 
 public class MainActivity extends AppCompatActivity {
     //This variable is used for further methods to know if the user signed in is an administrator
@@ -81,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
                 userName = Usuario.getText().toString();
                 Intent miIntent = new Intent(MainActivity.this, homeActivity.class);
                 startActivity(miIntent);
+
+                //Backups();
+                restoreDB();
             }
 
             cursor.close();
@@ -89,6 +101,71 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Usuario o contraseña no valido", Toast.LENGTH_LONG).show();
             System.out.println(e);
             limpiar();
+        }
+    }
+
+    public void Backups() throws IOException {
+/*
+        try {
+            File sd = Environment.getDataDirectory();
+            File data = Environment.getDataDirectory();
+
+            //if (sd.canWrite()) {
+                File currentDB = new File("/data/data/com.example.appganaderosv1/databases/bd_ganado");
+                File backupDB = new File("/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUp");
+
+                //if (currentDB.exists()) {
+                    FileChannel src = new FileInputStream(currentDB).getChannel();
+                    FileChannel dst = new FileOutputStream(backupDB).getChannel();
+                    dst.transferFrom(src, 0, src.size());
+                    src.close();
+                    dst.close();
+                    Toast.makeText(getApplicationContext(), "Backup is successful to SD card", Toast.LENGTH_SHORT).show();
+                //}
+            //}
+        } catch (Exception e) {
+            System.out.println("Error " + e);
+        }*/
+        final String inFileName = this.getDatabasePath("bd_ganado").getPath();
+        File dbFile = new File(inFileName);
+        FileInputStream fis = new FileInputStream(dbFile);
+
+        String outFileName = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP";
+
+        // Open the empty db as the output stream
+        OutputStream output = new FileOutputStream(outFileName);
+
+        // Transfer bytes from the inputfile to the outputfile
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = fis.read(buffer))>0){
+            output.write(buffer, 0, length);
+        }
+
+        // Close the streams
+        output.flush();
+        output.close();
+        fis.close();
+    }
+
+    public void restoreDB(){
+        try {
+            //if (sd.canWrite()) {
+                File currentDB = new File("/data/data/com.example.appganaderosv1/databases/bd_ganado");
+                File backupDB = new File("/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUp");
+
+                //if (currentDB.exists()) {
+                    FileChannel src = new FileInputStream(backupDB).getChannel();
+                    FileChannel dst = new FileOutputStream(currentDB).getChannel();
+                    //dst.transferFrom(src, 0, src.size());
+                    src.transferFrom(dst,0, dst.size());
+                    src.close();
+                    dst.close();
+                    Toast.makeText(getApplicationContext(), "Database Restored successfully", Toast.LENGTH_SHORT).show();
+                //}
+            //}
+        } catch (Exception e) {
+            System.out.println("Error " + e);
         }
     }
 

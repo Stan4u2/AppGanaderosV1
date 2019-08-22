@@ -46,7 +46,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + Utilidades.TABLA_USUARIO);
+        /*db.execSQL("DROP TABLE IF EXISTS " + Utilidades.TABLA_USUARIO);
         db.execSQL("DROP TABLE IF EXISTS " + Utilidades.TABLA_PERSONA);
         db.execSQL("DROP TABLE IF EXISTS " + Utilidades.TABLA_CITAS);
         db.execSQL("DROP TABLE IF EXISTS " + Utilidades.TABLA_RAZA);
@@ -71,7 +71,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP INDEX IF EXISTS " + Utilidades.INDEX_TABLE_APPOINTMENT);
         db.execSQL("DROP INDEX IF EXISTS " + Utilidades.INDEX_TABLE_PURCHASES);
         db.execSQL("DROP INDEX IF EXISTS " + Utilidades.INDEX_TABLE_SALES);
-        onCreate(db);
+        onCreate(db);*/
     }
 
     public void onOpen(SQLiteDatabase db) {
@@ -81,5 +81,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
             db.execSQL("PRAGMA foreign_keys=ON;");
         }
     }
+
+
 
 }
