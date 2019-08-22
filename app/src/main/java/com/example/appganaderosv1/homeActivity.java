@@ -190,6 +190,17 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
             backUpSHM.delete();
             backUpWAL.delete();
 
+            if(!oldSHM.exists()){
+                OutputStream  shm1 = new FileOutputStream(shmPath);
+                shm1.flush();
+                shm1.close();
+            }
+            if(!oldWAL.exists()){
+                OutputStream wal1 = new FileOutputStream(walPath);
+                wal1.flush();
+                wal1.close();
+            }
+
             // Open the empty db as the output stream
             OutputStream db = new FileOutputStream(dbPath);
             OutputStream  shm = new FileOutputStream(shmPath);
