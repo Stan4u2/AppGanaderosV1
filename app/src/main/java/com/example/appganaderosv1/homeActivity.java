@@ -1,6 +1,7 @@
 package com.example.appganaderosv1;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.appganaderosv1.Fragments.AppointmentFragment;
 import com.example.appganaderosv1.Fragments.HomeFragment;
@@ -20,6 +22,12 @@ import com.example.appganaderosv1.Fragments.PersonalDataFragment;
 import com.example.appganaderosv1.Fragments.PurchasesFragment;
 import com.example.appganaderosv1.Fragments.SalesFragment;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import static com.example.appganaderosv1.MainActivity.userName;
 
 public class homeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -27,6 +35,8 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
     TextView navUsername;
 
     private DrawerLayout drawer;
+
+    ConexionSQLiteHelper conn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +98,46 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_personal_data:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PersonalDataFragment()).commit();
                 break;
+            case R.id.nav_BackUp:
+
+                /*
+                String dbPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP";
+
+                File backUpDb = new File(dbPath);
+
+                SQLiteDatabase.deleteDatabase(new File(this.getDatabasePath("bd_ganado_BackUP").getPath()));
+                */
+
+                /*if(!this.getDatabasePath("bd_ganado_BackUP").getPath().isEmpty()){
+                    SQLiteDatabase.deleteDatabase(new File(this.getDatabasePath("bd_ganado_BackUP").getPath()));
+
+                    if(!this.getDatabasePath("db_ganado_BackUP").exists()){
+                        System.out.println("Database Deleted");
+                    }
+                }*/
+
+                try {
+
+                    boolean backUp = Backups();
+
+                    if (backUp) {
+                        Toast.makeText(getApplicationContext(), "Respaldo Exitoso", Toast.LENGTH_LONG).show();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case R.id.nav_Import:
+                try {
+                    boolean importDb = restoreDB();
+
+                    if (importDb) {
+                        Toast.makeText(getApplicationContext(), "Importación Exitosa", Toast.LENGTH_LONG).show();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
             case R.id.nav_logout:
                 Intent miIntent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(miIntent);
@@ -115,5 +165,132 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
         SF.newSale(view);
     }
 
+    public boolean Backups() throws IOException {
+        String DB_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado";
+        String dbPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP";
+
+        String SHM_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado-shm";
+        String shmPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP-shm";
+
+        String WAL_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado-wal";
+        String walPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP-wal";
+
+        File backUpDb = new File(dbPath);
+        File oldDb = new File(DB_FILEPATH);
+
+        File backUpSHM = new File(shmPath);
+        File oldSHM = new File(SHM_FILEPATH);
+
+        File backUpWAL = new File(walPath);
+        File oldWAL = new File(WAL_FILEPATH);
+
+        if (backUpDb.exists()) {
+            //If the database exists then I delete it and create a new one then I insert the data again
+            SQLiteDatabase.deleteDatabase(new File(dbPath));
+            backUpSHM.delete();
+            backUpWAL.delete();
+
+            // Open the empty db as the output stream
+            OutputStream db = new FileOutputStream(dbPath);
+            OutputStream  shm = new FileOutputStream(shmPath);
+            OutputStream wal = new FileOutputStream(walPath);
+
+            backUpDb = new File(dbPath);
+            backUpSHM = new File(shmPath);
+            backUpWAL = new File(walPath);
+
+            FileUtils.copyFile(new FileInputStream(oldDb), new FileOutputStream(backUpDb));
+            FileUtils.copyFile(new FileInputStream(oldSHM), new FileOutputStream(backUpSHM));
+            FileUtils.copyFile(new FileInputStream(oldWAL), new FileOutputStream(backUpWAL));
+
+            db.flush();
+            db.close();
+            shm.flush();
+            shm.close();
+            wal.flush();
+            wal.close();
+
+            return true;
+
+        }else if (!backUpDb.exists()){
+            //If the database doesn't exists, then I'll just create a new one and insert the data
+            // Open the empty db as the output stream
+            OutputStream db = new FileOutputStream(dbPath);
+            OutputStream  shm = new FileOutputStream(shmPath);
+            OutputStream wal = new FileOutputStream(walPath);
+
+            backUpDb = new File(dbPath);
+            backUpSHM = new File(shmPath);
+            backUpWAL = new File(walPath);
+
+            FileUtils.copyFile(new FileInputStream(oldDb), new FileOutputStream(backUpDb));
+            FileUtils.copyFile(new FileInputStream(oldSHM), new FileOutputStream(backUpSHM));
+            FileUtils.copyFile(new FileInputStream(oldWAL), new FileOutputStream(backUpWAL));
+
+            db.flush();
+            db.close();
+            shm.flush();
+            shm.close();
+            wal.flush();
+            wal.close();
+
+            return true;
+
+        }
+
+        return false;
+    }
+
+    public boolean restoreDB() throws IOException {
+/*
+        String DB_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado";
+        String dbPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP";
+
+        File backUpDb = new File(dbPath);
+        File oldDb = new File(DB_FILEPATH);
+*/
+
+        String DB_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado";
+        String dbPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP";
+
+        String SHM_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado-shm";
+        String shmPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP-shm";
+
+        String WAL_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado-wal";
+        String walPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP-wal";
+
+        File backUpDb = new File(dbPath);
+        File oldDb = new File(DB_FILEPATH);
+
+        File backUpSHM = new File(shmPath);
+        File oldSHM = new File(SHM_FILEPATH);
+
+        File backUpWAL = new File(walPath);
+        File oldWAL = new File(WAL_FILEPATH);
+
+
+        if (backUpDb.exists()) {
+
+            SQLiteDatabase.deleteDatabase(new File(DB_FILEPATH));
+
+            conn = new ConexionSQLiteHelper(getApplicationContext(), "bd_ganado", null, 2);
+            OutputStream  shm = new FileOutputStream(SHM_FILEPATH);
+            OutputStream wal = new FileOutputStream(WAL_FILEPATH);
+
+            FileUtils.copyFile(new FileInputStream(backUpDb), new FileOutputStream(oldDb));
+            FileUtils.copyFile(new FileInputStream(backUpSHM), new FileOutputStream(oldSHM));
+            FileUtils.copyFile(new FileInputStream(backUpWAL), new FileOutputStream(oldWAL));
+
+            conn.close();
+
+            shm.flush();
+            shm.close();
+            wal.flush();
+            wal.close();
+
+            return true;
+        }
+        return false;
+    }
 
 }
