@@ -99,29 +99,14 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PersonalDataFragment()).commit();
                 break;
             case R.id.nav_BackUp:
-
-                /*
-                String dbPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP";
-
-                File backUpDb = new File(dbPath);
-
-                SQLiteDatabase.deleteDatabase(new File(this.getDatabasePath("bd_ganado_BackUP").getPath()));
-                */
-
-                /*if(!this.getDatabasePath("bd_ganado_BackUP").getPath().isEmpty()){
-                    SQLiteDatabase.deleteDatabase(new File(this.getDatabasePath("bd_ganado_BackUP").getPath()));
-
-                    if(!this.getDatabasePath("db_ganado_BackUP").exists()){
-                        System.out.println("Database Deleted");
-                    }
-                }*/
-
                 try {
 
                     boolean backUp = Backups();
 
                     if (backUp) {
                         Toast.makeText(getApplicationContext(), "Respaldo Exitoso", Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Respaldo Fallido", Toast.LENGTH_LONG).show();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -133,6 +118,8 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
 
                     if (importDb) {
                         Toast.makeText(getApplicationContext(), "Importación Exitosa", Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Importación Fallida", Toast.LENGTH_LONG).show();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -166,14 +153,24 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public boolean Backups() throws IOException {
+        //So if the folders don't exist, then the appp will create them.
+        File folder = new File("/storage/emulated/0/Databases/AppGanaderos");
+
+        if(!folder.exists()){
+            folder.mkdirs();
+        }
+
         String DB_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado";
-        String dbPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP";
+        //String dbPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP";
+        String dbPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado_BackUP";
 
         String SHM_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado-shm";
-        String shmPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP-shm";
+        //String shmPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP-shm";
+        String shmPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado_BackUP-shm";
 
         String WAL_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado-wal";
-        String walPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP-wal";
+        //String walPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP-wal";
+        String walPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado_BackUP-wal";
 
         File backUpDb = new File(dbPath);
         File oldDb = new File(DB_FILEPATH);
@@ -253,53 +250,54 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public boolean restoreDB() throws IOException {
-/*
-        String DB_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado";
-        String dbPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP";
 
-        File backUpDb = new File(dbPath);
-        File oldDb = new File(DB_FILEPATH);
-*/
+        File folder = new File("/storage/emulated/0/Databases/AppGanaderos");
 
-        String DB_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado";
-        String dbPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP";
+        if(folder.exists()){
 
-        String SHM_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado-shm";
-        String shmPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP-shm";
+            String DB_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado";
+            //String dbPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP";
+            String dbPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado_BackUP";
 
-        String WAL_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado-wal";
-        String walPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP-wal";
+            String SHM_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado-shm";
+            //String shmPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP-shm";
+            String shmPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado_BackUP-shm";
 
-        File backUpDb = new File(dbPath);
-        File oldDb = new File(DB_FILEPATH);
+            String WAL_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado-wal";
+            //String walPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP-wal";
+            String walPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado_BackUP-wal";
 
-        File backUpSHM = new File(shmPath);
-        File oldSHM = new File(SHM_FILEPATH);
+            File backUpDb = new File(dbPath);
+            File oldDb = new File(DB_FILEPATH);
 
-        File backUpWAL = new File(walPath);
-        File oldWAL = new File(WAL_FILEPATH);
+            File backUpSHM = new File(shmPath);
+            File oldSHM = new File(SHM_FILEPATH);
+
+            File backUpWAL = new File(walPath);
+            File oldWAL = new File(WAL_FILEPATH);
 
 
-        if (backUpDb.exists()) {
+            if (backUpDb.exists() && backUpSHM.exists() && backUpWAL.exists()) {
 
-            SQLiteDatabase.deleteDatabase(new File(DB_FILEPATH));
+                SQLiteDatabase.deleteDatabase(new File(DB_FILEPATH));
 
-            conn = new ConexionSQLiteHelper(getApplicationContext(), "bd_ganado", null, 2);
-            OutputStream  shm = new FileOutputStream(SHM_FILEPATH);
-            OutputStream wal = new FileOutputStream(WAL_FILEPATH);
+                conn = new ConexionSQLiteHelper(getApplicationContext(), "bd_ganado", null, 2);
+                OutputStream shm = new FileOutputStream(SHM_FILEPATH);
+                OutputStream wal = new FileOutputStream(WAL_FILEPATH);
 
-            FileUtils.copyFile(new FileInputStream(backUpDb), new FileOutputStream(oldDb));
-            FileUtils.copyFile(new FileInputStream(backUpSHM), new FileOutputStream(oldSHM));
-            FileUtils.copyFile(new FileInputStream(backUpWAL), new FileOutputStream(oldWAL));
+                FileUtils.copyFile(new FileInputStream(backUpDb), new FileOutputStream(oldDb));
+                FileUtils.copyFile(new FileInputStream(backUpSHM), new FileOutputStream(oldSHM));
+                FileUtils.copyFile(new FileInputStream(backUpWAL), new FileOutputStream(oldWAL));
 
-            conn.close();
+                conn.close();
 
-            shm.flush();
-            shm.close();
-            wal.flush();
-            wal.close();
+                shm.flush();
+                shm.close();
+                wal.flush();
+                wal.close();
 
-            return true;
+                return true;
+            }
         }
         return false;
     }
