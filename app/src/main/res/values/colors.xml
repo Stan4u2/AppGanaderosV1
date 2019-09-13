@@ -6,5 +6,7 @@
     <color name="colorBackground">#EFD294</color>
     <color name="buttonColorNotSelected">#ffd6d7d7</color>
     <color name="buttonColorSelected">#808080</color>
+    <color name="menuBackGround">#FAFAFA</color>
+    <color name="colorFinalGradient">#1FA68F</color>
 
 </resources>

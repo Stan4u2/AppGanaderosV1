@@ -4,8 +4,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -22,19 +22,16 @@ import com.example.appganaderosv1.entidades.Persona;
 import com.example.appganaderosv1.entidades.Raza;
 import com.example.appganaderosv1.utilidades.Utilidades;
 
-import static com.example.appganaderosv1.MainActivity.administrator;
-
 import java.util.ArrayList;
+
+import static com.example.appganaderosv1.MainActivity.administrator;
 
 public class purchase_details extends AppCompatActivity {
 
+    static int idPurchase;
     ConexionSQLiteHelper conn;
-
     Persona person = null;
     Compras compras = null;
-
-    static int idPurchase;
-
     TextView name_person_purchase, cellphone_person_purchase, address_person_purchase, extra_data_person_purchase;
     TextView date_purchase, amount_animals_purchase, amount_to_pay, purchase_paid;
     RecyclerView recycler_view_purchase;
@@ -93,9 +90,9 @@ public class purchase_details extends AppCompatActivity {
             amount_animals_purchase.setText(compras.getCantidad_animales_compra().toString());
             amount_to_pay.setText(compras.getCantidad_pagar().toString());
 
-            if(compras.getCompra_pagada()){
+            if (compras.getCompra_pagada()) {
                 purchase_paid.setText("Si");
-            }else{
+            } else {
                 purchase_paid.setText("No");
             }
 
@@ -157,9 +154,9 @@ public class purchase_details extends AppCompatActivity {
         compras.setCantidad_animales_compra(cursor.getInt(2));
         compras.setCantidad_pagar(cursor.getInt(3));
 
-        if(cursor.getInt(4) == 1){
+        if (cursor.getInt(4) == 1) {
             compras.setCompra_pagada(true);
-        }else if (cursor.getInt(4) == 0){
+        } else if (cursor.getInt(4) == 0) {
             compras.setCompra_pagada(false);
         }
 
@@ -177,9 +174,9 @@ public class purchase_details extends AppCompatActivity {
         address_person_purchase.setText(cursor.getString(8));
         extra_data_person_purchase.setText(cursor.getString(9));
 
-        if(compras.getCompra_pagada()){
+        if (compras.getCompra_pagada()) {
             purchase_paid.setText("Si");
-        }else{
+        } else {
             purchase_paid.setText("No");
         }
 

@@ -4,8 +4,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -31,9 +31,17 @@ import java.util.ArrayList;
 
 public class insert_new_purchases extends AppCompatActivity {
 
+    public static int id_new_person;
+    public static boolean process;
+    public static boolean datePurchase;
+    public static String DatePurchase;
+    public static boolean newAnimalInserted;
+    public static boolean animalDeleted;
+    public static String action;
+    public static String InsertNewAnimal;
+    static int idPurchase;
     Persona person = null;
     Compras compras = null;
-
     ImageButton cancelButton, add_person_purchase, select_date_purchase, savePurchase;
     TextView action_to_do, name_person_purchase, cellphone_person_purchase, address_person_purchase, extra_data_person_purchase, date_purchase;
     TextView number_animals_purchase, amount_to_pay;
@@ -41,20 +49,7 @@ public class insert_new_purchases extends AppCompatActivity {
     Spinner spinner_person_purchase;
     RecyclerView recycler_view;
     CheckBox purchasePaid;
-
     int idPersonPurchase;
-    static int idPurchase;
-
-    public static int id_new_person;
-    public static boolean process;
-    public static boolean datePurchase;
-    public static String DatePurchase;
-    public static boolean newAnimalInserted;
-    public static boolean animalDeleted;
-
-    public static String action;
-    public static String InsertNewAnimal;
-
     ArrayList<String> peopleList;
     ArrayList<Persona> peopleData;
 
@@ -154,9 +149,9 @@ public class insert_new_purchases extends AppCompatActivity {
             number_animals_purchase.setText(compras.getCantidad_animales_compra().toString());
             amount_to_pay.setText(compras.getCantidad_pagar().toString());
 
-            if(compras.getCompra_pagada()){
+            if (compras.getCompra_pagada()) {
                 purchasePaid.setChecked(true);
-            }else{
+            } else {
                 purchasePaid.setChecked(false);
             }
 
@@ -675,7 +670,7 @@ public class insert_new_purchases extends AppCompatActivity {
                 }
             }
 
-            if (complete){
+            if (complete) {
                 finish();
             }
         }

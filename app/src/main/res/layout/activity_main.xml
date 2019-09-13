@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,66 +8,71 @@
     tools:context=".MainActivity">
 
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="181dp"
-        android:layout_height="195dp"
-        app:layout_constraintBottom_toTopOf="@+id/Usuario"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/toro" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/login_rectangle">
 
-    <EditText
-        android:id="@+id/Usuario"
-        android:layout_width="229dp"
-        android:layout_height="48dp"
-        android:background="@drawable/diseno_edit_text"
-        android:ems="10"
-        android:hint="USUARIO"
-        android:inputType="textPersonName"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColorHint="#1a464f"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/Contrasena"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="15dp"
+            app:srcCompat="@drawable/logo_1" />
 
-    <EditText
-        android:id="@+id/Contrasena"
-        android:layout_width="229dp"
-        android:layout_height="48dp"
-        android:background="@drawable/diseno_edit_text"
-        android:ems="10"
-        android:hint="CONTRASEÑA"
-        android:inputType="textPassword"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColorHint="#1a464f"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Usuario" />
+        <EditText
+            android:id="@+id/Usuario"
+            android:layout_width="229dp"
+            android:layout_height="48dp"
+            android:background="@drawable/diseno_edit_text"
+            android:ems="10"
+            android:hint="USUARIO"
+            android:inputType="textPersonName"
+            android:layout_marginTop="60dp"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColorHint="#1a464f"
+            android:textSize="24sp" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="161dp"
-        android:layout_height="49dp"
-        android:background="@drawable/boton_iniciar_secion"
-        android:onClick="verificarUsuarios"
-        android:text="INICIAR"
-        android:textColor="#ffff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Contrasena" />
+        <EditText
+            android:id="@+id/Contrasena"
+            android:layout_width="229dp"
+            android:layout_height="48dp"
+            android:background="@drawable/diseno_edit_text"
+            android:ems="10"
+            android:hint="CONTRASEÑA"
+            android:inputType="textPassword"
+            android:layout_marginTop="50dp"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColorHint="#1a464f"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="161dp"
+            android:layout_height="49dp"
+            android:background="@drawable/boton_iniciar_secion"
+            android:onClick="verificarUsuarios"
+            android:text="INICIAR"
+            android:textColor="#ffff"
+            android:layout_marginTop="50dp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
 
 
-</android.support.constraint.ConstraintLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
