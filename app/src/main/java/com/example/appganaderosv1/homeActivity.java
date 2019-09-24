@@ -161,16 +161,16 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
         }
 
         String DB_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado";
-        //String dbPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP";
-        String dbPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado_BackUP";
+        //String dbPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado_BackUP";
+        String dbPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado";
 
         String SHM_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado-shm";
-        //String shmPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP-shm";
-        String shmPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado_BackUP-shm";
+        //String shmPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado_BackUP-shm";
+        String shmPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado-shm";
 
         String WAL_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado-wal";
-        //String walPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP-wal";
-        String walPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado_BackUP-wal";
+        //String walPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado_BackUP-wal";
+        String walPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado-wal";
 
         File backUpDb = new File(dbPath);
         File oldDb = new File(DB_FILEPATH);
@@ -188,12 +188,12 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
             backUpWAL.delete();
 
             if(!oldSHM.exists()){
-                OutputStream  shm1 = new FileOutputStream(shmPath);
+                OutputStream  shm1 = new FileOutputStream(SHM_FILEPATH);
                 shm1.flush();
                 shm1.close();
             }
             if(!oldWAL.exists()){
-                OutputStream wal1 = new FileOutputStream(walPath);
+                OutputStream wal1 = new FileOutputStream(WAL_FILEPATH);
                 wal1.flush();
                 wal1.close();
             }
@@ -256,16 +256,16 @@ public class homeActivity extends AppCompatActivity implements NavigationView.On
         if(folder.exists()){
 
             String DB_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado";
-            //String dbPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP";
-            String dbPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado_BackUP";
+            //String dbPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado_BackUP";
+            String dbPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado";
 
             String SHM_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado-shm";
-            //String shmPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP-shm";
-            String shmPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado_BackUP-shm";
+            //String shmPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado_BackUP-shm";
+            String shmPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado-shm";
 
             String WAL_FILEPATH = "/data/data/com.example.appganaderosv1/databases/bd_ganado-wal";
-            //String walPath = "/data/data/com.example.appganaderosv1/databases/bd_ganado_BackUP-wal";
-            String walPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado_BackUP-wal";
+            //String walPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado_BackUP-wal";
+            String walPath = "/storage/emulated/0/Databases/AppGanaderos/bd_ganado-wal";
 
             File backUpDb = new File(dbPath);
             File oldDb = new File(DB_FILEPATH);

@@ -125,9 +125,9 @@ public class select_animal extends AppCompatActivity {
 
         loadingData = false;
 
-        consultListOwners();
-        consultListAnimals();
+        consultListOwners(0);
         consultListDates();
+        consultListAnimals();
 
         PesoPieRBVenta.setOnCheckedChangeListener((compoundButton, b) -> {
             peso_venta.setText("");
@@ -207,9 +207,6 @@ public class select_animal extends AppCompatActivity {
             action = actionToDo.getSerializable("action").toString();
             owner = actionToDo.getSerializable("owner").toString();
 
-            System.out.println(action);
-            System.out.println(owner);
-
             switch (action) {
                 case "insert":
 
@@ -237,6 +234,8 @@ public class select_animal extends AppCompatActivity {
 
                     person = true;
 
+                    consultListOwners(persona.getId_persona());
+                    consultListDates();
                     loadData();
                     break;
             }
@@ -311,12 +310,11 @@ public class select_animal extends AppCompatActivity {
         }
     }
 
-    private void consultListOwners() {
+    private void consultListOwners(int id_person_modife) {
 
         SQLiteDatabase db = conn.getWritableDatabase();
         Persona persona = null;
         peopleData = new ArrayList<Persona>();
-
 
         Cursor cursor = db.rawQuery(
                 "SELECT DISTINCT " +
@@ -332,7 +330,7 @@ public class select_animal extends AppCompatActivity {
                                         "AND NOT EXISTS (" +
                                         "   SELECT * FROM venta_detalle WHERE id_compra_detalle = compra_animal" +
                                         "   )" +
-                                        ")" +
+                                        ") OR p.id_persona = " + id_person_modife +
                         " ORDER BY " +
                         Utilidades.CAMPO_NOMBRE, null
         );
@@ -424,6 +422,7 @@ public class select_animal extends AppCompatActivity {
                         "   SELECT * FROM venta_detalle WHERE id_compra_detalle = compra_animal" +
                         "   )" +
                         ")" +
+                        "OR fecha = '" + purchaseDate + "'" +
                         " AND " +
                         Utilidades.CAMPO_PERSONA_COMPRO + " = ?" +
                         " ORDER BY " +
